@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Exports\TransactionExportExcel;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use App\Models\Device;
 use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Excel;
 
 class TransactionController extends Controller
 {
@@ -51,12 +53,15 @@ class TransactionController extends Controller
         ]));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
+    }
+
+    public function excel()
+    {
+        $waktu = Carbon::now()->format('Ymd');
+        return Excel::download(new TransactionExportExcel, $waktu . '_data report.xlsx');
     }
 
     /**

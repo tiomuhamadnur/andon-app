@@ -24,8 +24,9 @@
                                 Request</a>
                             <a class="btn bg-gradient-warning mb-0" data-toggle="modal" data-target="#filterModal"
                                 href="javascript:;"><i class="material-icons text-sm">filter</i>&nbsp;&nbsp;Filter</a>
-                            <a class="btn bg-gradient-success mb-0" data-toggle="modal" data-target="#exportModal"
-                                href="javascript:;"><i class="material-icons text-sm">send</i>&nbsp;&nbsp;Export</a>
+                            <a class="btn bg-gradient-success mb-0" data-toggle="modal"
+                                data-target="#confirmationExportExcel" href="javascript:;"><i
+                                    class="material-icons text-sm">send</i>&nbsp;&nbsp;Export</a>
                         </div>
                         <div class="card-body px-0 pb-2">
                             <div class="table-responsive p-0">
@@ -112,17 +113,17 @@
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center text-wrap">
-                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                    <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
                                                         {{ $item->call_at ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center text-wrap">
-                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                    <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
                                                         {{ $item->response_at ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center text-wrap">
-                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                    <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
                                                         {{ $item->closed_at ?? '-' }}
                                                     </span>
                                                 </td>
@@ -306,6 +307,37 @@
                 </div>
                 <!-- End Confirmation Closed Modal -->
 
+                <!-- Start Confirmation Export Excel Modal -->
+                <div class="modal fade" id="confirmationExportExcel" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form">
+                                    <form action="{{ route('transaction.excel') }}" id="confirmation-export-form"
+                                        method="GET">
+                                        @csrf
+                                        @method('get')
+                                        <div class="mb-3">
+                                            <p class="text-center text-wrap">
+                                                This report data will be generated in Excel format.
+                                            </p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" form="confirmation-export-form" formtarget="_blank"
+                                    onclick="closeModal()" class="btn btn-success">Download</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Confirmation Export Excel Modal -->
+
                 @section('javascript')
                     <script>
                         $(document).ready(function() {
@@ -318,6 +350,11 @@
                                 var id = $(e.relatedTarget).data('id');
                                 $('#id_modal_closed').val(id);
                             });
+
+                            function closeModal() {
+                                const modal_export_excell = document.getElementById("confirmationExportExcel");
+                                modal_export_excell.modal("hide");
+                            }
                         });
                     </script>
                 @endsection

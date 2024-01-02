@@ -83,6 +83,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('transaction', 'store')->name('transaction.store');
         Route::post('transaction/response', 'response')->name('transaction.response');
         Route::post('transaction/closed', 'closed')->name('transaction.closed');
+        Route::get('transaction/excel', 'excel')->name('transaction.excel');
     });
 
     Route::controller(UserManagementController::class)->group(function () {
