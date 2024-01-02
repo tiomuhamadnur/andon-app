@@ -33,20 +33,23 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 NO
                                             </th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                BUILDING <br>
-                                                (ZONA)
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                BUILDING
                                             </th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ZONA
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 PROCESS
                                             </th>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
                                                 PIC DEPARTMENT
                                             </th>
                                             <th
@@ -54,12 +57,24 @@
                                                 CALL AT
                                             </th>
                                             <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
                                                 RESPONSE AT
                                             </th>
                                             <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
                                                 CLOSED AT
+                                            </th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                RESPONSE DURATION
+                                            </th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                PERFORMANCE DURATION
+                                            </th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                TOTAL DURATION
                                             </th>
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
@@ -69,19 +84,21 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($transaction as $item)
+                                        @foreach ($transactions as $item)
                                             <tr>
-                                                <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <p class="mb-0 text-sm">{{ $loop->iteration }}</p>
-                                                        </div>
+                                                <td class="text-center">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <p class="mb-0 text-sm">{{ $loop->iteration }}</p>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
-                                                        {{ $item->device->building->name ?? '-' }} <br>
-                                                        ({{ $item->device->zona->name ?? '-' }})
+                                                        {{ $item->device->building->name ?? '-' }}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $item->device->zona->name ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -94,53 +111,80 @@
                                                         {{ $item->department->name ?? '-' }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center text-wrap">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->call_at ?? '-' }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center text-wrap">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->response_at ?? '-' }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center text-wrap">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->closed_at ?? '-' }}
                                                     </span>
                                                 </td>
+                                                <td class="align-middle text-center text-wrap">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{-- @php
+                                                            $call_at = \Carbon\Carbon::parse($item->call_at);
+                                                            $response_at = \Carbon\Carbon::parse($item->response_at);
+                                                        @endphp
+                                                        {{ $call_at->diffInMinutes($response_at) ?? '-' }} min --}}
+                                                        {{ $item->response_duration }} min
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center text-wrap">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{-- @php
+                                                            $response_at = \Carbon\Carbon::parse($item->response_at);
+                                                            $closed_at = \Carbon\Carbon::parse($item->closed_at);
+                                                        @endphp
+                                                        {{ $response_at->diffInMinutes($closed_at) ?? '-' }} min --}}
+                                                        {{ $item->performance_duration }} min
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center text-wrap">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{-- @php
+                                                            $call_at = \Carbon\Carbon::parse($item->call_at);
+                                                            $closed_at = \Carbon\Carbon::parse($item->closed_at);
+                                                        @endphp
+                                                        {{ $call_at->diffInMinutes($closed_at) ?? '-' }} min --}}
+                                                        {{ $item->total_duration }} min
+                                                    </span>
+                                                </td>
                                                 <td class="align-middle text-center">
-                                                    <h5 class="mb-0 text-center">
+                                                    <h6 class="mb-0 text-center">
                                                         <span
                                                             class="badge badge-lg @if ($item->status == 'Call') bg-danger @elseif ($item->status == 'Response') bg-warning
                                                                 @else
                                                                 bg-dark @endif  p-1">{{ $item->status }}</span>
-                                                    </h5>
+                                                    </h6>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-warning btn-link my-0 p-1"
-                                                            @if ($item->status != 'Call') hidden @endif
-                                                            data-bs-toggle="modal"
-                                                            data-bs-target="#confirmationResponse"
-                                                            data-id="{{ $item->id }}" title="Response">
-                                                            <i class="material-icons">phone</i>
-                                                            <div class="ripple-container"></div>
-                                                        </button>
-                                                        <a class="btn btn-success btn-link my-0 p-1"
-                                                            @if ($item->status != 'Response') hidden @endif
-                                                            href="" data-original-title="" title="Closed"
-                                                            data-bs-toggle="modal" data-bs-target="#confirmationClosed"
-                                                            data-id="{{ $item->id }}">
-                                                            <i class="material-icons">edit</i>
-                                                            <div class="ripple-container"></div>
-                                                        </a>
-                                                        {{-- <button type="button" class="btn btn-danger btn-link my-0 p-1"
+                                                    <button type="button" class="btn btn-warning btn-link my-0 p-1"
+                                                        @if ($item->status != 'Call') hidden @endif
+                                                        data-bs-toggle="modal" data-bs-target="#confirmationResponse"
+                                                        data-id="{{ $item->id }}" title="Response">
+                                                        <i class="material-icons">phone</i>
+                                                        <div class="ripple-container"></div>
+                                                    </button>
+                                                    <a class="btn btn-success btn-link my-0 p-1"
+                                                        @if ($item->status != 'Response') hidden @endif href=""
+                                                        data-original-title="" title="Closed" data-bs-toggle="modal"
+                                                        data-bs-target="#confirmationClosed"
+                                                        data-id="{{ $item->id }}">
+                                                        <i class="material-icons">edit</i>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                    {{-- <button type="button" class="btn btn-danger btn-link my-0 p-1"
                                                             data-original-title="" title="delete">
                                                             <i class="material-icons">close</i>
                                                             <div class="ripple-container"></div>
                                                         </button> --}}
-                                                    </div>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -165,7 +209,8 @@
                                         @method('post')
                                         <div class="mb-3">
                                             <label for="exampleFormControlInput1" class="form-label">Device</label>
-                                            <select name="device_id" class="form-control border border-2 p-2" required>
+                                            <select name="device_id" class="form-control border border-2 p-2"
+                                                required>
                                                 <option value="" selected disabled>- select device -</option>
                                                 @foreach ($device as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
