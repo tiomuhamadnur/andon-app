@@ -554,7 +554,7 @@ progress {
   margin-left: auto; }
 
 @media (min-width: 576px) {
-  .container, .container-sm {
+  .container, .container-sm .display {
     max-width: 540px; } }
 
 @media (min-width: 768px) {
@@ -17567,4 +17567,83 @@ pre[class*="language-"] {
   .ps {
     overflow: auto !important; } }
 
+.box-container-zone{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+.box-note-zone{
+    width: 500px;
+    height: 500px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: green;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+.box-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+.box-note{
+    width: 300px;
+    height: 300px;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: green;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    -ms-border-radius: 15px;
+    -o-border-radius: 15px;
+}
+.if-report{
+    background-color: red;
+}
+
+.box-note h2, p{
+    color: white;
+}
+
+#alertMessage{
+    display: none;
+}
+
+.live{
+    height:50px;
+    width:50px;
+    display:flex;
+    border-radius:50%;
+    background-color:black;
+    animation:pulse 1500ms infinite;
+  }
+
+  @keyframes pulse{
+    0%{
+      box-shadow:black 0 0 0 0;
+    }
+    75%{
+      box-shadow:#ff69b400 0 0 0 50px;
+    }
+  }
 /*# sourceMappingURL=material-dashboard.css.map */
