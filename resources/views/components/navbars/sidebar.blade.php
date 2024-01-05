@@ -27,6 +27,33 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display All (Temporary)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.zone' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_zone') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display Zone 1 Standby</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_zone_if_report') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display Zone 1 Error</span>
+                </a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'transaction.index' ? ' active bg-gradient-primary' : '' }} "
                     href="{{ route('transaction.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">

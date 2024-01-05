@@ -37,6 +37,9 @@ use App\Http\Controllers\UserProfileController;
 
 Route::get('/', function () {return redirect('sign-in');})->middleware('guest');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
+Route::get('/display', [DashboardController::class, 'display'])->middleware('auth')->name('display');
+Route::get('/display_zone', [DashboardController::class, 'display_zone'])->middleware('auth')->name('display_zone');
+Route::get('/display_zone_if_report', [DashboardController::class, 'display_zone_if_report'])->middleware('auth')->name('display_zone_if_report');
 Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');
 Route::post('sign-up', [RegisterController::class, 'store'])->middleware('guest');
 Route::get('sign-in', [SessionsController::class, 'create'])->middleware('guest')->name('login');
