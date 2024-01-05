@@ -27,6 +27,9 @@
                         ZONA
                     </th>
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                        LINE
+                    </th>
+                    <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         PROCESS
                     </th>
                     <th
@@ -81,7 +84,12 @@
                         </td>
                         <td class="align-middle text-center">
                             <p class="text-xs text-secondary mb-0 font-weight-bold">
-                                {{ $item->device->process ?? '-' }}
+                                {{ $item->device->line->name ?? '-' }}
+                            </p>
+                        </td>
+                        <td class="align-middle text-center">
+                            <p class="text-xs text-secondary mb-0 font-weight-bold">
+                                {{ $item->device->process->name ?? '-' }}
                             </p>
                         </td>
                         <td class="align-middle text-center">

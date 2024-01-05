@@ -3,30 +3,15 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Building;
-use App\Models\Device;
 use App\Models\Line;
-use App\Models\Process;
-use App\Models\Zona;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
-class DeviceController extends Controller
+class LineController extends Controller
 {
     public function index()
     {
-        $device = Device::all();
-        $building = Building::all();
-        $zona = Zona::all();
         $line = Line::all();
-        $process = Process::all();
-        return view('admin.masterdata.device.index', compact([
-            'device',
-            'building',
-            'zona',
-            'line',
-            'process',
-        ]));
+        return view('admin.masterdata.line.index', compact(['line']));
     }
 
     /**
@@ -37,22 +22,17 @@ class DeviceController extends Controller
         //
     }
 
+    /**
+     * Store a newly created resource in storage.
+     */
     public function store(Request $request)
     {
-        $token = Str::random(15);
-        Device::create([
+        Line::create([
             'name' => $request->name,
             'code' => $request->code,
-            'token' => $token,
-            'process_id' => $request->process_id,
-            'building_id' => $request->building_id,
-            'zona_id' => $request->zona_id,
-            'department_id' => $request->department_id,
-            'section_id' => $request->section_id,
-            'line_id' => $request->line_id,
         ]);
 
-        return redirect()->route('device.index')->withNotify('Data saved successfully');
+        return redirect()->route('line.index')->withNotify('Data saved successfully');
     }
 
     /**

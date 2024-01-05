@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Device extends Model
+class Equipment extends Model
 {
     use HasFactory;
 
-    protected $table = 'device';
+    protected $table = 'equipment';
 
     protected $guarded = [];
 
@@ -36,10 +36,5 @@ class Device extends Model
     public function line()
     {
         return $this->belongsTo(Line::class);
-    }
-
-    public function process()
-    {
-        return $this->belongsTo(Process::class);
     }
 }

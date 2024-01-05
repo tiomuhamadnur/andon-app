@@ -36,7 +36,7 @@
                 </a>
             </li>
             <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master Data</h6>
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Essential Data</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'user-management' ? ' active bg-gradient-primary' : '' }} "
@@ -46,6 +46,18 @@
                     </div>
                     <span class="nav-link-text ms-1">User Management</span>
                 </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'device.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('device.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;" class="fa fa-lg fa-microchip ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Device</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master Data</h6>
             </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'roles.index' ? ' active bg-gradient-primary' : '' }} "
@@ -111,12 +123,21 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'device.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('device.index') }}">
+                <a class="nav-link text-white {{ $activePage == 'line.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('line.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-microchip ps-2 pe-2 text-center"></i>
+                        <i style="font-size: 1rem;" class="fa fa-lg fa-grip-lines-vertical ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Device</span>
+                    <span class="nav-link-text ms-1">Line</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'process.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('process.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;" class="fa fa-lg fa-rotate-left ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Process</span>
                 </a>
             </li>
 
@@ -158,7 +179,7 @@
             <li class="nav-item">
                 <a class="nav-link text-white " href="{{ route('logout') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">logout</i>
+                        <i class="material-icons ps-2 opacity-10">logout</i>
                     </div>
                     <span class="nav-link-text ms-1">Logout</span>
                 </a>

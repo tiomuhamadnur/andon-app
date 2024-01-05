@@ -41,16 +41,23 @@
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
-                                                PROCESS
-                                            </th>
-                                            <th
-                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
                                                 TOKEN
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
-                                                BUILDING <br>
-                                                (ZONA)
+                                                PROCESS
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
+                                                BUILDING
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
+                                                ZONA
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
+                                                LINE
                                             </th>
                                             <th class="text-uppercase text-secondary text-center opacity-7">
                                                 ACTION
@@ -76,22 +83,37 @@
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm text-center">{{ $item->process }}</h6>
-                                                    </div>
-                                                </td>
-                                                <td class="align-middle text-center text-sm">
-                                                    <div class="d-flex flex-column justify-content-center">
-                                                        <h4 class="mb-0 text-center">
+                                                        <h6 class="mb-0 text-center">
                                                             <span
                                                                 class="badge badge-lg bg-warning p-1">{{ $item->token }}</span>
-                                                        </h4>
+                                                        </h6>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm text-center">
-                                                            {{ $item->building->name ?? '-' }} <br>
-                                                            ({{ $item->zona->name ?? '-' }})
+                                                            {{ $item->process->name ?? '-' }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm text-center">
+                                                            {{ $item->building->name ?? '-' }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm text-center">
+                                                            {{ $item->zona->name ?? '-' }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm text-center">
+                                                            {{ $item->line->name ?? '-' }}
                                                         </h6>
                                                     </div>
                                                 </td>
@@ -142,9 +164,13 @@
                                             placeholder="input code" name="code" required autocomplete="off">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Process</label>
-                                        <input type="text" class="form-control border border-2 p-2"
-                                            placeholder="input process name" name="process" required autocomplete="off">
+                                        <label for="exampleFormControlInput1" class="form-label">Building</label>
+                                        <select name="building_id" class="form-select border border-2 p-2" required>
+                                            <option value="" selected disabled>- select building -</option>
+                                            @foreach ($building as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="exampleFormControlInput1" class="form-label">Zona</label>
@@ -156,10 +182,19 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Building</label>
-                                        <select name="building_id" class="form-select border border-2 p-2" required>
-                                            <option value="" selected disabled>- select building -</option>
-                                            @foreach ($building as $item)
+                                        <label for="exampleFormControlInput1" class="form-label">Line</label>
+                                        <select name="line_id" class="form-select border border-2 p-2" required>
+                                            <option value="" selected disabled>- select line -</option>
+                                            @foreach ($line as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Process Name</label>
+                                        <select name="process_id" class="form-select border border-2 p-2" required>
+                                            <option value="" selected disabled>- select process -</option>
+                                            @foreach ($process as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>

@@ -8,20 +8,25 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('device', function (Blueprint $table) {
+        Schema::create('equipment', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
-            $table->string('token')->unique();
-            $table->string('process')->nullable();
+            $table->string('type')->nullable();
+            $table->string('manufacturer')->nullable();
+            $table->string('photo')->nullable();
+            $table->date('certification_date')->nullable();
+            $table->date('certification_expiration_date')->nullable();
             $table->bigInteger('building_id')->unsigned()->nullable();
             $table->bigInteger('zona_id')->unsigned()->nullable();
+            $table->bigInteger('line_id')->unsigned()->nullable();
             $table->bigInteger('section_id')->unsigned()->nullable();
             $table->bigInteger('department_id')->unsigned()->nullable();
             $table->timestamps();
 
             $table->foreign('building_id')->on('building')->references('id');
             $table->foreign('zona_id')->on('zona')->references('id');
+            $table->foreign('line_id')->on('line')->references('id');
             $table->foreign('section_id')->on('section')->references('id');
             $table->foreign('department_id')->on('department')->references('id');
         });
@@ -29,6 +34,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('device');
+        Schema::dropIfExists('equipment');
     }
 };

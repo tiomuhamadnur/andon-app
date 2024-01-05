@@ -22,4 +22,19 @@ class Transaction extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+    public function caller()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function pic()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function equipment()
+    {
+        return $this->belongsTo(Equipment::class);
+    }
 }

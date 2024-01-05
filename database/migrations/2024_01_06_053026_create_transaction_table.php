@@ -12,6 +12,9 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('device_id')->unsigned()->nullable();
             $table->bigInteger('department_id')->unsigned()->nullable();
+            $table->bigInteger('caller_id')->unsigned()->nullable();
+            $table->bigInteger('pic_id')->unsigned()->nullable();
+            $table->bigInteger('equipment_id')->unsigned()->nullable();
             $table->dateTime('call_at')->nullable();
             $table->dateTime('response_at')->nullable();
             $table->dateTime('closed_at')->nullable();
@@ -20,6 +23,9 @@ return new class extends Migration
 
             $table->foreign('device_id')->on('device')->references('id');
             $table->foreign('department_id')->on('department')->references('id');
+            $table->foreign('caller_id')->on('users')->references('id');
+            $table->foreign('pic_id')->on('users')->references('id');
+            $table->foreign('equipment_id')->on('equipment')->references('id');
         });
     }
 

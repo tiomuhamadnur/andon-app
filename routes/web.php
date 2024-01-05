@@ -5,6 +5,8 @@ use App\Http\Controllers\admin\CompanyController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\DeviceController;
 use App\Http\Controllers\admin\JabatanController;
+use App\Http\Controllers\admin\LineController;
+use App\Http\Controllers\admin\ProcessController;
 use App\Http\Controllers\admin\RolesController;
 use App\Http\Controllers\admin\SectionController;
 use App\Http\Controllers\admin\TransactionController;
@@ -84,6 +86,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('transaction/response', 'response')->name('transaction.response');
         Route::post('transaction/closed', 'closed')->name('transaction.closed');
         Route::get('transaction/excel', 'excel')->name('transaction.excel');
+        Route::get('transaction/filter', 'filter')->name('transaction.filter');
     });
 
     Route::controller(UserManagementController::class)->group(function () {
@@ -124,6 +127,16 @@ Route::group(['middleware' => 'auth'], function () {
     Route::controller(ZonaController::class)->group(function () {
         Route::get('zona', 'index')->name('zona.index');
         Route::post('zona', 'store')->name('zona.store');
+    });
+
+    Route::controller(LineController::class)->group(function () {
+        Route::get('line', 'index')->name('line.index');
+        Route::post('line', 'store')->name('line.store');
+    });
+
+    Route::controller(ProcessController::class)->group(function () {
+        Route::get('process', 'index')->name('process.index');
+        Route::post('process', 'store')->name('process.store');
     });
 
     Route::controller(DeviceController::class)->group(function () {
