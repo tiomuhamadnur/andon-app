@@ -13,9 +13,10 @@
                         <div class="card-body box-container-zone">
                             <div class="box-note-zone if-report">
                                 <h1 style="color: white">Zone 1</h1>
-                                <p>Error!<p>
-                                <span class="live">
-                                </span>
+                                <p>Error!
+                                <p>
+                                    <span class="live">
+                                    </span>
                             </div>
                         </div>
                     </div>
@@ -35,7 +36,7 @@
                     </div>
                 </div>
                 <marquee behavior="alternate" direction="" width="10%">
-                    <h2 style="color: red"> WARNING: GRINDING MACHINE FAILURE!!</h2>
+                    <h2 style="color: red">WARNING: MACHINE CALL</h2>
                 </marquee>
             </div>
             <x-footers.auth></x-footers.auth>

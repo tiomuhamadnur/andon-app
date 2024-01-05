@@ -27,12 +27,24 @@
                 </a>
             </li>
             <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'transaction.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('transaction.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-retweet ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Transaction</span>
+                </a>
+            </li>
+            <li class="nav-item mt-3">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Display</h6>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'display' ? ' active bg-gradient-primary' : '' }} "
                     href="{{ route('display') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Display All (Temporary)</span>
+                    <span class="nav-link-text ms-1">Sample display 1</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -41,7 +53,7 @@
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Display Zone 1 Standby</span>
+                    <span class="nav-link-text ms-1">Sample display 2</span>
                 </a>
             </li>
             <li class="nav-item">
@@ -50,16 +62,7 @@
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Display Zone 1 Error</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'transaction.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('transaction.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-retweet ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Transaction</span>
+                    <span class="nav-link-text ms-1">Sample display 3</span>
                 </a>
             </li>
             <li class="nav-item mt-3">
