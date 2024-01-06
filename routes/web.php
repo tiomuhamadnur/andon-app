@@ -90,6 +90,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('transaction/closed', 'closed')->name('transaction.closed');
         Route::get('transaction/excel', 'excel')->name('transaction.excel');
         Route::get('transaction/filter', 'filter')->name('transaction.filter');
+        Route::get('transaction/{id}/detail-response', 'detail_response')->name('transaction.detail.response');
     });
 
     Route::controller(UserManagementController::class)->group(function () {

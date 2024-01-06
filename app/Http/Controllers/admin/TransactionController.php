@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Building;
 use App\Models\Department;
 use App\Models\Device;
+use App\Models\Equipment;
 use App\Models\Line;
 use App\Models\Process;
 use App\Models\Transaction;
@@ -15,6 +16,8 @@ use App\Models\Zona;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Excel;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Support\Facades\Crypt;
 
 class TransactionController extends Controller
 {
@@ -120,23 +123,37 @@ class TransactionController extends Controller
         $transaction->update([
             'closed_at' => Carbon::now(),
             'status' => 'Closed',
+            'equipment_id' => $request->equipment_id,
         ]);
         return redirect()->route('transaction.index')->withNotify('Data laporan panggilan berhasil di-closed');
     }
 
     public function response(Request $request)
     {
+        $this->validate($request, [
+            'id' => ['required'],
+            'status' => ['required'],
+        ]);
+
         $id = $request->id;
         $transaction = Transaction::findOrFail($id);
+
         if (!$transaction){
             return back()->withNotifyerror('Someting went wrong!');
         }
+        $status = $request->status;
+        $response_at = Carbon::now();
+
+        if($status == 'Pending'){
+            $response_at = '';
+        }
 
         $transaction->update([
-            'response_at' => Carbon::now(),
-            'status' => 'Response',
+            'response_at' => $response_at,
+            'status' => $status,
             'pic_id' => auth()->user()->id,
         ]);
+
         return redirect()->route('transaction.index')->withNotify('Data respon telah berhasil disimpan dalam laporan panggilan');
     }
 
@@ -245,9 +262,28 @@ class TransactionController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    public function detail_response(string $id)
+    {
+        try {
+            $secret = Crypt::decryptString($id);
+            $transaction = Transaction::findOrFail($secret);
+            $status = $transaction->status;
+
+            if($status == 'Call'){
+                return view('transaction.detail.response', compact(['transaction']));
+            }
+            elseif($status == 'Response'){
+                $equipment = Equipment::all();
+                return view('transaction.detail.closed', compact(['transaction', 'equipment']));
+            }
+            else{
+                return redirect()->back()->withNotifyerror('something went wrong!');
+            }
+        } catch (DecryptException $e) {
+            return redirect()->back();
+        }
+    }
+
     public function update(Request $request, string $id)
     {
         //

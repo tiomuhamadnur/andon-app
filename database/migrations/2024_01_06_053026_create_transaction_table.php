@@ -19,6 +19,7 @@ return new class extends Migration
             $table->dateTime('response_at')->nullable();
             $table->dateTime('closed_at')->nullable();
             $table->string('status')->nullable();
+            $table->string('pending_reason')->nullable();
             $table->timestamps();
 
             $table->foreign('device_id')->on('device')->references('id');

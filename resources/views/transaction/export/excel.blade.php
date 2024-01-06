@@ -20,6 +20,9 @@
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         NO
                     </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        STATUS
+                    </th>
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         BUILDING
                     </th>
@@ -60,7 +63,10 @@
                         TOTAL DURATION (Minutes)
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                        STATUS
+                        PIC
+                    </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        AFFECTED EQUIPMENT
                     </th>
                 </tr>
             </thead>
@@ -71,6 +77,11 @@
                             <div class="d-flex flex-column justify-content-center">
                                 <p class="mb-0 text-sm">{{ $loop->iteration }}</p>
                             </div>
+                        </td>
+                        <td class="align-middle text-center">
+                            <h6 class="mb-0 text-center">
+                                <span>{{ $item->status }}</span>
+                            </h6>
                         </td>
                         <td class="align-middle text-center">
                             <span class="text-secondary text-xs font-weight-bold">
@@ -129,7 +140,12 @@
                         </td>
                         <td class="align-middle text-center">
                             <h6 class="mb-0 text-center">
-                                <span>{{ $item->status }}</span>
+                                <span>{{ $item->pic->name ?? '' }}</span>
+                            </h6>
+                        </td>
+                        <td class="align-middle text-center">
+                            <h6 class="mb-0 text-center">
+                                <span>{{ $item->equipment->name ?? '' }}</span>
                             </h6>
                         </td>
                     </tr>

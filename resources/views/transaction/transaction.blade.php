@@ -38,16 +38,24 @@
                                                 NO
                                             </th>
                                             <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                STATUS
+                                            </th>
+                                            <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ACTION
+                                            </th>
+                                            <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 BUILDING
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                                                ZONA
+                                                LINE
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                                                LINE
+                                                ZONA
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
@@ -81,11 +89,6 @@
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
                                                 TOTAL DURATION
                                             </th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                STATUS
-                                            </th>
-                                            <th class="text-secondary opacity-7"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -97,18 +100,42 @@
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
+                                                    <h6 class="mb-0 text-center">
+                                                        <span
+                                                            class="badge badge-lg @if ($item->status == 'Call') bg-danger @elseif ($item->status == 'Response') bg-warning
+                                                                @else
+                                                                bg-dark @endif  p-1">{{ $item->status }}</span>
+                                                    </h6>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <a href="{{ route('transaction.detail.response', Crypt::encryptString($item->id)) }}"
+                                                        type="button" class="btn btn-warning btn-link my-0 p-1"
+                                                        @if ($item->status != 'Call') hidden @endif title="Response"
+                                                        target="_blank">
+                                                        <i class="material-icons">phone</i>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                    <a class="btn btn-success btn-link my-0 p-1"
+                                                        @if ($item->status != 'Response') hidden @endif
+                                                        href="{{ route('transaction.detail.response', Crypt::encryptString($item->id)) }}"
+                                                        target="_blank">
+                                                        <i class="material-icons">edit</i>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                </td>
+                                                <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->device->building->name ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
-                                                        {{ $item->device->zona->name ?? '-' }}
+                                                        {{ $item->device->line->name ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
-                                                        {{ $item->device->line->name ?? '-' }}
+                                                        {{ $item->device->zona->name ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -151,31 +178,6 @@
                                                         {{ $item->total_duration }} min
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
-                                                    <h6 class="mb-0 text-center">
-                                                        <span
-                                                            class="badge badge-lg @if ($item->status == 'Call') bg-danger @elseif ($item->status == 'Response') bg-warning
-                                                                @else
-                                                                bg-dark @endif  p-1">{{ $item->status }}</span>
-                                                    </h6>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <button type="button" class="btn btn-warning btn-link my-0 p-1"
-                                                        @if ($item->status != 'Call') hidden @endif
-                                                        data-bs-toggle="modal" data-bs-target="#confirmationResponse"
-                                                        data-id="{{ $item->id }}" title="Response">
-                                                        <i class="material-icons">phone</i>
-                                                        <div class="ripple-container"></div>
-                                                    </button>
-                                                    <a class="btn btn-success btn-link my-0 p-1"
-                                                        @if ($item->status != 'Response') hidden @endif href=""
-                                                        data-original-title="" title="Closed" data-bs-toggle="modal"
-                                                        data-bs-target="#confirmationClosed"
-                                                        data-id="{{ $item->id }}">
-                                                        <i class="material-icons">edit</i>
-                                                        <div class="ripple-container"></div>
-                                                    </a>
-                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -194,8 +196,7 @@
                             </div>
                             <div class="modal-body">
                                 <div class="form">
-                                    <form action="{{ route('transaction.filter') }}" id="filter-form"
-                                        method="GET">
+                                    <form action="{{ route('transaction.filter') }}" id="filter-form" method="GET">
                                         @csrf
                                         @method('get')
                                         <div class="mb-3">
