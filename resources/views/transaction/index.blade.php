@@ -45,10 +45,9 @@
                                         @csrf
                                         @method('get')
                                         <div class="mb-3">
-                                            <label class="form-label">PIC
-                                                Department</label>
+                                            <label class="form-label">Issue</label>
                                             <select name="department_id" class="form-control border border-2 p-2">
-                                                <option value="" selected disabled>- select pic department -
+                                                <option value="" selected disabled>- select issue -
                                                 </option>
                                                 @foreach ($department as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
