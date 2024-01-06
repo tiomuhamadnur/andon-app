@@ -13,7 +13,7 @@ class Section extends Model
 
     protected $guarded = [];
 
-    public function departement()
+    public function department()
     {
         return $this->belongsTo(Department::class);
     }

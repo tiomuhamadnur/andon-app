@@ -52,8 +52,9 @@
                                         @foreach ($section as $item)
                                             <tr>
                                                 <td class="text-center">
-                                                    <p class="mb-0 text-sm text-center">{{ $loop->iteration }}
-                                                    </p>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm text-center">{{ $loop->iteration }}</h6>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column justify-content-center">
@@ -68,7 +69,7 @@
                                                 <td class="align-middle text-center text-sm">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm text-center">
-                                                            {{ $item->department->code ?? '' }}</h6>
+                                                            {{ $item->department->name ?? '-' }}</h6>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
