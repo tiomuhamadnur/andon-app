@@ -22,9 +22,6 @@
                                 href="javascript:;"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add New
                                 Data
                             </a>
-                            <a class="btn bg-gradient-warning mb-0" href="https://tideupindustries.com"
-                                target="_blank"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Tide Up
-                            </a>
                         </div>
 
                         <div class="card-body px-0 pb-2">
