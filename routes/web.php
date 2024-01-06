@@ -53,7 +53,7 @@ Route::get('/reset-password/{token}', function ($token) {
 	return view('sessions.password.reset', ['token' => $token]);
 })->middleware('guest')->name('password.reset');
 
-Route::post('sign-out', [SessionsController::class, 'destroy'])->middleware('auth')->name('logout');
+Route::get('sign-out', [SessionsController::class, 'destroy'])->middleware('auth')->name('logout');
 Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')->name('profile');
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 Route::group(['middleware' => 'auth'], function () {
