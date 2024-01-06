@@ -64,7 +64,8 @@
                 </div>
             </div>
             <hr class="horizontal dark my-sm-4">
-            <a class="btn btn-outline-dark w-100" target="_blank" href="https://tideupindustries.com">Developed by TIDUP
+            <a class="btn btn-outline-dark w-100" target="_blank" href="https://tideupindustries.com">Developed by TIDE
+                UP
                 INDUSTRIES</a>
             <div class="w-100 text-center">
             </div>
