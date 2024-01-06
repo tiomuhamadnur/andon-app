@@ -104,9 +104,9 @@
                                             <label class="form-label">Date Range</label>
                                             <div class="input-group">
                                                 <input type="date" name="start_date"
-                                                    class="form-control border border-2 p-2">
+                                                    class="form-control border border-2 p-2" placeholder="start date">
                                                 <input type="date" name="end_date"
-                                                    class="form-control border border-2 p-2">
+                                                    class="form-control border border-2 p-2" placeholder="end date">
                                             </div>
                                         </div>
                                     </form>
@@ -246,9 +246,9 @@
                                         @csrf
                                         @method('get')
                                         <div class="mb-3">
-                                            <p class="text-center text-wrap">
+                                            <h6 class="text-center text-wrap">
                                                 This report data will be generated in Excel format.
-                                            </p>
+                                            </h6>
                                             <input type="text" name="department_id"
                                                 value="{{ $department_id ?? '' }}" hidden>
                                             <input type="text" name="building_id"
