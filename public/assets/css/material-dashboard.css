@@ -17567,83 +17567,195 @@ pre[class*="language-"] {
   .ps {
     overflow: auto !important; } }
 
-.box-container-zone{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    border-radius: 15px;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-}
-.box-note-zone{
-    width: 500px;
-    height: 500px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: green;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-}
-.box-container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    border-radius: 15px;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-}
-.box-note{
-    width: 300px;
-    height: 300px;
-    border-radius: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: green;
-    -webkit-border-radius: 15px;
-    -moz-border-radius: 15px;
-    -ms-border-radius: 15px;
-    -o-border-radius: 15px;
-}
-.if-report{
-    background-color: red;
-}
-
-.box-note h2, p{
-    color: white;
-}
-
-#alertMessage{
-    display: none;
-}
-
-.live{
-    height:50px;
-    width:50px;
-    display:flex;
-    border-radius:50%;
-    background-color:black;
-    animation:pulse 1500ms infinite;
-  }
-
-  @keyframes pulse{
-    0%{
-      box-shadow:black 0 0 0 0;
+    /* CUSTOM CSS DI LUAR TEMPLATE */
+    .box-container-zone{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
     }
-    75%{
-      box-shadow:#ff69b400 0 0 0 50px;
+    .box-note-zone{
+        width: 500px;
+        height: 500px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: green;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
     }
-  }
+    .box-container{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .box-note{
+        width: 300px;
+        height: 300px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: green;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .box-user{
+        width: 300px;
+        height: 300px;
+        border-radius: 15px;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: #922820;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .box-container-zone-1{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .box-note-zone-1{
+        width: 200px;
+        height: 200px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+        background-color: green;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .box-container-1{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: black;
+        border-radius: 15px;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .box-note-1{
+        width: 300px;
+        height: 300px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        background-color: green;
+        -webkit-border-radius: 15px;
+        -moz-border-radius: 15px;
+        -ms-border-radius: 15px;
+        -o-border-radius: 15px;
+    }
+    .if-report{
+        background-color: #922820;
+    }
+
+    .box-note h2, p{
+        color: white;
+    }
+
+    #alertMessage{
+        display: none;
+    }
+
+    .live{
+        height:50px;
+        width:50px;
+        display:flex;
+        border-radius:50%;
+        background-color:black;
+        animation:pulse 1500ms infinite;
+      }
+
+      @keyframes pulse{
+        0%{
+          box-shadow:black 0 0 0 0;
+        }
+        75%{
+          box-shadow:#ff69b400 0 0 0 50px;
+        }
+      }
+
+    .if-report-header{
+        font-size: 50px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background-color: #922820;
+        color: white;
+    }
+    .if-normal-header{
+        font-size: 50px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background-color: green;
+        color: white;
+    }
+    .if-report-header-1{
+        font-size: 30px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background-color: #922820;
+        color: white;
+    }
+    .if-normal-header-1{
+        font-size: 30px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        background-color: green;
+        color: white;
+    }
+
+    @keyframes flashColor {
+        0%, 49% {
+          background-color: #922820;
+        }
+        50%, 100% {
+          background-color: black;
+        }
+      }
+
+      .flashing-card {
+        animation: flashColor 1s infinite; /* Ubah nilai 2s sesuai dengan kecepatan yang Anda inginkan */
+      }
+
+      .box-user-notif{
+        font-size: 20px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        border-radius: 10px;
+        color: white;
+    }
 /*# sourceMappingURL=material-dashboard.css.map */
