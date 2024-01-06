@@ -34,7 +34,7 @@
                     </th>
                     <th
                         class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
-                        PIC DEPARTMENT
+                        ISSUE
                     </th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         CALL AT
