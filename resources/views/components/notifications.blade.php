@@ -17,7 +17,7 @@
         @endif
 
 
-        <div class="position-fixed bottom-1 end-1 z-index-2">
+        <div class="position-fixed top-1 end-1 z-index-2">
             <div class="toast fade hide p-2 bg-white" role="alert" aria-live="assertive" id="successToast"
                 aria-atomic="true">
                 <div class="toast-header border-0">

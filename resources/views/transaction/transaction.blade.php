@@ -93,7 +93,7 @@
                                             <tr>
                                                 <td class="text-center">
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        <p class="mb-0 text-sm">{{ $loop->iteration }}</p>
+                                                        <h6 class="mb-0 text-sm text-center">{{ $loop->iteration }}</h6>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">

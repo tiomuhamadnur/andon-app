@@ -68,8 +68,9 @@
                                         @foreach ($device as $item)
                                             <tr>
                                                 <td class="text-center">
-                                                    <p class="mb-0 text-sm text-center">{{ $loop->iteration }}
-                                                    </p>
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm text-center">{{ $loop->iteration }}</h6>
+                                                    </div>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex flex-column justify-content-center">
