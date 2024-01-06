@@ -60,7 +60,8 @@
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <p class="mb-0 text-sm">{{ $loop->iteration }}</p>
+                                                            <p class="mb-0 text-sm text-secondary">
+                                                                {{ $loop->iteration }}</p>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -85,16 +86,16 @@
                                                     </p>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                    <p class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->role->name ?? '-' }} <br>
                                                         ({{ $item->jabatan->name ?? '-' }})
-                                                    </span>
+                                                    </p>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                    <p class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->department->name ?? '-' }} <br>
                                                         ({{ $item->section->name ?? '-' }})
-                                                    </span>
+                                                    </p>
                                                 </td>
                                                 <td class="align-middle">
                                                     <a rel="tooltip" class="btn btn-success btn-link" href=""
