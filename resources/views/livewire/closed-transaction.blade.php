@@ -1,6 +1,5 @@
 <div>
-    <a
-        href="{{ route('transaction.filter', 'status=Closed&start_date=' . \Carbon\Carbon::now()->format('Y-m-d') . '&end_date=') . \Carbon\Carbon::now()->format('Y-m-d') }}">
+    <a href="{{ route('transaction.filter', 'status=Closed&department_id=' . auth()->user()->department->id) }}">
         <div class="card shadow-success">
             <div class="card-header p-3 pt-2">
                 <div
