@@ -14,9 +14,7 @@ class ResponseTransaction extends Component
         $department = auth()->user()->department->id;
         $status = 'Response';
 
-        $response = Transaction::whereDate('call_at', '>=', $today)
-                            ->whereDate('call_at', '<=', $today)
-                            ->where('department_id', $department)
+        $response = Transaction::where('department_id', $department)
                             ->where('status', $status)
                             ->count();
         return view('livewire.response-transaction', compact(['response']));

@@ -18,7 +18,7 @@
                                 <h6 class="text-white mx-3">{{ auth()->user()->department->name ?? 'Your' }}
                                     Department
                                 </h6>
-                                <p class="mx-3 text-white">Today {{ \Carbon\Carbon::now()->format('d F Y') }}</p>
+                                {{-- <p class="mx-3 text-white">Today {{ \Carbon\Carbon::now()->format('d F Y') }}</p> --}}
                             </div>
                         </div>
                         <div class="card-body my-3">

@@ -13,9 +13,7 @@ class TotalTransaction extends Component
         $today = Carbon::now()->format('Y-m-d');
         $department = auth()->user()->department->id;
 
-        $total = Transaction::whereDate('call_at', '>=', $today)
-                            ->whereDate('call_at', '<=', $today)
-                            ->where('department_id', $department)
+        $total = Transaction::where('department_id', $department)
                             ->count();
         return view('livewire.total-transaction', compact(['total']));
     }

@@ -14,9 +14,7 @@ class CallTransaction extends Component
         $department = auth()->user()->department->id;
         $status = 'Call';
 
-        $call = Transaction::whereDate('call_at', '>=', $today)
-                            ->whereDate('call_at', '<=', $today)
-                            ->where('department_id', $department)
+        $call = Transaction::where('department_id', $department)
                             ->where('status', $status)
                             ->count();
         return view('livewire.call-transaction', compact(['call']));

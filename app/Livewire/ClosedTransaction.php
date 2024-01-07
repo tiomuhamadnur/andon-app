@@ -14,9 +14,7 @@ class ClosedTransaction extends Component
         $department = auth()->user()->department->id;
         $status = 'Closed';
 
-        $closed = Transaction::whereDate('call_at', '>=', $today)
-                            ->whereDate('call_at', '<=', $today)
-                            ->where('department_id', $department)
+        $closed = Transaction::where('department_id', $department)
                             ->where('status', $status)
                             ->count();
         return view('livewire.closed-transaction', compact(['closed']));

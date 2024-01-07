@@ -14,9 +14,7 @@ class PendingTransaction extends Component
         $department = auth()->user()->department->id;
         $status = 'Pending';
 
-        $pending = Transaction::whereDate('call_at', '>=', $today)
-                            ->whereDate('call_at', '<=', $today)
-                            ->where('department_id', $department)
+        $pending = Transaction::where('department_id', $department)
                             ->where('status', $status)
                             ->count();
         return view('livewire.pending-transaction', compact(['pending']));
