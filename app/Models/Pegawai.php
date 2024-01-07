@@ -28,6 +28,11 @@ class Pegawai extends Model
         return $this->belongsTo(Company::class);
     }
 
+    public function building()
+    {
+        return $this->belongsTo(Building::class);
+    }
+
     public function role()
     {
         return $this->belongsTo(Roles::class);

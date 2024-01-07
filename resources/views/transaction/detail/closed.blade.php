@@ -4,7 +4,7 @@
         <title>Form Closed</title>
         @livewireStyles
     @endsection
-    <x-navbars.sidebar activePage="transaction.index"></x-navbars.sidebar>
+    <x-navbars.sidebar activePage="transaction.status.response"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
         <x-navbars.navs.auth titlePage="Form Closed"></x-navbars.navs.auth>
@@ -69,13 +69,14 @@
                                     </div>
                                 </div>
 
-                                <form action="{{ route('transaction.closed') }}" id="response-form" method="POST">
+                                <form action="{{ route('transaction.closed') }}" id="response-form" method="POST"
+                                    enctype="multipart/form-data">
                                     @csrf
                                     @method('post')
                                     <div class="mb-3">
                                         <label class="form-label">PIC</label>
                                         <input type="text" class="form-control border border-2 p-2"
-                                            value="{{ auth()->user()->name ?? '-' }}" disabled>
+                                            value="{{ $transaction->pic->name ?? auth()->user()->name }}" disabled>
                                     </div>
                                     <div class="mb-3">
                                         <input type="text" name="id" value="{{ $transaction->id }}" required
@@ -87,6 +88,21 @@
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Photo Before Repair</label>
+                                        <input type="file" class="form-control border border-2 p-2" name="photo"
+                                            accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Photo After Repair</label>
+                                        <input type="file" class="form-control border border-2 p-2"
+                                            name="photo_closed" accept="image/*">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Remark</label>
+                                        <input type="text" class="form-control border border-2 p-2" name="remark"
+                                            placeholder="add notes or remark" autocomplete="off">
                                     </div>
                                 </form>
                             </div>

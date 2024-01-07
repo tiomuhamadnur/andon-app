@@ -1,7 +1,7 @@
 @props(['activePage'])
 
 <aside
-    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
+    class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3  bg-gradient-dark"
     id="sidenav-main">
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
@@ -26,64 +26,55 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item mt-4">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Requests</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'transaction.standby' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('transaction.standby') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-bullhorn ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Standby</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'transaction.status.call' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('transaction.status.call') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-phone ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Call</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'transaction.status.response' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('transaction.status.response') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-flag ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Response</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'transaction.status.pending' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('transaction.status.pending') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-pause ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Pending</span>
+                </a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'transaction.index' ? ' active bg-gradient-primary' : '' }} "
                     href="{{ route('transaction.index') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-retweet ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Transaction</span>
+                    <span class="nav-link-text ms-1">All Requests</span>
                 </a>
             </li>
-            <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Display</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.zone' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_zone') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sample All Zone</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report_1' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_zone_if_report_1') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sample Display 1</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report_2' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_zone_if_report_2') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sample Display 2</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user_page' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('user_page') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Page</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user_performance' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('user_performance') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Performance</span>
-                </a>
-            </li>
-            <li class="nav-item mt-3">
+            <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Essential Data</h6>
             </li>
             <li class="nav-item">
@@ -104,7 +95,7 @@
                     <span class="nav-link-text ms-1">Device</span>
                 </a>
             </li>
-            <li class="nav-item mt-3">
+            <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master Data</h6>
             </li>
             <li class="nav-item">
@@ -188,6 +179,15 @@
                     <span class="nav-link-text ms-1">Process</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'equipment.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('equipment.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1rem;" class="fa fa-lg fa-toolbox ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Equipment</span>
+                </a>
+            </li>
 
 
             {{-- <li class="nav-item mt-3">
@@ -212,7 +212,55 @@
                 </a>
             </li> --}}
 
-            <li class="nav-item mt-3">
+            <li class="nav-item mt-4">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Display</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.zone' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_zone') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sample All Zone</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report_1' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_zone_if_report_1') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sample Display 1</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report_2' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_zone_if_report_2') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Sample Display 2</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'user_page' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('user_page') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">User Page</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'user_performance' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('user_performance') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">User Performance</span>
+                </a>
+            </li>
+            <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
             </li>
             <li class="nav-item">

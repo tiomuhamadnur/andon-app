@@ -59,7 +59,7 @@ class TransactionController extends Controller
         $line = Line::all();
         $process = Process::all();
 
-        return view('transaction.index', compact([
+        return view('transaction.transaction', compact([
             'transactions',
             'device',
             'department',
@@ -67,6 +67,39 @@ class TransactionController extends Controller
             'zona',
             'line',
             'process',
+        ]));
+    }
+
+    public function status_call()
+    {
+        $transactions = Transaction::where('status', 'Call')
+                            ->where('department_id', auth()->user()->department->id)
+                            ->get();
+
+        return view('transaction.call', compact([
+            'transactions',
+        ]));
+    }
+
+    public function status_response()
+    {
+        $transactions = Transaction::where('status', 'Response')
+                            ->where('department_id', auth()->user()->department->id)
+                            ->get();
+
+        return view('transaction.response', compact([
+            'transactions',
+        ]));
+    }
+
+    public function status_pending()
+    {
+        $transactions = Transaction::where('status', 'Pending')
+                            ->where('department_id', auth()->user()->department->id)
+                            ->get();
+
+        return view('transaction.pending', compact([
+            'transactions',
         ]));
     }
 
@@ -145,14 +178,19 @@ class TransactionController extends Controller
         $response_at = Carbon::now();
 
         if($status == 'Pending'){
-            $response_at = '';
+            $response_at = null;
         }
 
         $transaction->update([
             'response_at' => $response_at,
             'status' => $status,
+            'pending_reason' => $request->pending_reason,
             'pic_id' => auth()->user()->id,
         ]);
+
+        if($status == 'Pending'){
+            return redirect()->route('transaction.status.pending')->withNotify('Data request masuk ke dalam list pending, jangan lupa untuk ditindak lanjuti');
+        }
 
         return redirect()->route('transaction.index')->withNotify('Data respon telah berhasil disimpan dalam laporan panggilan');
     }
@@ -269,7 +307,7 @@ class TransactionController extends Controller
             $transaction = Transaction::findOrFail($secret);
             $status = $transaction->status;
 
-            if($status == 'Call'){
+            if($status == 'Call' or $status == 'Pending'){
                 return view('transaction.detail.response', compact(['transaction']));
             }
             elseif($status == 'Response'){
@@ -277,16 +315,16 @@ class TransactionController extends Controller
                 return view('transaction.detail.closed', compact(['transaction', 'equipment']));
             }
             else{
-                return redirect()->back()->withNotifyerror('something went wrong!');
+                return redirect()->route('dashboard')->withNotifyerror('Data request already solved & completed');
             }
         } catch (DecryptException $e) {
-            return redirect()->back();
+            return abort(404);
         }
     }
 
-    public function update(Request $request, string $id)
+    public function standby()
     {
-        //
+        return view('transaction.standby');
     }
 
     /**

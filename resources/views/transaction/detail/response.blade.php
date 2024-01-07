@@ -2,9 +2,8 @@
 
     @section('title')
         <title>Form Response</title>
-        @livewireStyles
     @endsection
-    <x-navbars.sidebar activePage="transaction.index"></x-navbars.sidebar>
+    <x-navbars.sidebar activePage="transaction.status.call"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
         <x-navbars.navs.auth titlePage="Form Response"></x-navbars.navs.auth>
@@ -75,17 +74,25 @@
                                     <div class="mb-3">
                                         <label class="form-label">PIC</label>
                                         <input type="text" class="form-control border border-2 p-2"
-                                            value="{{ auth()->user()->name ?? '-' }}" disabled>
+                                            value="{{ $transaction->pic->name ?? auth()->user()->name }}" disabled>
                                     </div>
                                     <div class="mb-3">
                                         <input type="text" name="id" value="{{ $transaction->id }}" required
                                             hidden>
                                         <label class="form-label">Follow Up</label>
-                                        <select name="status" class="form-control border border-2 p-2" required>
+                                        <select name="status" id="status" class="form-control border border-2 p-2"
+                                            required>
                                             <option value="" selected disabled>- select follow up -</option>
                                             <option value="Response">Response</option>
-                                            <option value="Pending">Pending</option>
+                                            <option value="Pending" @if ($transaction->status == 'Pending') hidden @endif>
+                                                Pending</option>
                                         </select>
+                                    </div>
+                                    <div class="mb-3" id="pending_reason_container" style="display: none;">
+                                        <label class="form-label">Pending Reason</label>
+                                        <input type="text" name="pending_reason" id="pending_reason"
+                                            class="form-control border border-2 p-2" placeholder="explain why pending"
+                                            autocomplete="off">
                                     </div>
                                 </form>
                             </div>
@@ -97,6 +104,24 @@
                         </div>
                     </div>
                 </div>
+                @section('javascript')
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Menangani perubahan pada elemen status
+                            document.getElementById('status').addEventListener('change', function() {
+                                var status = this.value;
+
+                                // Menentukan apakah harus menampilkan atau menyembunyikan pending_reason_container
+                                var pendingReasonContainer = document.getElementById('pending_reason_container');
+                                pendingReasonContainer.style.display = (status === 'Pending') ? 'block' : 'none';
+
+                                // Menangani atribut required pada pending_reason
+                                var pendingReasonInput = document.getElementById('pending_reason');
+                                pendingReasonInput.required = (status === 'Pending');
+                            });
+                        });
+                    </script>
+                @endsection
             </div>
             <x-footers.auth></x-footers.auth>
         </div>

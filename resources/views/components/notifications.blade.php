@@ -9,7 +9,7 @@
         @elseif (session('notifyerror'))
             <script>
                 $(document).ready(function() {
-                    var modal = document.getElementById('successToast');
+                    var modal = document.getElementById('dangerToast');
                     modal.classList.remove('hide');
                     modal.classList.add('show');
                 })

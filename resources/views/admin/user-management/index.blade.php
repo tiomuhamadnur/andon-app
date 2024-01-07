@@ -29,7 +29,7 @@
                                     <thead>
                                         <tr>
                                             <th
-                                                class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 NO
                                             </th>
                                             <th
@@ -57,13 +57,9 @@
                                     <tbody>
                                         @foreach ($users as $item)
                                             <tr>
-                                                <td>
-                                                    <div class="d-flex px-2 py-1">
-                                                        <div class="d-flex flex-column justify-content-center">
-                                                            <p class="mb-0 text-sm text-secondary">
-                                                                {{ $loop->iteration }}</p>
-                                                        </div>
-                                                    </div>
+                                                <td class="text-center">
+                                                    <p class="mb-0 text-sm text-secondary">
+                                                        {{ $loop->iteration }}</p>
                                                 </td>
                                                 <td>
                                                     <div class="d-flex px-2 py-1">
@@ -98,17 +94,12 @@
                                                     </p>
                                                 </td>
                                                 <td class="align-middle">
-                                                    <a rel="tooltip" class="btn btn-success btn-link" href=""
+                                                    <a rel="tooltip" class="btn btn-success btn-link"
+                                                        href="{{ route('user-management.edit', Crypt::encryptString($item->id)) }}"
                                                         data-original-title="" title="">
                                                         <i class="material-icons">edit</i>
                                                         <div class="ripple-container"></div>
                                                     </a>
-
-                                                    <button type="button" class="btn btn-danger btn-link"
-                                                        data-original-title="" title="">
-                                                        <i class="material-icons">close</i>
-                                                        <div class="ripple-container"></div>
-                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -132,23 +123,23 @@
                                         @csrf
                                         @method('post')
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Name</label>
+                                            <label class="form-label">Name</label>
                                             <input type="text" class="form-control border border-2 p-2"
                                                 placeholder="input name" name="name" required autocomplete="off">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Email</label>
+                                            <label class="form-label">Email</label>
                                             <input type="email" class="form-control border border-2 p-2"
                                                 placeholder="input email" name="email" required autocomplete="off">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Phone</label>
+                                            <label class="form-label">Phone</label>
                                             <input type="text" class="form-control border border-2 p-2"
                                                 placeholder="input phone number" name="phone" required
                                                 autocomplete="off">
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Gender</label>
+                                            <label class="form-label">Gender</label>
                                             <select name="gender" class="form-control border border-2 p-2" required>
                                                 <option value="" selected disabled>- select gender -</option>
                                                 <option value="Bapak">Bapak</option>
@@ -156,7 +147,7 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Role</label>
+                                            <label class="form-label">Role</label>
                                             <select name="role_id" class="form-control border border-2 p-2" required>
                                                 <option value="" selected disabled>- select role -</option>
                                                 @foreach ($role as $item)
@@ -165,7 +156,7 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Jabatan</label>
+                                            <label class="form-label">Jabatan</label>
                                             <select name="jabatan_id" class="form-control border border-2 p-2"
                                                 required>
                                                 <option value="" selected disabled>- select jabatan -</option>
@@ -175,7 +166,7 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Section</label>
+                                            <label class="form-label">Section</label>
                                             <select name="section_id" class="form-control border border-2 p-2"
                                                 required>
                                                 <option value="" selected disabled>- select section -</option>
@@ -185,8 +176,7 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1"
-                                                class="form-label">Department</label>
+                                            <label class="form-label">Department</label>
                                             <select name="department_id" class="form-control border border-2 p-2"
                                                 required>
                                                 <option value="" selected disabled>- select department -</option>
@@ -196,11 +186,21 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="exampleFormControlInput1" class="form-label">Company</label>
+                                            <label class="form-label">Company</label>
                                             <select name="company_id" class="form-control border border-2 p-2"
                                                 required>
                                                 <option value="" selected disabled>- select company -</option>
                                                 @foreach ($company as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Building on Duty</label>
+                                            <select name="building_id" class="form-control border border-2 p-2"
+                                                required>
+                                                <option value="" selected disabled>- select building -</option>
+                                                @foreach ($building as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>

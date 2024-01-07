@@ -1,13 +1,13 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
 
     @section('title')
-        <title>Transaction</title>
+        <title>All Request</title>
         @livewireStyles
     @endsection
     <x-navbars.sidebar activePage="transaction.index"></x-navbars.sidebar>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <!-- Navbar -->
-        <x-navbars.navs.auth titlePage="Transaction"></x-navbars.navs.auth>
+        <x-navbars.navs.auth titlePage="Request"></x-navbars.navs.auth>
         <!-- End Navbar -->
         <div class="container-fluid py-4">
             <div class="row">
@@ -15,7 +15,7 @@
                     <div class="card my-4">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                                <h6 class="text-white mx-3">Data Transaction
+                                <h6 class="text-white mx-3">Data All Request
                                 </h6>
                             </div>
                         </div>
@@ -40,10 +40,6 @@
                                             <th
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                                                 STATUS
-                                            </th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                ACTION
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
@@ -103,25 +99,10 @@
                                                     <h6 class="mb-0 text-center">
                                                         <span
                                                             class="badge badge-lg @if ($item->status == 'Call') bg-danger @elseif ($item->status == 'Response') bg-warning
-                                                                @else
+                                                            @elseif ($item->status == 'Closed') bg-success
+                                                            @else
                                                                 bg-dark @endif  p-1">{{ $item->status }}</span>
                                                     </h6>
-                                                </td>
-                                                <td class="align-middle text-center">
-                                                    <a href="{{ route('transaction.detail.response', Crypt::encryptString($item->id)) }}"
-                                                        type="button" class="btn btn-warning btn-link my-0 p-1"
-                                                        @if ($item->status != 'Call') hidden @endif title="Response"
-                                                        target="_blank">
-                                                        <i class="material-icons">phone</i>
-                                                        <div class="ripple-container"></div>
-                                                    </a>
-                                                    <a class="btn btn-success btn-link my-0 p-1"
-                                                        @if ($item->status != 'Response') hidden @endif
-                                                        href="{{ route('transaction.detail.response', Crypt::encryptString($item->id)) }}"
-                                                        target="_blank">
-                                                        <i class="material-icons">edit</i>
-                                                        <div class="ripple-container"></div>
-                                                    </a>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
@@ -252,6 +233,7 @@
                                                 <option value="Call">Call</option>
                                                 <option value="Response">Response</option>
                                                 <option value="Closed">Closed</option>
+                                                <option value="Pending">Pending</option>
                                             </select>
                                         </div>
                                         <div class="mb-3">
