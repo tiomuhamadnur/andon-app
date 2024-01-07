@@ -127,13 +127,14 @@ class TransactionController extends Controller
             return Excel::download(new TransactionFilterExport($department_id, $building_id, $zona_id, $line_id, $process_id, $status, $start_date, $end_date), $waktu . '_data report (filtered).xlsx');
         }
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        $timestamp = now()->timestamp;
+        $randomNumber = rand(1000, 9999);
+        $ticketNumber = $timestamp . $randomNumber;
+
         Transaction::create([
+            'ticket_number' => $ticketNumber,
             'device_id' => $request->device_id,
             'department_id' => $request->department_id,
             'call_at' => Carbon::now(),
@@ -153,11 +154,26 @@ class TransactionController extends Controller
             return back()->withNotifyerror('Someting went wrong!');
         }
 
-        $transaction->update([
-            'closed_at' => Carbon::now(),
-            'status' => 'Closed',
-            'equipment_id' => $request->equipment_id,
-        ]);
+        if ($request->hasFile('photo') && $request->photo != '' && $request->hasFile('photo_closed') && $request->photo_closed != '') {
+            $photo = $request->file('photo')->store('photo');
+            $photo_closed = $request->file('photo_closed')->store('photo-closed');
+            $transaction->update([
+                'closed_at' => Carbon::now(),
+                'status' => 'Closed',
+                'equipment_id' => $request->equipment_id,
+                'remark' => $request->remark,
+                'photo' => $photo,
+                'photo_closed' => $photo_closed,
+            ]);
+        } else {
+            $transaction->update([
+                'closed_at' => Carbon::now(),
+                'status' => 'Closed',
+                'equipment_id' => $request->equipment_id,
+                'remark' => $request->remark,
+            ]);
+        }
+
         return redirect()->route('transaction.index')->withNotify('Data laporan panggilan berhasil di-closed');
     }
 
@@ -192,7 +208,7 @@ class TransactionController extends Controller
             return redirect()->route('transaction.status.pending')->withNotify('Data request masuk ke dalam list pending, jangan lupa untuk ditindak lanjuti');
         }
 
-        return redirect()->route('transaction.index')->withNotify('Data respon telah berhasil disimpan dalam laporan panggilan');
+        return redirect()->route('transaction.status.response')->withNotify('Data respon telah berhasil disimpan dalam laporan panggilan');
     }
 
     public function filter(Request $request)

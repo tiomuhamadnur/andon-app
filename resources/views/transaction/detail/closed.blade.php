@@ -21,99 +21,186 @@
                         </div>
                         <div class="card-body px-0 pb-2">
                             <div class="container">
-                                <div class="row g-2 mb-3">
-                                    <div class="col mb-3">
-                                        <label class="form-label">Building</label>
-                                        <input class="form-control border border-2 p-2"
-                                            value="{{ $transaction->device->building->name ?? '' }}" disabled>
-                                    </div>
-                                    <div class="col mb-3">
-                                        <label class="form-label">Line</label>
-                                        <input class="form-control border border-2 p-2"
-                                            value="{{ $transaction->device->line->name ?? '' }}" disabled>
-                                    </div>
+                                <div class="row align-items-center">
+                                    <table class="table table-borderless w-1 ms-5">
+                                        <tbody>
+                                            <tr>
+                                                <th scope="row">Building</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->device->building->name ?? '' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Line</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->device->line->name ?? '' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Zona</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->device->zona->name ?? '' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Process</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->device->process->name ?? '' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Status</th>
+                                                <td>:</td>
+                                                <td>
+                                                    <span
+                                                        class="badge @if ($transaction->status == 'Call') bg-gradient-danger @elseif ($transaction->status == 'Pending') bg-gradient-dark @elseif ($transaction->status == 'Response') bg-gradient-warning @else bg-gradient-success @endif">
+                                                        {{ $transaction->status ?? '-' }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Call At</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->call_at ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Response At</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->response_at ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">Closed At</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->closed_at ?? '-' }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">PIC</th>
+                                                <td>:</td>
+                                                <td>{{ $transaction->pic->name ?? '-' }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
 
-                                <div class="row g-2 mb-3">
-                                    <div class="col mb-3">
-                                        <label class="form-label">Zona</label>
-                                        <input class="form-control border border-2 p-2"
-                                            value="{{ $transaction->device->zona->name ?? '' }}" disabled>
+                                <div class="border-2 card border-secondary p-2">
+                                    <div class="card-header bg-gradient-faded-primary py-2">
+                                        <h5 class="text-center text-white">FOLLOW UP</h4>
                                     </div>
-                                    <div class="col mb-3">
-                                        <label class="form-label">Process</label>
-                                        <input class="form-control border border-2 p-2"
-                                            value="{{ $transaction->device->process->name ?? '' }}" disabled>
-                                    </div>
+                                    <form action="{{ route('transaction.closed') }}" id="response-form" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('post')
+                                        <div class="mb-3">
+                                            <input type="text" name="id" value="{{ $transaction->id }}"
+                                                required hidden>
+                                            <label class="form-label">Affected Equipment</label>
+                                            <select name="equipment_id" id="equipment_id"
+                                                class="form-control border border-2 p-2">
+                                                <option value="" selected disabled>- select equipment -</option>
+                                                @foreach ($equipment as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div id="data_container" style="display: none;">
+                                            <div class="mb-3">
+                                                <label class="form-label">Remark</label>
+                                                <input type="text"
+                                                    class="form-control data-tambahan border border-2 p-2"
+                                                    name="remark" placeholder="add notes or remark" autocomplete="off">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Photo Before Repair</label>
+                                                <div class="my-2">
+                                                    <img class="img-thumbnail" id="previewImage" src="#"
+                                                        alt="Preview"
+                                                        style="max-width: 250px; max-height: 250px; display: none;">
+                                                </div>
+                                                <input type="file"
+                                                    class="form-control data-tambahan border border-2 p-2"
+                                                    name="photo" accept="image/*" id="imageInput">
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Photo After Repair</label>
+                                                <div class="my-2">
+                                                    <img class="img-thumbnail" id="previewImageClosed" src="#"
+                                                        alt="Preview"
+                                                        style="max-width: 250px; max-height: 250px; display: none;">
+                                                </div>
+                                                <input type="file"
+                                                    class="form-control data-tambahan border border-2 p-2"
+                                                    name="photo_closed" accept="image/*" id="imageInputClosed">
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
-                                <div class="col mb-3">
-                                    <label class="form-label">Status</label>
-                                    <input class="form-control border border-2 p-2" value="{{ $transaction->status }}"
-                                        disabled>
-                                </div>
-                                <div class="row g-3 mb-3">
-                                    <div class="col mb-3">
-                                        <label class="form-label">Call At</label>
-                                        <input type="datetime-local" class="form-control border border-2 p-2"
-                                            value="{{ $transaction->call_at ?? '' }}" disabled>
-                                    </div>
-                                    <div class="col mb-3">
-                                        <label class="form-label">Response At</label>
-                                        <input type="datetime-local" class="form-control border border-2 p-2"
-                                            value="{{ $transaction->response_at ?? '' }}" disabled>
-                                    </div>
-                                    <div class="col mb-3">
-                                        <label class="form-label">Closed At</label>
-                                        <input type="datetime-local" class="form-control border border-2 p-2"
-                                            value="{{ $transaction->closed_at ?? '' }}" disabled>
-                                    </div>
-                                </div>
-
-                                <form action="{{ route('transaction.closed') }}" id="response-form" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    @method('post')
-                                    <div class="mb-3">
-                                        <label class="form-label">PIC</label>
-                                        <input type="text" class="form-control border border-2 p-2"
-                                            value="{{ $transaction->pic->name ?? auth()->user()->name }}" disabled>
-                                    </div>
-                                    <div class="mb-3">
-                                        <input type="text" name="id" value="{{ $transaction->id }}" required
-                                            hidden>
-                                        <label class="form-label">Affected Equipment</label>
-                                        <select name="equipment_id" class="form-control border border-2 p-2">
-                                            <option value="" selected disabled>- select equipment -</option>
-                                            @foreach ($equipment as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Photo Before Repair</label>
-                                        <input type="file" class="form-control border border-2 p-2" name="photo"
-                                            accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Photo After Repair</label>
-                                        <input type="file" class="form-control border border-2 p-2"
-                                            name="photo_closed" accept="image/*">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Remark</label>
-                                        <input type="text" class="form-control border border-2 p-2" name="remark"
-                                            placeholder="add notes or remark" autocomplete="off">
-                                    </div>
-                                </form>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ route('transaction.index') }}" type="button" class="btn btn-secondary"
-                                data-dismiss="modal">Cancel</a>
+                            <a href="{{ route('transaction.status.response') }}" type="button"
+                                class="btn btn-secondary" data-dismiss="modal">Cancel</a>
                             <button type="submit" form="response-form" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
                 </div>
+                @section('javascript')
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var equipmentSelect = document.getElementById('equipment_id');
+                            var container = document.getElementById('data_container');
+                            var dataContainer = document.querySelectorAll('.data-tambahan');
+
+                            equipmentSelect.addEventListener('change', function() {
+                                if (equipmentSelect.value !== "") {
+                                    container.style.display = 'block';
+                                    var inputs = dataContainer;
+                                    console.log(inputs.length);
+                                    inputs.forEach(function(input) {
+                                        input.setAttribute('required', 'required');
+                                    });
+                                } else {
+                                    dataContainer.style.display = 'none';
+                                    var inputs = dataContainer.querySelectorAll('.data-tambahan');
+                                    inputs.forEach(function(input) {
+                                        input.removeAttribute('required');
+                                    });
+                                }
+                            });
+
+                            const imageInput = document.getElementById('imageInput');
+                            const previewImage = document.getElementById('previewImage');
+
+                            imageInput.addEventListener('change', function(event) {
+                                const selectedFile = event.target.files[0];
+
+                                if (selectedFile) {
+                                    const reader = new FileReader();
+
+                                    reader.onload = function(e) {
+                                        previewImage.src = e.target.result;
+                                        previewImage.style.display = 'block';
+                                    }
+
+                                    reader.readAsDataURL(selectedFile);
+                                }
+                            });
+
+                            const imageInputClosed = document.getElementById('imageInputClosed');
+                            const previewImageClosed = document.getElementById('previewImageClosed');
+
+                            imageInputClosed.addEventListener('change', function(event) {
+                                const selectedFile = event.target.files[0];
+
+                                if (selectedFile) {
+                                    const reader = new FileReader();
+
+                                    reader.onload = function(e) {
+                                        previewImageClosed.src = e.target.result;
+                                        previewImageClosed.style.display = 'block';
+                                    }
+
+                                    reader.readAsDataURL(selectedFile);
+                                }
+                            });
+                        });
+                    </script>
+                @endsection
             </div>
             <x-footers.auth></x-footers.auth>
         </div>

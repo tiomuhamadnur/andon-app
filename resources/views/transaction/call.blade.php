@@ -32,6 +32,10 @@
                                                 STATUS
                                             </th>
                                             <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                TICKET NUMBER
+                                            </th>
+                                            <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 BUILDING
                                             </th>
@@ -68,12 +72,17 @@
                                                 <td class="align-middle text-center">
                                                     <a href="{{ route('transaction.detail.response', Crypt::encryptString($item->id)) }}"
                                                         type="button" class="btn btn-danger btn-link my-0 p-1"
-                                                        title="Response" target="_blank">
+                                                        title="Response">
                                                         <i class="material-icons">phone</i>
                                                         <div class="ripple-container">
                                                             {{ $item->status }}
                                                         </div>
                                                     </a>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $item->ticket_number ?? '-' }}
+                                                    </span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">

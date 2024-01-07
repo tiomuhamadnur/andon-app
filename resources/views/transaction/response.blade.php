@@ -33,6 +33,10 @@
                                                 STATUS
                                             </th>
                                             <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                TICKET NUMBER
+                                            </th>
+                                            <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 BUILDING
                                             </th>
@@ -77,12 +81,17 @@
                                                 <td class="align-middle text-center">
                                                     <a href="{{ route('transaction.detail.response', Crypt::encryptString($item->id)) }}"
                                                         type="button" class="btn btn-warning btn-link my-0 p-1"
-                                                        title="Response" target="_blank">
+                                                        title="Response">
                                                         <i class="material-icons">flag</i>
                                                         <div class="ripple-container">
                                                             {{ $item->status }}
                                                         </div>
                                                     </a>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $item->ticket_number ?? '-' }}
+                                                    </span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
@@ -109,17 +118,17 @@
                                                         {{ $item->department->name ?? '-' }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center text-wrap">
                                                     <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
                                                         {{ $item->call_at ?? '-' }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center text-wrap">
                                                     <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
                                                         {{ $item->response_at ?? '-' }}
                                                     </span>
                                                 </td>
-                                                <td class="align-middle text-center">
+                                                <td class="align-middle text-center text-wrap">
                                                     <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
                                                         {{ $item->pic->name ?? '-' }}
                                                     </span>
@@ -128,7 +137,7 @@
                                         @endforeach
                                         @if ($transactions->count() == 0)
                                             <tr>
-                                                <td colspan="9" class="fw-bolder text-center">
+                                                <td colspan="10" class="fw-bolder text-center">
                                                     <p class="text-secondary">No response request data found!</p>
                                                 </td>
                                             </tr>

@@ -42,6 +42,10 @@
                                                 STATUS
                                             </th>
                                             <th
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                TICKET NUMBER
+                                            </th>
+                                            <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 BUILDING
                                             </th>
@@ -103,6 +107,11 @@
                                                             @else
                                                                 bg-dark @endif  p-1">{{ $item->status }}</span>
                                                     </h6>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $item->ticket_number ?? '-' }}
+                                                    </span>
                                                 </td>
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">

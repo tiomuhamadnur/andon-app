@@ -23,6 +23,9 @@
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         STATUS
                     </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        TICKET NUMBER
+                    </th>
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         BUILDING
                     </th>
@@ -68,6 +71,15 @@
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
                         AFFECTED EQUIPMENT
                     </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        PHOTO BEFORE
+                    </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        PHOTO AFTER
+                    </th>
+                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
+                        REMARK
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -82,6 +94,11 @@
                             <h6 class="mb-0 text-center">
                                 <span>{{ $item->status }}</span>
                             </h6>
+                        </td>
+                        <td class="align-middle text-center">
+                            <span class="text-secondary text-xs font-weight-bold">
+                                {{ $item->ticket_number ?? '-' }}
+                            </span>
                         </td>
                         <td class="align-middle text-center">
                             <span class="text-secondary text-xs font-weight-bold">
@@ -146,6 +163,25 @@
                         <td class="align-middle text-center">
                             <h6 class="mb-0 text-center">
                                 <span>{{ $item->equipment->name ?? '' }}</span>
+                            </h6>
+                        </td>
+                        <td>
+                            @if ($item->photo != null)
+                                {{ asset('storage/' . $item->photo) }}
+                            @else
+                                '-'
+                            @endif
+                        </td>
+                        <td>
+                            @if ($item->photo_closed != null)
+                                {{ asset('storage/' . $item->photo_closed) }}
+                            @else
+                                '-'
+                            @endif
+                        </td>
+                        <td class="align-middle text-center">
+                            <h6 class="mb-0 text-center">
+                                <span>{{ $item->remark ?? '-' }}</span>
                             </h6>
                         </td>
                     </tr>
