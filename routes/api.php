@@ -37,5 +37,5 @@ Route::controller(TransactionController::class)->group(function () {
     Route::get('transaction/response', 'response')->name('api.transaction.response');
     Route::get('transaction/closed', 'closed')->name('api.transaction.closed');
 
-    Route::get('transaction/check-tower-light', 'tower_light')->name('api.transaction.status.towerlight');
+    Route::get('transaction/checktowerlight', 'tower_light')->name('api.transaction.status.towerlight');
 });
