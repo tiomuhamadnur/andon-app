@@ -80,11 +80,13 @@ class TransactionController extends Controller
             $statusZona[$item] = $count;
         }
 
-        return response()->json([
+        $data = [
             'status' => 'ok',
             'message' => 'data berhasil didapatkan',
             'statusZona' => $statusZona,
-        ], 200)->header('Content-Type', 'application/json');
+        ];
+
+        return response(200)->json_encode($data)->header('Content-Type', 'application/json');
     }
 
     public function response(Request $request)
