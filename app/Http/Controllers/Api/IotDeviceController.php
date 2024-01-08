@@ -10,6 +10,7 @@ class IotDeviceController extends Controller
 {
     public function towerLight(Request $request)
     {
+        dd($request);
         $zona_id = $request->zona_id;
 
         $status = ['Call', 'Response', 'Closed'];
