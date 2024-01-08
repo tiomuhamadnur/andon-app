@@ -61,7 +61,7 @@ class TransactionController extends Controller
         dd($request);
     }
 
-    public function towerLight(Request $request)
+    public function tower_light(Request $request)
     {
         dd($request);
         $zona_id = $request->zona_id;
