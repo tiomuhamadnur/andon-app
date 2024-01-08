@@ -84,7 +84,7 @@ class TransactionController extends Controller
             'status' => 'ok',
             'message' => 'data berhasil didapatkan',
             'statusZona' => $statusZona,
-        ], 200);
+        ], 200)->header('Content-Type', 'application/json');
     }
 
     public function response(Request $request)
