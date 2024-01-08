@@ -86,7 +86,7 @@ class TransactionController extends Controller
             'statusZona' => $statusZona,
         ];
 
-        return response(200)->json($data)->header('Content-Type', 'application/json');
+        return response()->json($data)->header('Content-Type', 'application/json');
     }
 
     public function response(Request $request)
