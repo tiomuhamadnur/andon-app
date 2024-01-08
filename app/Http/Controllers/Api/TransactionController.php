@@ -26,7 +26,7 @@ class TransactionController extends Controller
 
         if((!$device) or (!$department)){
             $data = [
-                'status' => 'NOT OK',
+                'status' => 'error',
                 'message' => 'something went wrong'
             ];
             return response()->json($data, 400);
@@ -45,24 +45,14 @@ class TransactionController extends Controller
         ]);
 
         $data = [
-                'status' => 'OK',
+                'status' => 'ok',
                 'message' => 'data laporan berhasil ditambahkan'
             ];
 
         return response()->json($data, 201);
     }
 
-    public function response(Request $request)
-    {
-        dd($request);
-    }
-
-    public function closed(Request $request)
-    {
-        dd($request);
-    }
-
-    public function tower_light(Request $request)
+    public function check(Request $request)
     {
         dd($request);
         $zona_id = $request->zona_id;
@@ -86,6 +76,17 @@ class TransactionController extends Controller
             'message' => 'data berhasil didapatkan',
             'statusZona' => $statusZona,
         ], 200);
+    }
+
+
+    public function response(Request $request)
+    {
+        dd($request);
+    }
+
+    public function closed(Request $request)
+    {
+        dd($request);
     }
 
     public function show(string $id)

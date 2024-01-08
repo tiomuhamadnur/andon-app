@@ -33,7 +33,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::controller(TransactionController::class)->group(function () {
-    Route::get('transaction/check', 'tower_light')->name('api.transaction.status.towerlight');
+    Route::get('transaction/check', 'check')->name('api.transaction.check');
     Route::get('transaction/call', 'call')->name('api.transaction.call');
     Route::get('transaction/response', 'response')->name('api.transaction.response');
     Route::get('transaction/closed', 'closed')->name('api.transaction.closed');
