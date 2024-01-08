@@ -18,6 +18,7 @@ class TransactionController extends Controller
 
     public function call(Request $request)
     {
+        dd($request);
         $token = $request->token;
         $dept_id = $request->dept;
         $department = Department::where('id', $dept_id)->first();
