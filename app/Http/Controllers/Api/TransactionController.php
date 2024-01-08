@@ -18,7 +18,6 @@ class TransactionController extends Controller
 
     public function call(Request $request)
     {
-        dd($request);
         $token = $request->token;
         $dept_id = $request->dept;
         $department = Department::where('id', $dept_id)->first();
@@ -52,7 +51,7 @@ class TransactionController extends Controller
         return response()->json($data, 201);
     }
 
-    public function check(Request $request)
+    public function checksatu(Request $request)
     {
         dd($request);
         $zona_id = $request->zona_id;
@@ -79,34 +78,38 @@ class TransactionController extends Controller
     }
 
 
-    public function response(Request $request)
+    public function check(Request $request)
     {
         dd($request);
+    }
+
+    public function response(Request $request)
+    {
+        $zona_id = $request->zona_id;
+
+        $status = ['Call', 'Response', 'Closed'];
+        $statusZona = [];
+
+        foreach ($status as $item) {
+            $count = Transaction::query()
+                ->select('device.zona_id as zona_id', 'transaction.status as status')
+                ->join('device', 'device.id', '=', 'transaction.device_id')
+                ->where('zona_id', $zona_id)
+                ->where('status', $item)
+                ->count();
+
+            $statusZona[$item] = $count;
+        }
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'data berhasil didapatkan',
+            'statusZona' => $statusZona,
+        ], 200);
     }
 
     public function closed(Request $request)
     {
         dd($request);
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
