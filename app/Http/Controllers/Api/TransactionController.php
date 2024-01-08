@@ -30,6 +30,17 @@ class TransactionController extends Controller
             ];
             return response()->json($data, 400);
         }
+        $cek = Transaction::where('device_id', $device->id)
+                            ->whereIn('status', ['Call', 'Pending'])
+                            ->count();
+
+        if($cek > 0){
+            $data = [
+                'status' => 'error',
+                'message' => 'request device_id ini masih berstatus "Call" atau "Pending", tidak bisa menambah request baru'
+            ];
+            return response()->json($data, 400);
+        }
 
         $timestamp = now()->timestamp;
         $randomNumber = rand(1000, 9999);
@@ -51,9 +62,8 @@ class TransactionController extends Controller
         return response()->json($data, 201);
     }
 
-    public function checksatu(Request $request)
+    public function check(Request $request)
     {
-        dd($request);
         $zona_id = $request->zona_id;
 
         $status = ['Call', 'Response', 'Closed'];
@@ -75,37 +85,11 @@ class TransactionController extends Controller
             'message' => 'data berhasil didapatkan',
             'statusZona' => $statusZona,
         ], 200);
-    }
-
-
-    public function check(Request $request)
-    {
-        dd($request);
     }
 
     public function response(Request $request)
     {
-        $zona_id = $request->zona_id;
-
-        $status = ['Call', 'Response', 'Closed'];
-        $statusZona = [];
-
-        foreach ($status as $item) {
-            $count = Transaction::query()
-                ->select('device.zona_id as zona_id', 'transaction.status as status')
-                ->join('device', 'device.id', '=', 'transaction.device_id')
-                ->where('zona_id', $zona_id)
-                ->where('status', $item)
-                ->count();
-
-            $statusZona[$item] = $count;
-        }
-
-        return response()->json([
-            'status' => 'ok',
-            'message' => 'data berhasil didapatkan',
-            'statusZona' => $statusZona,
-        ], 200);
+        dd($request);
     }
 
     public function closed(Request $request)
