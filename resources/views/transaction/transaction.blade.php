@@ -96,7 +96,8 @@
                                             <tr>
                                                 <td class="text-center">
                                                     <div class="d-flex flex-column justify-content-center">
-                                                        <h6 class="mb-0 text-sm text-center">{{ $loop->iteration }}</h6>
+                                                        <h6 class="mb-0 text-sm text-secondary text-center">
+                                                            {{ $loop->iteration }}</h6>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -170,6 +171,13 @@
                                                 </td>
                                             </tr>
                                         @endforeach
+                                        @if ($transactions->count() == 0)
+                                            <tr>
+                                                <td colspan="14">
+                                                    <p class="text-secondary ms-3">No data found.</p>
+                                                </td>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
