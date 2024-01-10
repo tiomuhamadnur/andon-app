@@ -244,7 +244,7 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Staus</label>
+                                            <label class="form-label">Status</label>
                                             <select name="status" class="form-control border border-2 p-2">
                                                 <option value="" selected disabled>- select status -</option>
                                                 <option value="Call">Call</option>
