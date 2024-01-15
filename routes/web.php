@@ -41,11 +41,11 @@ Route::get('/', function () {return redirect('dashboard');})->middleware('auth')
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth')->name('dashboard');
 Route::get('/display', [DashboardController::class, 'display'])->middleware('auth')->name('display');
 Route::get('/display_zone', [DashboardController::class, 'display_zone'])->middleware('auth')->name('display_zone');
-Route::get('/display_zone_if_report_1', [DashboardController::class, 'display_zone_if_report_1'])->middleware('auth')->name('display_zone_if_report_1');
-Route::get('/display_zone_if_normal_1', [DashboardController::class, 'display_zone_if_normal_1'])->middleware('auth')->name('display_zone_if_normal_1');
-Route::get('/display_zone_if_report_2', [DashboardController::class, 'display_zone_if_report_2'])->middleware('auth')->name('display_zone_if_report_2');
-Route::get('/display_zone_if_normal_2', [DashboardController::class, 'display_zone_if_normal_2'])->middleware('auth')->name('display_zone_if_normal_2');
-Route::get('/display_zone_if_normal_2', [DashboardController::class, 'display_zone_if_normal_2'])->middleware('auth')->name('display_zone_if_normal_2');
+Route::get('/display_machine_call', [DashboardController::class, 'display_machine_call'])->middleware('auth')->name('display_machine_call');
+Route::get('/display_quality_call', [DashboardController::class, 'display_quality_call'])->middleware('auth')->name('display_quality_call');
+Route::get('/display_material_call', [DashboardController::class, 'display_material_call'])->middleware('auth')->name('display_material_call');
+Route::get('/display_spv_call', [DashboardController::class, 'display_spv_call'])->middleware('auth')->name('display_spv_call');
+Route::get('/display_progress', [DashboardController::class, 'display_progress'])->middleware('auth')->name('display_progress');
 Route::get('/user_page', [DashboardController::class, 'user_page'])->middleware('auth')->name('user_page');
 Route::get('/user_performance', [DashboardController::class, 'user_performance'])->middleware('auth')->name('user_performance');
 Route::get('sign-up', [RegisterController::class, 'create'])->middleware('guest')->name('register');

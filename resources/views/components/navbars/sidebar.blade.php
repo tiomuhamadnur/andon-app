@@ -225,21 +225,48 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report_1' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_zone_if_report_1') }}">
+                <a class="nav-link text-white {{ $activePage == 'display_machine_call' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_machine_call') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Sample Display 1</span>
+                    <span class="nav-link-text ms-1">Display Machine Call</span>
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.zone_if_report_2' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_zone_if_report_2') }}">
+                <a class="nav-link text-white {{ $activePage == 'display_quality_call' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_quality_call') }}">
                     <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                         <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
                     </div>
-                    <span class="nav-link-text ms-1">Sample Display 2</span>
+                    <span class="nav-link-text ms-1">Display Quality Call</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display_material_call' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_material_call') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display Material Call</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display_spv_call' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_spv_call') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display Supervisor Call</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display_progress' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display_progress') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display List</span>
                 </a>
             </li>
             <li class="nav-item">
