@@ -126,6 +126,19 @@ class TransactionController extends Controller
     }
     public function store(Request $request)
     {
+        $department_id = $request->department_id;
+        $device_id = $request->device_id;
+        $department = Department::findOrFail($department_id);
+        $device = Device::findOrFail($device_id);
+
+        $cek = Transaction::where('device_id', $device->id)
+                            ->whereIn('status', ['Call', 'Pending'])
+                            ->count();
+
+        if($cek > 0){
+            return redirect()->route('transaction.index')->withNotifyerror('Request dari Device ini masih berstatus "Call" atau "Pending", tidak bisa menambah request baru');
+        }
+
         $timestamp = now()->timestamp;
         $randomNumber = rand(1000, 9999);
         $ticketNumber = $timestamp . $randomNumber;
