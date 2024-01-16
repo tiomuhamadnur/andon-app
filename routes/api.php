@@ -32,18 +32,20 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::controller(TransactionController::class)->group(function () {
+        Route::post('transaction/search/id', 'id');
+        Route::post('transaction/search/ticket-number', 'ticketNumber');
+
         Route::get('transactions', 'transactions');
         Route::post('transactions/filter', 'filter');
 
-        Route::get('parameters', 'parameters');
+        Route::get('transactions/parameters', 'parameters');
     });
 });
 
 Route::controller(TransactionController::class)->group(function () {
     Route::get('transaction/call', 'call');
-    Route::get('transaction/response', 'response');
-    Route::get('transaction/closed', 'closed');
     Route::get('transaction/check', 'check');
+    Route::get('check-initial', 'check_initial');
 
     Route::get('cek-kirim-event', 'testEvent');
 });

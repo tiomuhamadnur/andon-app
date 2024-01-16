@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Events\RealtimeEvent;
 use App\Exports\TransactionExportExcel;
 use App\Exports\TransactionFilterExport;
 use App\Http\Controllers\Controller;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
 use Excel;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Event;
 
 class TransactionController extends Controller
 {
@@ -103,11 +105,6 @@ class TransactionController extends Controller
         ]));
     }
 
-    public function create()
-    {
-        //
-    }
-
     public function excel(Request $request)
     {
         $department_id = $request->department_id;
@@ -143,9 +140,6 @@ class TransactionController extends Controller
         return redirect()->route('transaction.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function closed(Request $request)
     {
         $id = $request->id;
@@ -174,6 +168,10 @@ class TransactionController extends Controller
             ]);
         }
 
+        $zona_id = $transaction->device->zona->id;
+
+        $this->sendEvent($zona_id);
+
         return redirect()->route('transaction.index')->withNotify('Data laporan panggilan berhasil di-closed');
     }
 
@@ -190,6 +188,7 @@ class TransactionController extends Controller
         if (!$transaction){
             return back()->withNotifyerror('Someting went wrong!');
         }
+        $zona_id = $transaction->device->zona->id;
         $status = $request->status;
         $response_at = Carbon::now();
 
@@ -203,6 +202,8 @@ class TransactionController extends Controller
             'pending_reason' => $request->pending_reason,
             'pic_id' => auth()->user()->id,
         ]);
+
+        $this->sendEvent($zona_id);
 
         if($status == 'Pending'){
             return redirect()->route('transaction.status.pending')->withNotify('Data request masuk ke dalam list pending, jangan lupa untuk ditindak lanjuti');
@@ -343,11 +344,28 @@ class TransactionController extends Controller
         return view('transaction.standby');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function sendEvent($zona_id)
     {
-        //
+        $status = ['Call', 'Response', 'Pending', 'Closed'];
+        $statusZona = [];
+
+        foreach ($status as $item) {
+            $count = Transaction::query()
+                ->select('device.zona_id as zona_id', 'transaction.status as status')
+                ->join('device', 'device.id', '=', 'transaction.device_id')
+                ->where('zona_id', $zona_id)
+                ->where('status', $item)
+                ->count();
+
+            $statusZona[] = $count;
+        }
+
+        $data = [
+            'ok',
+            $zona_id,
+            $statusZona,
+        ];
+
+        Event::dispatch(new RealtimeEvent($data));
     }
 }

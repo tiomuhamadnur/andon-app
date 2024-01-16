@@ -14,6 +14,7 @@ use App\Models\Transaction;
 use App\Models\Zona;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 
 class TransactionController extends Controller
 {
@@ -45,6 +46,104 @@ class TransactionController extends Controller
                 $transaction->performance_duration = 0;
                 $transaction->total_duration = 0;
             }
+        }
+
+        $data = [
+            'status' => 'ok',
+            'message' => 'data berhasil didapatkan',
+            'data' => $transactions,
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function id(Request $request)
+    {
+        $id = $request->id;
+        $transactions = Transaction::findOrFail($id);
+
+        if(!$transactions)
+        {
+            $data = [
+                'status' => 'error',
+                'message' => 'data tidak ditemukan',
+                'data' => [],
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        $call_at = $transactions->call_at;
+        $response_at = $transactions->response_at ?? $call_at;
+        $closed_at = $transactions->closed_at;
+
+        $call_at_carbon = Carbon::parse($call_at);
+        $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
+        $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
+
+        if ($response_at_carbon) {
+            $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);
+
+            $performace_duration = $closed_at_carbon ? $closed_at_carbon->diffInMinutes($response_at_carbon) : 0;
+
+            $total_duration = $closed_at_carbon ? $call_at_carbon->diffInMinutes($closed_at_carbon) : 0;
+
+            $transactions->response_duration = $response_duration;
+            $transactions->performance_duration = $performace_duration;
+            $transactions->total_duration = $total_duration;
+        } else {
+            $transactions->response_duration = 0;
+            $transactions->performance_duration = 0;
+            $transactions->total_duration = 0;
+        }
+
+        $data = [
+            'status' => 'ok',
+            'message' => 'data berhasil didapatkan',
+            'data' => $transactions,
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function ticketNumber(Request $request)
+    {
+        $ticket_number = $request->ticket_number;
+        $transactions = Transaction::where('ticket_number', $ticket_number)->first();
+
+        if(!$transactions)
+        {
+            $data = [
+                'status' => 'error',
+                'message' => 'data tidak ditemukan',
+                'data' => [],
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        $call_at = $transactions->call_at;
+        $response_at = $transactions->response_at ?? $call_at;
+        $closed_at = $transactions->closed_at;
+
+        $call_at_carbon = Carbon::parse($call_at);
+        $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
+        $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
+
+        if ($response_at_carbon) {
+            $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);
+
+            $performace_duration = $closed_at_carbon ? $closed_at_carbon->diffInMinutes($response_at_carbon) : 0;
+
+            $total_duration = $closed_at_carbon ? $call_at_carbon->diffInMinutes($closed_at_carbon) : 0;
+
+            $transactions->response_duration = $response_duration;
+            $transactions->performance_duration = $performace_duration;
+            $transactions->total_duration = $total_duration;
+        } else {
+            $transactions->response_duration = 0;
+            $transactions->performance_duration = 0;
+            $transactions->total_duration = 0;
         }
 
         $data = [
@@ -188,7 +287,7 @@ class TransactionController extends Controller
         if((!$device) or (!$department)){
             $data = [
                 'status' => 'error',
-                'message' => 'something went wrong'
+                'message' => 'bad request'
             ];
             return response()->json($data, 400);
         }
@@ -221,6 +320,8 @@ class TransactionController extends Controller
                 'message' => 'data laporan berhasil ditambahkan'
             ];
 
+        $this->sendEvent($device->zona->id);
+
         return response()->json($data, 201);
     }
 
@@ -251,14 +352,60 @@ class TransactionController extends Controller
         return response()->json($data)->header('Content-Type', 'application/json');
     }
 
-    public function response(Request $request)
+    public function check_initial(Request $request)
     {
-        dd($request);
+        $zona_id = $request->zona_id;
+        $status = ['Call', 'Response', 'Pending', 'Closed'];
+        $statusZona = [];
+
+        foreach ($status as $item) {
+            $count = Transaction::query()
+                ->select('device.zona_id as zona_id', 'transaction.status as status')
+                ->join('device', 'device.id', '=', 'transaction.device_id')
+                ->where('zona_id', $zona_id)
+                ->where('status', $item)
+                ->count();
+
+            $statusZona[] = $count;
+        }
+
+        $data = [
+            'ok',
+            $zona_id,
+            $statusZona,
+        ];
+
+        Event::dispatch(new RealtimeEvent($data));
+
+        return response()->json([
+            'status' => 'ok',
+            'message' => 'data initial request berhasil didapatkan',
+        ])->header('Content-Type', 'application/json');
     }
 
-    public function closed(Request $request)
+    public function sendEvent($zona_id)
     {
-        dd($request);
+        $status = ['Call', 'Response', 'Pending', 'Closed'];
+        $statusZona = [];
+
+        foreach ($status as $item) {
+            $count = Transaction::query()
+                ->select('device.zona_id as zona_id', 'transaction.status as status')
+                ->join('device', 'device.id', '=', 'transaction.device_id')
+                ->where('zona_id', $zona_id)
+                ->where('status', $item)
+                ->count();
+
+            $statusZona[] = $count;
+        }
+
+        $data = [
+            'ok',
+            $zona_id,
+            $statusZona,
+        ];
+
+        Event::dispatch(new RealtimeEvent($data));
     }
 
     public function testEvent()
@@ -268,7 +415,7 @@ class TransactionController extends Controller
             'data2' => 456,
         ];
 
-        event(new RealtimeEvent($data));
+        event(new RealtimeEvent([$data]));
 
         return response()->json([
             'message' => 'Realtime event sent successfully'

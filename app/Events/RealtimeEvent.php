@@ -17,15 +17,18 @@ class RealtimeEvent implements ShouldBroadcast
 
     public $data;
 
-    public function __construct($data)
+    public function __construct(array $data)
     {
         $this->data = $data;
     }
 
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [
-            'realtime-channel',
-        ];
+        return new Channel('realtime-channel');
+    }
+
+    public function broadcastWith()
+    {
+        return $this->data;
     }
 }
