@@ -150,6 +150,11 @@ class TransactionController extends Controller
             'call_at' => Carbon::now(),
             'status' => 'Call',
         ]);
+
+        $zona_id = $device->zona->id;
+
+        $this->sendEvent($zona_id);
+
         return redirect()->route('transaction.index')->withNotify('Data saved successfully');
     }
 
