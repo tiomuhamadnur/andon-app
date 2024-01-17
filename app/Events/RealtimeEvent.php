@@ -31,4 +31,9 @@ class RealtimeEvent implements ShouldBroadcast
     {
         return $this->data;
     }
+
+    public function broadcastAs()
+    {
+        return 'RealtimeEvent';
+    }
 }

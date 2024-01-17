@@ -25,11 +25,14 @@
         {{-- TRIGGER DIHAPUS AJA NANTI --}}
         <div class="container-fluid">
             <div class="col-xl-12 d-flex justify-content-center align-item-center">
-                <button type="button" class="btn btn-success m-2" data-toggle="modal" data-target="#modalCall">Button
+                <button type="button" id="buttonModalCall" class="btn btn-success m-2" data-toggle="modal"
+                    data-target="#modalCall">Button
                     CALL</button>
-                <button type="button" class="btn btn-success m-2" data-toggle="modal" data-target="#modalArrived">Button
+                <button type="button" class="btn btn-success m-2" data-toggle="modal"
+                    data-target="#modalArrived">Button
                     ARRIVED</button>
-                <button type="button" class="btn btn-success m-2" data-toggle="modal" data-target="#modalFinished">Button
+                <button type="button" class="btn btn-success m-2" data-toggle="modal"
+                    data-target="#modalFinished">Button
                     FINISHED</button>
             </div>
         </div>
@@ -137,12 +140,13 @@
                             <div class="row">
                                 <div class="col-xl-6 content-modal-img">
                                     <div class="modal-content-custom">
-                                        <img class="img-modals" src="{{ asset('assets/img/user.jpeg') }}" alt="">
+                                        <img class="img-modals" src="{{ asset('assets/img/user.jpeg') }}"
+                                            alt="">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 content-modal-grid">
                                     <div class="row">
-                                        <h1 >LINE</h1>
+                                        <h1>LINE</h1>
                                     </div>
                                     <div class="row">
                                         <h2>LS 1</h2>
@@ -183,12 +187,13 @@
                             <div class="row">
                                 <div class="col-xl-6 content-modal-img">
                                     <div class="modal-content-custom">
-                                        <img class="img-modals" src="{{ asset('assets/img/user.jpeg') }}" alt="">
+                                        <img class="img-modals" src="{{ asset('assets/img/user.jpeg') }}"
+                                            alt="">
                                     </div>
                                 </div>
                                 <div class="col-xl-6 content-modal-grid">
                                     <div class="row">
-                                        <h1 >LINE</h1>
+                                        <h1>LINE</h1>
                                     </div>
                                     <div class="row">
                                         <h2>LS 1</h2>
@@ -210,6 +215,7 @@
 
 
     @section('javascript')
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>``
         <script>
             class DigitalClock {
                 constructor(element) {
@@ -249,6 +255,42 @@
             const clockObject = new DigitalClock(clockElement);
 
             clockObject.start();
+
+            var buttonModalCall = document.getElementById('buttonModalCall');
+
+            // Pusher.logToConsole = true;
+
+            var pusher = new Pusher('76bef5d058242d5c2648', {
+                cluster: 'ap1'
+            });
+
+            var channel = pusher.subscribe('realtime-channel');
+            channel.bind('RealtimeEvent', function(dataRaw) {
+                var dataString = JSON.stringify(dataRaw)
+                var data = JSON.parse(dataString);
+                // alert(data);
+
+                var status = data[0];
+                var zona_id = parseInt(data[1]);
+                var call = parseInt(data[2][0]);
+                var response = parseInt(data[2][1]);
+                var pending = parseInt(data[2][2]);
+                var closed = parseInt(data[2][3]);
+
+                // Menampilkan hasil parsing
+                console.log("Status:", status);
+                console.log("Zona ID:", zona_id);
+                console.log("Call:", call);
+                console.log("Response:", response);
+                console.log("Pending:", pending);
+                console.log("Closed:", closed);
+
+                console.log("test");
+                if (call > 0) {
+                    buttonModalCall.click();
+                }
+
+            });
         </script>
     @endsection
 </x-layout>
