@@ -28,10 +28,10 @@
                 <button type="button" id="buttonModalCall" class="btn btn-success m-2" data-toggle="modal"
                     data-target="#modalCall">Button
                     CALL</button>
-                <button type="button" class="btn btn-success m-2" data-toggle="modal"
+                <button type="button" id="buttonModalResponse" class="btn btn-success m-2" data-toggle="modal"
                     data-target="#modalArrived">Button
                     ARRIVED</button>
-                <button type="button" class="btn btn-success m-2" data-toggle="modal"
+                <button type="button" id="buttonModalClosed" class="btn btn-success m-2" data-toggle="modal"
                     data-target="#modalFinished">Button
                     FINISHED</button>
             </div>
@@ -257,6 +257,8 @@
             clockObject.start();
 
             var buttonModalCall = document.getElementById('buttonModalCall');
+            var buttonModalResponse = document.getElementById('buttonModalResponse');
+            var buttonModalClosed = document.getElementById('buttonModalClosed');
 
             // Pusher.logToConsole = true;
 
@@ -285,9 +287,18 @@
                 console.log("Pending:", pending);
                 console.log("Closed:", closed);
 
-                console.log("test");
                 if (call > 0) {
-                    buttonModalCall.click();
+                    if (buttonModalCall) {
+                        buttonModalCall.click();
+                    }
+                } else if (response > 0 && call == 0) {
+                    if (buttonModalResponse) {
+                        buttonModalResponse.click();
+                    }
+                } else if (closed > 0 && call == 0 && response == 0) {
+                    if (buttonModalClosed) {
+                        buttonModalClosed.click();
+                    }
                 }
 
             });
