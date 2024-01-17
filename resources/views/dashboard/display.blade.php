@@ -23,7 +23,7 @@
         </div>
 
         {{-- TRIGGER DIHAPUS AJA NANTI --}}
-        <div class="container-fluid">
+        <div class="container-fluid" hidden>
             <div class="col-xl-12 d-flex justify-content-center align-item-center">
                 <button type="button" id="buttonModalCall" class="btn btn-success m-2" data-toggle="modal"
                     data-target="#modalCall">Button
@@ -256,9 +256,11 @@
 
             clockObject.start();
 
-            var buttonModalCall = document.getElementById('buttonModalCall');
-            var buttonModalResponse = document.getElementById('buttonModalResponse');
-            var buttonModalClosed = document.getElementById('buttonModalClosed');
+            var modalCall = new bootstrap.Modal(document.getElementById('modalCall'));
+            var modalResponse = new bootstrap.Modal(document.getElementById('modalArrived'));
+            var modalClosed = new bootstrap.Modal(document.getElementById('modalFinished'));
+
+            var audio = new Audio("{{ asset('assets/tone/ring-tone.mp3') }}");
 
             // Pusher.logToConsole = true;
 
@@ -288,17 +290,22 @@
                 console.log("Closed:", closed);
 
                 if (call > 0) {
-                    if (buttonModalCall) {
-                        buttonModalCall.click();
-                    }
+                    modalCall.show();
+                    audio.play();
                 } else if (response > 0 && call == 0) {
-                    if (buttonModalResponse) {
-                        buttonModalResponse.click();
-                    }
+                    modalCall.hide();
+                    audio.pause();
+                    modalResponse.show();
+                    setTimeout(function() {
+                        modalResponse.hide();
+                    }, 10000);
                 } else if (closed > 0 && call == 0 && response == 0) {
-                    if (buttonModalClosed) {
-                        buttonModalClosed.click();
-                    }
+                    modalResponse.hide();
+                    audio.pause();
+                    modalClosed.show();
+                    setTimeout(function() {
+                        modalClosed.hide();
+                    }, 5000);
                 }
 
             });
