@@ -297,6 +297,7 @@
 
             function pauseAudio() {
                 audio.pause();
+                audio.currentTime = 0;
             }
 
             // Pusher.logToConsole = true;

@@ -1,4 +1,4 @@
-<div wire:poll>
+<div wire:poll.10000ms>
     <div class="card-body px-0 pb-2" style="background-color: white">
         <div class="table-responsive p-0">
             <table class="table align-items-center mb-0">
