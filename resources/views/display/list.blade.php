@@ -355,10 +355,10 @@
                             });
 
                             modalCall.show();
-                            playAudio();
+                            playAudio;
                             setTimeout(function() {
                                 modalCall.hide();
-                                pauseAudio();
+                                pauseAudio;
                             }, 20000);
                         } else if (transaction_status == 'Response') {
                             departmentName.forEach(function(element) {
@@ -375,7 +375,7 @@
                             });
 
                             modalCall.hide();
-                            pauseAudio();
+                            pauseAudio;
                             modalResponse.show();
                             setTimeout(function() {
                                 modalResponse.hide();
@@ -395,7 +395,7 @@
                             });
 
                             modalResponse.hide();
-                            pauseAudio();
+                            pauseAudio;
                             modalClosed.show();
                             setTimeout(function() {
                                 modalClosed.hide();
