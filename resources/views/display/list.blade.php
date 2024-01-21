@@ -245,186 +245,164 @@
         <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
         @livewireScripts
         <script>
-            class DigitalClock {
-                constructor(element) {
-                    this.element = element;
-                }
-
-                start() {
-                    this.update();
-
-                    setInterval(() => {
-                        this.update();
-                    }, 500);
-                }
-
-                update() {
-                    const parts = this.getTimeParts();
-                    const hourFormatted = parts.hour.toString().padStart(2, "0");
-                    const minuteFormatted = parts.minute.toString().padStart(2, "0");
-                    const secondFormatted = parts.second.toString().padStart(2, "0");
-                    const timeFormatted = `${hourFormatted}:${minuteFormatted}:${secondFormatted}`;
-
-                    this.element.querySelector(".clock-time").textContent = timeFormatted;
-                }
-
-                getTimeParts() {
-                    const now = new Date();
-
-                    return {
-                        hour: now.getHours(),
-                        minute: now.getMinutes(),
-                        second: now.getSeconds(),
-                    };
-                }
-            }
-
-            const clockElement = document.querySelector(".clock");
-            const clockObject = new DigitalClock(clockElement);
-
-            clockObject.start();
-
-
-            var modalCall = new bootstrap.Modal(document.getElementById('modalCall'));
-            var modalResponse = new bootstrap.Modal(document.getElementById('modalArrived'));
-            var modalClosed = new bootstrap.Modal(document.getElementById('modalFinished'));
-
-            var audio = new Audio("{{ asset('assets/tone/ring-tone.mp3') }}");
-
-            function playAudio() {
-                audio.play();
-            }
-
-            function pauseAudio() {
-                audio.pause();
-                audio.currentTime = 0;
-            }
-
-            // Pusher.logToConsole = true;
-
-            var pusher = new Pusher('76bef5d058242d5c2648', {
-                cluster: 'ap1'
-            });
-
-            var channel = pusher.subscribe('realtime-channel');
-            channel.bind('RealtimeEvent', function(dataRaw) {
-                var dataString = JSON.stringify(dataRaw)
-                var data = JSON.parse(dataString);
-                // alert(data);
-
-                var status = data[0];
-                var zona_id = parseInt(data[1]);
-                var call = parseInt(data[2][0]);
-                var response = parseInt(data[2][1]);
-                var pending = parseInt(data[2][2]);
-                var closed = parseInt(data[2][3]);
-                var department_name = data[3];
-                var zona_name = data[4];
-                var line_name = data[5];
-                var transaction_status = data[6];
-                var pic = data[7];
-                var pic_photo = data[8];
-
-                // Menampilkan hasil parsing
-                console.log("Status:", status);
-                console.log("Zona ID:", zona_id);
-                console.log("Department Name:", department_name);
-                console.log("Line Name:", line_name);
-                console.log("Zona Name:", zona_name);
-                console.log("Transaction status:", transaction_status);
-                console.log("pic:", pic);
-                console.log("pic photo:", pic_photo);
-
-                var departmentName = document.querySelectorAll('.department-name');
-                var lineName = document.querySelectorAll('.line-name');
-                var zonaName = document.querySelectorAll('.zona-name');
-                var picPhoto = document.querySelectorAll('.pic-photo');
-
-                var currentZonaId = parseInt({{ $zona->id }});
-                if (zona_id == currentZonaId) {
-                    if (transaction_status == 'Call') {
-                        departmentName.forEach(function(element) {
-                            element.textContent = department_name;
-                        });
-                        lineName.forEach(function(element) {
-                            element.textContent = line_name;
-                        });
-                        zonaName.forEach(function(element) {
-                            element.textContent = zona_name;
-                        });
-
-                        modalCall.show();
-                        playAudio();
-                        setTimeout(function() {
-                            modalCall.hide();
-                            pauseAudio();
-                        }, 20000);
-                    } else if (transaction_status == 'Response') {
-                        departmentName.forEach(function(element) {
-                            element.textContent = department_name;
-                        });
-                        lineName.forEach(function(element) {
-                            element.textContent = line_name;
-                        });
-                        zonaName.forEach(function(element) {
-                            element.textContent = zona_name;
-                        });
-                        picPhoto.forEach(function(element) {
-                            element.src = pic_photo;
-                        });
-
-                        modalCall.hide();
-                        pauseAudio();
-                        modalResponse.show();
-                        setTimeout(function() {
-                            modalResponse.hide();
-                        }, 15000);
-                    } else if (transaction_status == 'Closed') {
-                        departmentName.forEach(function(element) {
-                            element.textContent = department_name;
-                        });
-                        lineName.forEach(function(element) {
-                            element.textContent = line_name;
-                        });
-                        zonaName.forEach(function(element) {
-                            element.textContent = zona_name;
-                        });
-                        picPhoto.forEach(function(element) {
-                            element.src = pic_photo;
-                        });
-
-                        modalResponse.hide();
-                        pauseAudio();
-                        modalClosed.show();
-                        setTimeout(function() {
-                            modalClosed.hide();
-                        }, 15000);
+            document.addEventListener("DOMContentLoaded", function() {
+                class DigitalClock {
+                    constructor(element) {
+                        this.element = element;
                     }
 
+                    start() {
+                        this.update();
 
-                    // if (call > 0) {
-                    //     modalCall.show();
-                    //     audio.play();
-                    //     setTimeout(function() {
-                    //         modalCall.hide();
-                    //         audio.pause();
-                    //     }, 15000);
-                    // } else if (response > 0 && call == 0) {
-                    //     modalCall.hide();
-                    //     audio.pause();
-                    //     modalResponse.show();
-                    //     setTimeout(function() {
-                    //         modalResponse.hide();
-                    //     }, 10000);
-                    // } else if (closed > 0 && call == 0 && response == 0) {
-                    //     modalResponse.hide();
-                    //     audio.pause();
-                    //     modalClosed.show();
-                    //     setTimeout(function() {
-                    //         modalClosed.hide();
-                    //     }, 5000);
-                    // }
+                        setInterval(() => {
+                            this.update();
+                        }, 500);
+                    }
+
+                    update() {
+                        const parts = this.getTimeParts();
+                        const hourFormatted = parts.hour.toString().padStart(2, "0");
+                        const minuteFormatted = parts.minute.toString().padStart(2, "0");
+                        const secondFormatted = parts.second.toString().padStart(2, "0");
+                        const timeFormatted = `${hourFormatted}:${minuteFormatted}:${secondFormatted}`;
+
+                        this.element.querySelector(".clock-time").textContent = timeFormatted;
+                    }
+
+                    getTimeParts() {
+                        const now = new Date();
+
+                        return {
+                            hour: now.getHours(),
+                            minute: now.getMinutes(),
+                            second: now.getSeconds(),
+                        };
+                    }
                 }
+
+                const clockElement = document.querySelector(".clock");
+                const clockObject = new DigitalClock(clockElement);
+
+                clockObject.start();
+
+
+                var modalCall = new bootstrap.Modal(document.getElementById('modalCall'));
+                var modalResponse = new bootstrap.Modal(document.getElementById('modalArrived'));
+                var modalClosed = new bootstrap.Modal(document.getElementById('modalFinished'));
+
+                var audio = new Audio("{{ asset('assets/tone/ring-tone.mp3') }}");
+
+                function playAudio() {
+                    audio.play();
+                }
+
+                function pauseAudio() {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+
+                // Pusher.logToConsole = true;
+
+                var pusher = new Pusher('76bef5d058242d5c2648', {
+                    cluster: 'ap1'
+                });
+
+                var channel = pusher.subscribe('realtime-channel');
+                channel.bind('RealtimeEvent', function(dataRaw) {
+                    var dataString = JSON.stringify(dataRaw)
+                    var data = JSON.parse(dataString);
+                    // alert(data);
+
+                    var status = data[0];
+                    var zona_id = parseInt(data[1]);
+                    var call = parseInt(data[2][0]);
+                    var response = parseInt(data[2][1]);
+                    var pending = parseInt(data[2][2]);
+                    var closed = parseInt(data[2][3]);
+                    var department_name = data[3];
+                    var zona_name = data[4];
+                    var line_name = data[5];
+                    var transaction_status = data[6];
+                    var pic = data[7];
+                    var pic_photo = data[8];
+
+                    // Menampilkan hasil parsing
+                    console.log("Status:", status);
+                    console.log("Zona ID:", zona_id);
+                    console.log("Department Name:", department_name);
+                    console.log("Line Name:", line_name);
+                    console.log("Zona Name:", zona_name);
+                    console.log("Transaction status:", transaction_status);
+                    console.log("pic:", pic);
+                    console.log("pic photo:", pic_photo);
+
+                    var departmentName = document.querySelectorAll('.department-name');
+                    var lineName = document.querySelectorAll('.line-name');
+                    var zonaName = document.querySelectorAll('.zona-name');
+                    var picPhoto = document.querySelectorAll('.pic-photo');
+
+                    var currentZonaId = parseInt({{ $zona->id }});
+                    if (zona_id == currentZonaId) {
+                        if (transaction_status == 'Call') {
+                            departmentName.forEach(function(element) {
+                                element.textContent = department_name;
+                            });
+                            lineName.forEach(function(element) {
+                                element.textContent = line_name;
+                            });
+                            zonaName.forEach(function(element) {
+                                element.textContent = zona_name;
+                            });
+
+                            modalCall.show();
+                            playAudio();
+                            setTimeout(function() {
+                                modalCall.hide();
+                                pauseAudio();
+                            }, 20000);
+                        } else if (transaction_status == 'Response') {
+                            departmentName.forEach(function(element) {
+                                element.textContent = department_name;
+                            });
+                            lineName.forEach(function(element) {
+                                element.textContent = line_name;
+                            });
+                            zonaName.forEach(function(element) {
+                                element.textContent = zona_name;
+                            });
+                            picPhoto.forEach(function(element) {
+                                element.src = pic_photo;
+                            });
+
+                            modalCall.hide();
+                            pauseAudio();
+                            modalResponse.show();
+                            setTimeout(function() {
+                                modalResponse.hide();
+                            }, 15000);
+                        } else if (transaction_status == 'Closed') {
+                            departmentName.forEach(function(element) {
+                                element.textContent = department_name;
+                            });
+                            lineName.forEach(function(element) {
+                                element.textContent = line_name;
+                            });
+                            zonaName.forEach(function(element) {
+                                element.textContent = zona_name;
+                            });
+                            picPhoto.forEach(function(element) {
+                                element.src = pic_photo;
+                            });
+
+                            modalResponse.hide();
+                            pauseAudio();
+                            modalClosed.show();
+                            setTimeout(function() {
+                                modalClosed.hide();
+                            }, 15000);
+                        }
+                    }
+                });
             });
         </script>
     @endsection
