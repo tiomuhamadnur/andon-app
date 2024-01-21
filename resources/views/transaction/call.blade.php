@@ -118,8 +118,8 @@
                                         @endforeach
                                         @if ($transactions->count() == 0)
                                             <tr>
-                                                <td colspan="8" class="fw-bolder text-center">
-                                                    <p class="text-secondary">No call request data found!</p>
+                                                <td colspan="8" class="fw-bolder">
+                                                    <p class="text-secondary">No data found!</p>
                                                 </td>
                                             </tr>
                                         @endif

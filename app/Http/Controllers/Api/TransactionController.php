@@ -292,6 +292,7 @@ class TransactionController extends Controller
             return response()->json($data, 400);
         }
         $cek = Transaction::where('device_id', $device->id)
+                            ->where('department_id', $department->id)
                             ->whereIn('status', ['Call', 'Pending'])
                             ->count();
 

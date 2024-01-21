@@ -17,17 +17,24 @@
             <div class="card card-body mx-3 mx-md-4 mt-n6">
                 <div class="row gx-4 mb-2">
                     <div class="col-auto">
-                        <div class="avatar avatar-xl position-relative">
-                            <img src="{{ asset('assets') }}/img/bruce-mars.jpg" alt="profile_image"
-                                class="w-100 border-radius-lg shadow-sm">
-                        </div>
+                        <a href="javascript:;" data-toggle="modal" data-target="#updatePhotoModal">
+                            <div class="avatar avatar-xl position-relative">
+                                @if (auth()->user()->photo != '')
+                                    <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="profile_image"
+                                        class="w-100 border-radius-lg shadow-sm">
+                                @else
+                                    <img src="{{ asset('assets') }}/img/bruce-mars.jpg" alt="profile_image"
+                                        class="w-100 border-radius-lg shadow-sm">
+                                @endif
+                            </div>
+                        </a>
                     </div>
                     <div class="col-auto my-auto">
                         <div class="h-100">
                             <h5 class="mb-1">
                                 {{ auth()->user()->name }}
                             </h5>
-                            <p class="mb-0 font-weight-normal text-sm">
+                            <p class="mb-0 font-weight-normal text-sm text-secondary">
                                 {{ auth()->user()->role->name }} / {{ auth()->user()->jabatan->name }}
                             </p>
                         </div>
@@ -143,6 +150,65 @@
 
                     </div>
                 </div>
+                <!-- Start Update Photo Modal -->
+                <div class="modal fade" id="updatePhotoModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Update Data</h5>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form">
+                                    <form action="{{ route('update.photo-profile') }}" id="update-photo-form"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('put')
+                                        <div class="mb-3">
+                                            <div class="mx-auto">
+                                                <img class="img-thumbnail mx-auto" id="previewImage" src="#"
+                                                    alt="Preview"
+                                                    style="max-width: 250px; max-height: 250px; display: none;">
+                                            </div>
+                                            <label class="form-label">Photo</label>
+                                            <input type="file" name="photo"
+                                                class="form-control border border-2 p-2" required id="imageInput"
+                                                accept="image/*" required>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" form="update-photo-form"
+                                    class="btn btn-primary">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Update Photo Modal -->
+
+                @section('javascript')
+                    <script>
+                        const imageInput = document.getElementById('imageInput');
+                        const previewImage = document.getElementById('previewImage');
+
+                        imageInput.addEventListener('change', function(event) {
+                            const selectedFile = event.target.files[0];
+
+                            if (selectedFile) {
+                                const reader = new FileReader();
+
+                                reader.onload = function(e) {
+                                    previewImage.src = e.target.result;
+                                    previewImage.style.display = 'block';
+                                }
+
+                                reader.readAsDataURL(selectedFile);
+                            }
+                        });
+                    </script>
+                @endsection
             </div>
 
         </div>

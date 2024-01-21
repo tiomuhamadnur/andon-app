@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pegawai;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class UserProfileController extends Controller
 {
@@ -11,12 +13,29 @@ class UserProfileController extends Controller
         return view('user.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function updatePhoto(Request $request)
     {
-        //
+        $this->validate($request, [
+            'photo' => ['image'],
+        ], [
+            'photo.image' => 'File harus dalam format gambar/photo!',
+        ]);
+
+        if ($request->hasFile('photo') && $request->photo != '') {
+            $user = Pegawai::findOrFail(auth()->user()->id);
+            $photo = $user->photo;
+            if ($photo){
+                Storage::delete($photo);
+            }
+            $photo_profile = $request->file('photo')->store('users/photo-profile');
+            $user->update([
+                'photo' => $photo_profile,
+            ]);
+
+            return redirect()->route('user-profile')->withNotify('Profile photo updated successfully!');
+        }
+
+        return back();
     }
 
     /**

@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\BuildingController;
 use App\Http\Controllers\admin\CompanyController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\DeviceController;
+use App\Http\Controllers\admin\DisplayController;
 use App\Http\Controllers\admin\EquipmentController;
 use App\Http\Controllers\admin\JabatanController;
 use App\Http\Controllers\admin\LineController;
@@ -65,6 +66,11 @@ Route::get('sign-out', [SessionsController::class, 'destroy'])->middleware('auth
 Route::get('profile', [ProfileController::class, 'create'])->middleware('auth')->name('profile');
 Route::post('user-profile', [ProfileController::class, 'update'])->middleware('auth');
 
+Route::controller(DisplayController::class)->group(function () {
+    Route::get('display', 'index')->name('display.index');
+    Route::get('display/show', 'displayShow')->name('display.show');
+});
+
 
 Route::group(['middleware' => 'auth'], function () {
 
@@ -92,6 +98,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::controller(UserProfileController::class)->group(function () {
         Route::get('user-profile', 'index')->name('user-profile');
+        Route::put('user-profile/update/photo', 'updatePhoto')->name('update.photo-profile');
     });
 
     Route::controller(TransactionController::class)->group(function () {

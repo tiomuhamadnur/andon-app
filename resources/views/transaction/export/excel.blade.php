@@ -169,19 +169,17 @@
                             @if ($item->photo != null)
                                 {{ asset('storage/' . $item->photo) }}
                             @else
-                                '-'
                             @endif
                         </td>
                         <td>
                             @if ($item->photo_closed != null)
                                 {{ asset('storage/' . $item->photo_closed) }}
                             @else
-                                '-'
                             @endif
                         </td>
                         <td class="align-middle text-center">
                             <h6 class="mb-0 text-center">
-                                <span>{{ $item->remark ?? '-' }}</span>
+                                <span>{{ $item->remark ?? '' }}</span>
                             </h6>
                         </td>
                     </tr>

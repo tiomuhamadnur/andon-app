@@ -26,6 +26,15 @@
                     <span class="nav-link-text ms-1">Dashboard</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-desktop ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display</span>
+                </a>
+            </li>
             <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Requests</h6>
             </li>
@@ -212,9 +221,19 @@
                 </a>
             </li> --}}
 
-            <li class="nav-item mt-4">
+            {{-- <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Display</h6>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'display.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('display.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-desktop ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Display</span>
+                </a>
+            </li>
+
             <li class="nav-item">
                 <a class="nav-link text-white {{ $activePage == 'display.zone' ? ' active bg-gradient-primary' : '' }} "
                     href="{{ route('display_zone') }}">
@@ -286,7 +305,8 @@
                     </div>
                     <span class="nav-link-text ms-1">User Performance</span>
                 </a>
-            </li>
+            </li> --}}
+
             <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
             </li>

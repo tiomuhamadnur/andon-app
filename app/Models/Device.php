@@ -18,10 +18,10 @@ class Device extends Model
         return $this->belongsTo(Section::class);
     }
 
-    public function department()
-    {
-        return $this->belongsTo(Department::class);
-    }
+    // public function department()
+    // {
+    //     return $this->belongsTo(Department::class);
+    // }
 
     public function building()
     {

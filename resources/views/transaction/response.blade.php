@@ -137,8 +137,8 @@
                                         @endforeach
                                         @if ($transactions->count() == 0)
                                             <tr>
-                                                <td colspan="10" class="fw-bolder text-center">
-                                                    <p class="text-secondary">No response request data found!</p>
+                                                <td colspan="10" class="fw-bolder">
+                                                    <p class="text-secondary">No data found!</p>
                                                 </td>
                                             </tr>
                                         @endif

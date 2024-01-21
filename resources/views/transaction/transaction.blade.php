@@ -19,7 +19,7 @@
                                 </h6>
                             </div>
                         </div>
-                        <div class=" me-3 my-3 text-end">
+                        <div class=" me-3 mt-3 mb-1 text-end">
                             <a class="btn bg-gradient-dark mb-0" data-toggle="modal" data-target="#addModal"
                                 href="javascript:;"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add</a>
                             <a class="btn bg-gradient-warning mb-0" data-toggle="modal" data-target="#filterModal"
@@ -29,6 +29,9 @@
                                     class="material-icons text-sm">send</i>&nbsp;&nbsp;Export</a>
                         </div>
                         <div class="card-body px-0 pb-2">
+                            <div class="px-3">
+                                {{ $transactions->links('vendor.pagination.bootstrap-4') }}
+                            </div>
                             <div class="table-responsive p-0">
                                 <table class="table align-items-center mb-0">
                                     <thead>
@@ -97,7 +100,8 @@
                                                 <td class="text-center">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm text-secondary text-center">
-                                                            {{ $loop->iteration }}</h6>
+                                                            {{ ($transactions->currentPage() - 1) * $transactions->perPage() + $loop->index + 1 }}
+                                                        </h6>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -298,10 +302,10 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Department</label>
+                                            <label class="form-label">Issue</label>
                                             <select name="department_id" class="form-control border border-2 p-2"
                                                 required>
-                                                <option value="" selected disabled>- select department -</option>
+                                                <option value="" selected disabled>- select issue -</option>
                                                 @foreach ($department as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach

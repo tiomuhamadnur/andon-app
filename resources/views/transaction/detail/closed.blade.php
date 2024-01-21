@@ -22,7 +22,7 @@
                         <div class="card-body px-0 pb-2">
                             <div class="container">
                                 <div class="row align-items-center">
-                                    <table class="table table-borderless w-1 ms-5">
+                                    <table class="table table-borderless w-1 mx-auto">
                                         <tbody>
                                             <tr>
                                                 <th scope="row">Building</th>
@@ -86,13 +86,14 @@
                                         enctype="multipart/form-data">
                                         @csrf
                                         @method('post')
-                                        <div class="mb-3">
+                                        <div class="mb-3 mt-2">
                                             <input type="text" name="id" value="{{ $transaction->id }}"
                                                 required hidden>
-                                            <label class="form-label">Affected Equipment</label>
+                                            <label class="form-label">Affected Equipment (Optional)</label>
                                             <select name="equipment_id" id="equipment_id"
                                                 class="form-control border border-2 p-2">
                                                 <option value="" selected disabled>- select equipment -</option>
+                                                <option value="">No Equipment</option>
                                                 @foreach ($equipment as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
@@ -150,13 +151,12 @@
                                 if (equipmentSelect.value !== "") {
                                     container.style.display = 'block';
                                     var inputs = dataContainer;
-                                    console.log(inputs.length);
                                     inputs.forEach(function(input) {
                                         input.setAttribute('required', 'required');
                                     });
                                 } else {
-                                    dataContainer.style.display = 'none';
-                                    var inputs = dataContainer.querySelectorAll('.data-tambahan');
+                                    container.style.display = 'none';
+                                    var inputs = dataContainer;
                                     inputs.forEach(function(input) {
                                         input.removeAttribute('required');
                                     });

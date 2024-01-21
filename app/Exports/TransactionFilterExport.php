@@ -22,31 +22,33 @@ class TransactionFilterExport implements FromView
     }
     public function view(): View
     {
-        $transactions = Transaction::query();
+        $transactions = Transaction::query()
+                ->select('transaction.*')
+                ->join('device', 'device.id', '=', 'transaction.device_id');;
 
         // Filter by department_id
         $transactions->when($this->department_id, function ($query) {
-            return $query->where('department_id', $this->department_id);
+            return $query->where('transaction.department_id', $this->department_id);
         });
 
         // Filter by building_id
         $transactions->when($this->building_id, function ($query) {
-            return $query->where('building_id', $this->building_id);
+            return $query->where('device.building_id', $this->building_id);
         });
 
         // Filter by zona_id
         $transactions->when($this->zona_id, function ($query) {
-            return $query->where('zona_id', $this->zona_id);
+            return $query->where('device.zona_id', $this->zona_id);
         });
 
         // Filter by line_id
         $transactions->when($this->line_id, function ($query) {
-            return $query->where('line_id', $this->line_id);
+            return $query->where('device.line_id', $this->line_id);
         });
 
         // Filter by process_id
         $transactions->when($this->process_id, function ($query) {
-            return $query->where('process_id', $this->process_id);
+            return $query->where('device.process_id', $this->process_id);
         });
 
         // Filter by status

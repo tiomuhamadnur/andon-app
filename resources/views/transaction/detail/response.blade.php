@@ -21,7 +21,7 @@
                         <div class="card-body px-0 pb-2">
                             <div class="container">
                                 <div class="row align-items-center">
-                                    <table class="table table-borderless w-1 ms-5">
+                                    <table class="table table-borderless w-1 mx-auto">
                                         <tbody>
                                             <tr>
                                                 <th scope="row">Building</th>

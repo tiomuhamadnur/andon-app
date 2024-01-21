@@ -25,7 +25,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::get();
+        $transactions = Transaction::orderBy('call_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -132,6 +132,7 @@ class TransactionController extends Controller
         $device = Device::findOrFail($device_id);
 
         $cek = Transaction::where('device_id', $device->id)
+                            ->where('department_id', $department->id)
                             ->whereIn('status', ['Call', 'Pending'])
                             ->count();
 
@@ -143,7 +144,7 @@ class TransactionController extends Controller
         $randomNumber = rand(1000, 9999);
         $ticketNumber = $timestamp . $randomNumber;
 
-        Transaction::create([
+        $transaction = Transaction::create([
             'ticket_number' => $ticketNumber,
             'device_id' => $request->device_id,
             'department_id' => $request->department_id,
@@ -152,8 +153,11 @@ class TransactionController extends Controller
         ]);
 
         $zona_id = $device->zona->id;
+        $transaction_id = $transaction->id;
 
-        $this->sendEvent($zona_id);
+        $data = [$zona_id, $transaction_id];
+
+        $this->sendEvent($data);
 
         return redirect()->route('transaction.index')->withNotify('Data saved successfully');
     }
@@ -187,8 +191,11 @@ class TransactionController extends Controller
         }
 
         $zona_id = $transaction->device->zona->id;
+        $transaction_id = $transaction->id;
 
-        $this->sendEvent($zona_id);
+        $data = [$zona_id, $transaction_id];
+
+        $this->sendEvent($data);
 
         return redirect()->route('transaction.index')->withNotify('Data laporan panggilan berhasil di-closed');
     }
@@ -221,7 +228,10 @@ class TransactionController extends Controller
             'pic_id' => auth()->user()->id,
         ]);
 
-        $this->sendEvent($zona_id);
+        $transaction_id = $transaction->id;
+        $data = [(int)$zona_id, (int)$transaction_id];
+
+        $this->sendEvent($data);
 
         if($status == 'Pending'){
             return redirect()->route('transaction.status.pending')->withNotify('Data request masuk ke dalam list pending, jangan lupa untuk ditindak lanjuti');
@@ -241,31 +251,33 @@ class TransactionController extends Controller
         $start_date = $request->start_date;
         $end_date = $request->end_date ?? $start_date;
 
-        $transactions = Transaction::query();
+        $transactions = Transaction::query()
+        ->select('transaction.*')
+        ->join('device', 'device.id', '=', 'transaction.device_id');
 
         // Filter by department_id
         $transactions->when($department_id, function ($query) use ($request) {
-            return $query->where('department_id', $request->department_id);
+            return $query->where('transaction.department_id', $request->department_id);
         });
 
         // Filter by building_id
         $transactions->when($building_id, function ($query) use ($request) {
-            return $query->where('building_id', $request->building_id);
+            return $query->where('device.building_id', $request->building_id);
         });
 
         // Filter by zona_id
         $transactions->when($zona_id, function ($query) use ($request) {
-            return $query->where('zona_id', $request->zona_id);
+            return $query->where('device.zona_id', $request->zona_id);
         });
 
         // Filter by line_id
         $transactions->when($line_id, function ($query) use ($request) {
-            return $query->where('line_id', $request->line_id);
+            return $query->where('device.line_id', $request->line_id);
         });
 
         // Filter by process_id
         $transactions->when($process_id, function ($query) use ($request) {
-            return $query->where('process_id', $request->process_id);
+            return $query->where('device.process_id', $request->process_id);
         });
 
         // Filter by status
@@ -283,7 +295,7 @@ class TransactionController extends Controller
             });
         }
 
-        $transactions = $transactions->get();
+        $transactions = $transactions->paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -362,10 +374,13 @@ class TransactionController extends Controller
         return view('transaction.standby');
     }
 
-    public function sendEvent($zona_id)
+    public function sendEvent($data)
     {
+        $zona_id = (int)$data[0];
+        $transaction_id = (int)$data[1];
         $status = ['Call', 'Response', 'Pending', 'Closed'];
         $statusZona = [];
+        $transaction = Transaction::findOrFail($transaction_id);
 
         foreach ($status as $item) {
             $count = Transaction::query()
@@ -382,6 +397,12 @@ class TransactionController extends Controller
             'ok',
             $zona_id,
             $statusZona,
+            $transaction->department->name,
+            $transaction->device->zona->name,
+            $transaction->device->line->name,
+            $transaction->status,
+            auth()->user()->name,
+            asset('storage/' . auth()->user()->photo),
         ];
 
         Event::dispatch(new RealtimeEvent($data));

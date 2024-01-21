@@ -26,227 +26,222 @@
                 <table class="table align-items-center mb-0">
                     <thead>
                         <tr>
-                            <th
-                                class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
+                            <th class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
                                 NO
                             </th>
-                            <th
-                                class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
+                            <th class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
                                 LINE
                             </th>
-                            <th
-                                class="text-center text-uppercase text-dark text-large font-weight-bolder opacity-7">
+                            <th class="text-center text-uppercase text-dark text-large font-weight-bolder opacity-7">
                                 ZONE
                             </th>
                             <th
                                 class="text-center text-uppercase text-dark text-large font-weight-bolder opacity-7 text-wrap">
                                 CALL
                             </th>
-                            <th
-                                class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
+                            <th class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
                                 STATE
                             </th>
-                            <th
-                                class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
+                            <th class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
                                 TIME
                             </th>
                         </tr>
                     </thead>
                     <tbody style="background-color: black">
-                            <tr class="flashing-card-machine">
-                                <td class="align-middle text-center">
-                                    <span class="text-large white font-weight-bold">
-                                        1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        LS 1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        ZONE 2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        MACHINE
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        CALLING
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class="text-large white mb-0 font-weight-bold">
-                                        08:00:00
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr class="flashing-card-quality">
-                                <td class="align-middle text-center">
-                                    <span class="text-large white font-weight-bold">
-                                        2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        LS 1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        ZONE 2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        QUALITY
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        CALLING
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class="text-large white mb-0 font-weight-bold">
-                                        08:00:00
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr class="">
-                                <td class="align-middle text-center">
-                                    <span class="text-large white font-weight-bold">
-                                        2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        LS 1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        ZONE 2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        QUALITY
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        DONE
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class="text-large white mb-0 font-weight-bold">
-                                        08:00:00
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr class="flashing-card-material">
-                                <td class="align-middle text-center">
-                                    <span class="text-large white font-weight-bold">
-                                        2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        LS 1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        ZONE 2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        MATERIAL
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        CALLING
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class="text-large white mb-0 font-weight-bold">
-                                        08:00:00
-                                    </span>
-                                </td>
-                            </tr>
-                            <tr class="">
-                                <td class="align-middle text-center">
-                                    <span class="text-large white font-weight-bold">
-                                        2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        LS 1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        ZONE 2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        SPV
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        DONE
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class="text-large white mb-0 font-weight-bold">
-                                        08:00:00
-                                    </span>
-                                </td>
-                            </tr>
-                                </td>
-                            </tr>
-                            <tr class="flashing-card-spv">
-                                <td class="align-middle text-center">
-                                    <span class="text-large white font-weight-bold">
-                                        2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        LS 1
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        ZONE 2
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        SPV
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class=" text-large white font-weight-bold">
-                                        CALLING
-                                    </span>
-                                </td>
-                                <td class="align-middle text-center">
-                                    <span class="text-large white mb-0 font-weight-bold">
-                                        08:00:00
-                                    </span>
-                                </td>
-                            </tr>
+                        <tr class="flashing-card-machine">
+                            <td class="align-middle text-center">
+                                <span class="text-large white font-weight-bold">
+                                    1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    LS 1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    ZONE 2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    MACHINE
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    CALLING
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-large white mb-0 font-weight-bold">
+                                    08:00:00
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="flashing-card-quality">
+                            <td class="align-middle text-center">
+                                <span class="text-large white font-weight-bold">
+                                    2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    LS 1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    ZONE 2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    QUALITY
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    CALLING
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-large white mb-0 font-weight-bold">
+                                    08:00:00
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td class="align-middle text-center">
+                                <span class="text-large white font-weight-bold">
+                                    2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    LS 1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    ZONE 2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    QUALITY
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    DONE
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-large white mb-0 font-weight-bold">
+                                    08:00:00
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="flashing-card-material">
+                            <td class="align-middle text-center">
+                                <span class="text-large white font-weight-bold">
+                                    2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    LS 1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    ZONE 2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    MATERIAL
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    CALLING
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-large white mb-0 font-weight-bold">
+                                    08:00:00
+                                </span>
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td class="align-middle text-center">
+                                <span class="text-large white font-weight-bold">
+                                    2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    LS 1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    ZONE 2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    SPV
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    DONE
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-large white mb-0 font-weight-bold">
+                                    08:00:00
+                                </span>
+                            </td>
+                        </tr>
+                        </td>
+                        </tr>
+                        <tr class="flashing-card-spv">
+                            <td class="align-middle text-center">
+                                <span class="text-large white font-weight-bold">
+                                    2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    LS 1
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    ZONE 2
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    SPV
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class=" text-large white font-weight-bold">
+                                    CALLING
+                                </span>
+                            </td>
+                            <td class="align-middle text-center">
+                                <span class="text-large white mb-0 font-weight-bold">
+                                    08:00:00
+                                </span>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
