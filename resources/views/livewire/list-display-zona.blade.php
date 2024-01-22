@@ -69,10 +69,11 @@
                         </tr>
                     @endforeach
                     @if ($transactions->count() == 0)
-                        <tr class="">
+                        <tr class="bg-success">
                             <td colspan="6">
-                                <p class="text-white text-large text-center">
-                                    No data found!
+                                <p
+                                    class="text-white text-large fw-bolder text-center text-uppercase align-items-center">
+                                    Everything is good in {{ $zona->name }}!
                                 </p>
                             </td>
                         </tr>

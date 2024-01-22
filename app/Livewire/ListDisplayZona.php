@@ -31,6 +31,7 @@ class ListDisplayZona extends Component
                         ->select('transaction.*')
                         ->where('device.zona_id', $zona_id)
                         ->whereDay('transaction.call_at', $today)
+                        ->whereNot('status', 'Closed')
                         // ->orderBy('status', 'ASC')
                         ->orderBy('call_at', 'DESC')
                         ->paginate(5);

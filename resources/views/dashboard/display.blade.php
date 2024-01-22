@@ -23,7 +23,7 @@
         </div>
 
         {{-- TRIGGER DIHAPUS AJA NANTI --}}
-        <div class="container-fluid" hidden>
+        <div class="container-fluid">
             <div class="col-xl-12 d-flex justify-content-center align-item-center">
                 <button type="button" id="buttonModalCall" class="btn btn-success m-2" data-toggle="modal"
                     data-target="#modalCall">Button
@@ -139,9 +139,15 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-xl-6 content-modal-img">
-                                    <div class="modal-content-custom">
-                                        <img class="img-modals" src="{{ asset('assets/img/user.jpeg') }}"
-                                            alt="">
+                                    <div class="row">
+                                        <div class="modal-content-custom">
+                                            <img class="img-modals" src="{{ asset('assets/img/user.jpeg') }}"
+                                                alt="">
+                                        </div>
+                                        <div class="modal-content-custom mt-4">
+                                            <h2 class="text-white fw-bolder text-center text-uppercase">Tio Muhamad Nur
+                                            </h2>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="col-xl-6 content-modal-grid">
