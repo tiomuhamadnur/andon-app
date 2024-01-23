@@ -1,17 +1,15 @@
         @if (session('notify'))
             <script>
                 $(document).ready(function() {
-                    var modal = document.getElementById('successToast');
-                    modal.classList.remove('hide');
-                    modal.classList.add('show');
+                    var buttonSuccess = document.getElementById('buttonSuccess');
+                    buttonSuccess.click();
                 })
             </script>
         @elseif (session('notifyerror'))
             <script>
                 $(document).ready(function() {
-                    var modal = document.getElementById('dangerToast');
-                    modal.classList.remove('hide');
-                    modal.classList.add('show');
+                    var buttonError = document.getElementById('buttonError');
+                    buttonError.click();
                 })
             </script>
         @endif
@@ -46,5 +44,16 @@
                 <div class="toast-body">
                     {{ session('notifyerror') ?? '-' }}
                 </div>
+            </div>
+        </div>
+
+        <div class="row" hidden>
+            <div class="col-lg-3 col-sm-6 col-12">
+                <button id="buttonSuccess" class="btn bg-gradient-success w-100 mb-0 toast-btn" type="button"
+                    data-target="successToast">Success</button>
+            </div>
+            <div class="col-lg-3 col-sm-6 col-12 mt-lg-0 mt-2">
+                <button id="buttonError" class="btn bg-gradient-danger w-100 mb-0 toast-btn" type="button"
+                    data-target="dangerToast">Danger</button>
             </div>
         </div>

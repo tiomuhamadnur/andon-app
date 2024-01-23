@@ -86,9 +86,9 @@ Route::group(['middleware' => 'auth'], function () {
 	// Route::get('virtual-reality', function () {
 	// 	return view('pages.virtual-reality');
 	// })->name('virtual-reality');
-	// Route::get('notifications', function () {
-	// 	return view('pages.notifications');
-	// })->name('notifications');
+	Route::get('notifications', function () {
+		return view('pages.notifications');
+	})->name('notifications');
 	// Route::get('static-sign-in', function () {
 	// 	return view('pages.static-sign-in');
 	// })->name('static-sign-in');
@@ -103,6 +103,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::controller(TransactionController::class)->group(function () {
         Route::get('transaction', 'index')->name('transaction.index');
+        Route::post('transaction/search', 'search')->name('transaction.search');
         Route::get('transaction-standby', 'standby')->name('transaction.standby');
         Route::get('transaction-call', 'status_call')->name('transaction.status.call');
         Route::get('transaction-response', 'status_response')->name('transaction.status.response');

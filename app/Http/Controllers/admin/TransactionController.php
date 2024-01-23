@@ -5,12 +5,14 @@ namespace App\Http\Controllers\admin;
 use App\Events\RealtimeEvent;
 use App\Exports\TransactionExportExcel;
 use App\Exports\TransactionFilterExport;
+use App\Helpers\WhatsAppHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Building;
 use App\Models\Department;
 use App\Models\Device;
 use App\Models\Equipment;
 use App\Models\Line;
+use App\Models\Pegawai;
 use App\Models\Process;
 use App\Models\Transaction;
 use App\Models\Zona;
@@ -26,6 +28,59 @@ class TransactionController extends Controller
     public function index()
     {
         $transactions = Transaction::orderBy('call_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
+
+        foreach ($transactions as $transaction) {
+            $call_at = $transaction->call_at;
+            $response_at = $transaction->response_at ?? $call_at;
+            $closed_at = $transaction->closed_at;
+
+            $call_at_carbon = Carbon::parse($call_at);
+            $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
+            $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
+
+            if ($response_at_carbon) {
+                $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);
+
+                $performace_duration = $closed_at_carbon ? $closed_at_carbon->diffInMinutes($response_at_carbon) : 0;
+
+                $total_duration = $closed_at_carbon ? $call_at_carbon->diffInMinutes($closed_at_carbon) : 0;
+
+                $transaction->response_duration = $response_duration;
+                $transaction->performance_duration = $performace_duration;
+                $transaction->total_duration = $total_duration;
+            } else {
+                $transaction->response_duration = 0;
+                $transaction->performance_duration = 0;
+                $transaction->total_duration = 0;
+            }
+        }
+
+
+        $device = Device::all();
+        $department = Department::all();
+        $building = Building::all();
+        $zona = Zona::all();
+        $line = Line::all();
+        $process = Process::all();
+
+        return view('transaction.transaction', compact([
+            'transactions',
+            'device',
+            'department',
+            'building',
+            'zona',
+            'line',
+            'process',
+        ]));
+    }
+
+    public function search(Request $request)
+    {
+        $ticket_number = $request->ticket_number;
+        $transactions = Transaction::where('ticket_number', $ticket_number)->paginate(50);
+        if($transactions->count() == 0){
+            return back()->withNotifyerror('Data not found!');
+        }
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -144,7 +199,7 @@ class TransactionController extends Controller
         $randomNumber = rand(1000, 9999);
         $ticketNumber = $timestamp . $randomNumber;
 
-        $transaction = Transaction::create([
+        Transaction::create([
             'ticket_number' => $ticketNumber,
             'device_id' => $request->device_id,
             'department_id' => $request->department_id,
@@ -152,12 +207,41 @@ class TransactionController extends Controller
             'status' => 'Call',
         ]);
 
+        $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
+
         $zona_id = $device->zona->id;
         $transaction_id = $transaction->id;
 
         $data = [$zona_id, $transaction_id];
 
         $this->sendEvent($data);
+
+
+        $department_id = $transaction->department_id;
+        $building_id = $transaction->device->building->id;
+
+        $users = Pegawai::where('department_id', $department_id)
+                        ->where('building_id', $building_id)
+                        ->get();
+
+        foreach($users as $user)
+        {
+            $data = [
+                $user->gender,
+                $user->name,
+                $user->department->name,
+                Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                Carbon::parse($transaction->call_at)->format("H:m:s"),
+                $transaction->device->building->name,
+                $transaction->device->line->name,
+                $transaction->device->zona->name,
+                $transaction->device->process->name,
+                route('transaction.detail.response', Crypt::encryptString($transaction_id))
+            ];
+
+            $message = $this->formatMessage($data);
+            WhatsAppHelper::sendNotification($user->phone, $message);
+        }
 
         return redirect()->route('transaction.index')->withNotify('Data saved successfully');
     }
@@ -406,5 +490,57 @@ class TransactionController extends Controller
         ];
 
         Event::dispatch(new RealtimeEvent($data));
+    }
+
+    public function formatMessage(array $data)
+    {
+        $enter = "\n";
+        $div = '=============================';
+
+        $mode = "*CALLING*";
+        $gender = $data[0];
+        $name = $data[1];
+        $department = strtoupper($data[2]);
+        $date = $data[3];
+        $time = $data[4];
+        $building = $data[5];
+        $line = $data[6];
+        $zone = $data[7];
+        $process = $data[8];
+        $url = $data[9];
+
+        $message = '🔴 *ANDON NOTIFICATION:* ' . $mode . $enter . $enter . $enter .
+        'Dear ' . $gender .' *' . $name . '*,' . $enter . $enter.
+        'Sebagai informasi, terdapat ' . $mode . ' untuk tim ' . $department . ' yang perlu ditindaklanjuti dengan detail informasi sebagai berikut:' . $enter . $enter .
+
+        $div . $enter . $enter .
+
+        '*Tanggal :*' . $enter.
+        $date . $enter . $enter .
+
+        '*Pukul :*' . $enter .
+        $time . $enter . $enter .
+
+        '*Building :*' . $enter .
+        $building . $enter . $enter .
+
+        '*Line :*' . $enter .
+        $line . $enter . $enter .
+
+        '*Zone :*' . $enter .
+        $zone . $enter . $enter .
+
+        '*Process :*' . $enter .
+        $process . $enter . $enter .
+
+        '*URL :*' . $enter .
+        $url . $enter . $enter .
+        $div . $enter . $enter .
+
+        '_Regards,_' . $enter . $enter .
+        '*ExoBOT*' .
+        $enter . $enter . $enter . $enter;
+
+        return $message;
     }
 }
