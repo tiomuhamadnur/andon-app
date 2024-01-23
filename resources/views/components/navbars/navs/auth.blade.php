@@ -16,7 +16,7 @@
                     @csrf
                     @method('POST')
                     <div class="input-group input-group-outline">
-                        <label class="form-label">search ticket number</label>
+                        <label class="form-label">ticket number</label>
                         <input type="text" name="ticket_number" class="form-control" autocomplete="off">
                     </div>
                 </form>
