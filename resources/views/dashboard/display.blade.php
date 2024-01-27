@@ -90,7 +90,7 @@
                     <div class="row">
                         <div class="container-fluid">
                             <div class="row">
-                                <div class="col-xl-12 title-modal-machine flashing-card-machine">
+                                <div class="col-xl-12 title-name title-modal-machine flashing-card-machine">
                                     <div class="modal-header-custom">
                                         <h1>MATERIAL CALL</h1>
                                     </div>

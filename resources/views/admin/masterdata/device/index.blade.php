@@ -45,19 +45,23 @@
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
-                                                PROCESS
-                                            </th>
-                                            <th
-                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
                                                 BUILDING
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
-                                                ZONA
+                                                LINE
                                             </th>
                                             <th
                                                 class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
-                                                LINE
+                                                SECTION
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
+                                                ZONE
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-secondary text-center font-weight-bolder opacity-7">
+                                                PROCESS
                                             </th>
                                             <th class="text-uppercase text-secondary text-center opacity-7">
                                                 ACTION
@@ -93,14 +97,21 @@
                                                 <td class="align-middle text-center text-sm">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm text-center">
-                                                            {{ $item->process->name ?? '-' }}
+                                                            {{ $item->building->name ?? '-' }}
                                                         </h6>
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center text-sm">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm text-center">
-                                                            {{ $item->building->name ?? '-' }}
+                                                            {{ $item->line->name ?? '-' }}
+                                                        </h6>
+                                                    </div>
+                                                </td>
+                                                <td class="align-middle text-center text-sm">
+                                                    <div class="d-flex flex-column justify-content-center">
+                                                        <h6 class="mb-0 text-sm text-center">
+                                                            {{ $item->section->name ?? '-' }}
                                                         </h6>
                                                     </div>
                                                 </td>
@@ -114,7 +125,7 @@
                                                 <td class="align-middle text-center text-sm">
                                                     <div class="d-flex flex-column justify-content-center">
                                                         <h6 class="mb-0 text-sm text-center">
-                                                            {{ $item->line->name ?? '-' }}
+                                                            {{ $item->process->name ?? '-' }}
                                                         </h6>
                                                     </div>
                                                 </td>

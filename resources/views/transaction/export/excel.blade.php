@@ -30,10 +30,13 @@
                         BUILDING
                     </th>
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                        ZONA
+                        LINE
                     </th>
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                        LINE
+                        SECTION
+                    </th>
+                    <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                        ZONE
                     </th>
                     <th class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                         PROCESS
@@ -107,12 +110,17 @@
                         </td>
                         <td class="align-middle text-center">
                             <span class="text-secondary text-xs font-weight-bold">
-                                {{ $item->device->zona->name ?? '-' }}
+                                {{ $item->device->line->name ?? '-' }}
                             </span>
                         </td>
                         <td class="align-middle text-center">
                             <p class="text-xs text-secondary mb-0 font-weight-bold">
-                                {{ $item->device->line->name ?? '-' }}
+                                {{ $item->device->section->name ?? '-' }}
+                            </p>
+                        </td>
+                        <td class="align-middle text-center">
+                            <p class="text-xs text-secondary mb-0 font-weight-bold">
+                                {{ $item->device->zona->name ?? '-' }}
                             </p>
                         </td>
                         <td class="align-middle text-center">

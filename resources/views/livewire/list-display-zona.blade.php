@@ -8,7 +8,7 @@
                             NO
                         </th>
                         <th class="text-uppercase text-center text-dark text-large font-weight-bolder opacity-7">
-                            LINE
+                            ZONE
                         </th>
                         <th class="text-center text-uppercase text-dark text-large font-weight-bolder opacity-7">
                             PROCESS
@@ -43,7 +43,7 @@
                             </td>
                             <td class="align-middle text-center">
                                 <span class="text-uppercase text-large white font-weight-bold">
-                                    {{ $item->device->line->name ?? '-' }}
+                                    {{ $item->device->zona->name ?? '-' }}
                                 </span>
                             </td>
                             <td class="text-uppercase align-middle text-center">
@@ -63,7 +63,17 @@
                             </td>
                             <td class="text-uppercase align-middle text-center">
                                 <span class="text-large white mb-0 font-weight-bold">
-                                    {{ \Carbon\Carbon::parse($item->call_at)->format('H:i:s') }}
+                                    @if ($item->status == 'Call')
+                                        {{ \Carbon\Carbon::parse($item->call_at)->format('H:i:s') }}
+                                    @elseif ($item->status == 'Response')
+                                        {{ \Carbon\Carbon::parse($item->response_at)->format('H:i:s') }}
+                                    @elseif ($item->status == 'Pending')
+                                        {{ \Carbon\Carbon::parse($item->response_at)->format('H:i:s') }}
+                                    @elseif ($item->status == 'Closed')
+                                        {{ \Carbon\Carbon::parse($item->closed_at)->format('H:i:s') }}
+                                    @else
+                                        {{ \Carbon\Carbon::parse($item->call_at)->format('H:i:s') }}
+                                    @endif
                                 </span>
                             </td>
                         </tr>
@@ -73,7 +83,7 @@
                             <td colspan="6">
                                 <p
                                     class="text-white text-large fw-bolder text-center text-uppercase align-items-center">
-                                    Everything is good in {{ $zona->name }}!
+                                    Everything is good!
                                 </p>
                             </td>
                         </tr>

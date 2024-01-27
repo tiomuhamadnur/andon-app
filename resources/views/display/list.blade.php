@@ -1,24 +1,25 @@
 <x-layout bodyClass="g-sidenav-show bg-dark">
     @section('title')
-        <title>Display {{ $zona->name ?? '' }}</title>
+        <title>Display {{ $line->name ?? '' }}</title>
         @livewireStyles
     @endsection
     <main class="main-content position-relative max-height-vh-100 h-100 mt-4">
         <div class="container-fluid fluid-head">
             <div class="col-xl-12 header-zone-display">
                 <div class="header-caption">
-                    <h1 class="text-uppercase">
-                        {{ $zona->name ?? '-' }}
+                    <h1>
+                        <div class="clock text-wrap">
+                            <span id="date" class="date-time text-wrap"></span>
+                        </div>
                     </h1>
                 </div>
                 <div class="header-caption">
-                    <h1>ANDON STATUS DASHBOARD</h1>
+                    <h1>ANDON STATUS - <span class="text-uppercase text-warning">{{ $line->name ?? '-' }}</span></h1>
                 </div>
                 <div class="header-caption">
                     <h1>
-                        <div class="clock">
-                            <span class="clock-time"></span>
-                            <span class="clock-ampm"></span>
+                        <div class="clock text-wrap">
+                            <span id="clock" class="clock-time text-wrap"></span>
                         </div>
                     </h1>
                 </div>
@@ -27,149 +28,8 @@
 
         @livewire('list-display-zona')
 
-        {{-- MODAL CALL --}}
-        <div class="modal fade" id="modalCall" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xlarge" role="document">
-                <div class="modal-content black-modal">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xl-12 title-modal-machine flashing-card-machine">
-                                        <div class="modal-header-custom">
-                                            <h1 class="department-name text-uppercase">MATERIAL</h1> <span>
-                                                <h1> CALL!</h1>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="container-fluid">
-                                <div class="row my-auto my-auto">
-                                    <div class="col-xl-6 content-modal">
-                                        <div class="modal-content-custom">
-                                            <h1 class="line-name text-uppercase">LS 1</h1>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 content-modal">
-                                        <div class="modal-content-custom">
-                                            <h1 class="zona-name text-uppercase">ZONE 1</h1>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        @include('display.modals')
 
-        {{-- MODAL ARRIVED --}}
-        <div class="modal fade" id="modalArrived" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xlarge" role="document">
-                <div class="modal-content black-modal">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xl-12 title-modal-machine">
-                                        <div class="modal-header-custom">
-                                            <h2 class="department-name text-uppercase">MACHINE</h2> <span>
-                                                <h2> ARRIVED!</h2>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xl-6 content-modal-img">
-                                        <div class="row">
-                                            <div class="modal-content-custom">
-                                                <img class="img-modals pic-photo"
-                                                    src="{{ asset('assets/img/user.jpeg') }}" alt="PIC">
-                                            </div>
-                                            <div class="modal-content-custom mt-4">
-                                                <h2 class="pic-name text-white fw-bolder text-center text-uppercase">Tio
-                                                    Muhamad
-                                                    Nur
-                                                </h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 content-modal-grid align-items-center justify-content-center">
-                                        <div class="row mb-4">
-                                            <h2 class="line-name text-uppercase my-auto">LS 1</h2>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <h2 class="zona-name text-uppercase my-auto">ZONE 2</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        {{-- MODAL FINISHED --}}
-        <div class="modal fade" id="modalFinished" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-xlarge" role="document">
-                <div class="modal-content black-modal">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xl-12 title-modal-machine">
-                                        <div class="modal-header-custom">
-                                            <h2 class="department-name text-uppercase">MACHINE</h2><span>
-                                                <h2> FINISHED!</h2>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-xl-6 content-modal-img">
-                                        <div class="row">
-                                            <div class="modal-content-custom">
-                                                <img class="img-modals pic-photo"
-                                                    src="{{ asset('assets/img/user.jpeg') }}" alt="PIC">
-                                            </div>
-                                            <div class="modal-content-custom mt-4">
-                                                <h2 class="pic-name text-white fw-bolder text-center text-uppercase">Tio
-                                                    Muhamad
-                                                    Nur
-                                                </h2>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-xl-6 content-modal-grid align-items-center justify-content-center">
-                                        <div class="row mb-4">
-                                            <h2 class="line-name text-uppercase my-auto">LS 1</h2>
-                                        </div>
-                                        <div class="row mt-4">
-                                            <h2 class="zona-name text-uppercase my-auto">ZONE 2</h2>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
         <audio src="{{ asset('assets/tone/ring-tone.mp3') }}" id="audio" hidden>
     </main>
     </div>
@@ -189,49 +49,39 @@
                 audio.currentTime = 0;
             }
 
-            class DigitalClock {
-                constructor(element) {
-                    this.element = element;
-                }
+            function updateClock() {
+                const now = new Date();
 
-                start() {
-                    this.update();
+                const year = now.getFullYear();
+                const month = (now.getMonth() + 1).toString().padStart(2, "0"); // Months are zero-based
+                const day = now.getDate().toString().padStart(2, "0");
+                const hour = now.getHours().toString().padStart(2, "0");
+                const minute = now.getMinutes().toString().padStart(2, "0");
+                const second = now.getSeconds().toString().padStart(2, "0");
 
-                    setInterval(() => {
-                        this.update();
-                    }, 500);
-                }
+                const dateFormatted = `${day}/${month}/${year}`;
+                const timeFormatted = `${hour}:${minute}:${second}`;
 
-                update() {
-                    const parts = this.getTimeParts();
-                    const hourFormatted = parts.hour.toString().padStart(2, "0");
-                    const minuteFormatted = parts.minute.toString().padStart(2, "0");
-                    const secondFormatted = parts.second.toString().padStart(2, "0");
-                    const timeFormatted = `${hourFormatted}:${minuteFormatted}:${secondFormatted}`;
-
-                    this.element.querySelector(".clock-time").textContent = timeFormatted;
-                }
-
-                getTimeParts() {
-                    const now = new Date();
-
-                    return {
-                        hour: now.getHours(),
-                        minute: now.getMinutes(),
-                        second: now.getSeconds(),
-                    };
-                }
+                document.getElementById('date').textContent = dateFormatted;
+                document.getElementById('clock').textContent = timeFormatted;
             }
 
-            const clockElement = document.querySelector(".clock");
-            const clockObject = new DigitalClock(clockElement);
+            // Update the clock every second
+            setInterval(updateClock, 1000);
 
-            clockObject.start();
+            // Initial update
+            updateClock();
 
+            var modalCall = '';
+            var modalResponse = '';
+            var modalClosed = '';
 
-            var modalCall = new bootstrap.Modal(document.getElementById('modalCall'));
-            var modalResponse = new bootstrap.Modal(document.getElementById('modalArrived'));
-            var modalClosed = new bootstrap.Modal(document.getElementById('modalFinished'));
+            function selectModal(departmentName) {
+                var issue = departmentName;
+                modalCall = new bootstrap.Modal(document.getElementById('modalCall' + issue.toString()));
+                modalResponse = new bootstrap.Modal(document.getElementById('modalArrived' + issue.toString()));
+                modalClosed = new bootstrap.Modal(document.getElementById('modalFinished' + issue.toString()));
+            }
 
             // Pusher.logToConsole = true;
 
@@ -273,9 +123,11 @@
                 var zonaName = document.querySelectorAll('.zona-name');
                 var picName = document.querySelectorAll('.pic-name');
                 var picPhoto = document.querySelectorAll('.pic-photo');
+                var currentLineName = '{{ $line->name }}';
 
-                var currentZonaId = parseInt({{ $zona->id }});
-                if (zona_id == currentZonaId) {
+                selectModal(department_name.toString());
+
+                if (line_name == currentLineName) {
                     if (transaction_status == 'Call') {
                         departmentName.forEach(function(element) {
                             element.textContent = department_name;

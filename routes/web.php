@@ -11,6 +11,7 @@ use App\Http\Controllers\admin\LineController;
 use App\Http\Controllers\admin\ProcessController;
 use App\Http\Controllers\admin\RolesController;
 use App\Http\Controllers\admin\SectionController;
+use App\Http\Controllers\admin\SettingsController;
 use App\Http\Controllers\admin\TransactionController;
 use App\Http\Controllers\admin\UserManagementController;
 use App\Http\Controllers\admin\ZonaController;
@@ -86,9 +87,9 @@ Route::group(['middleware' => 'auth'], function () {
 	// Route::get('virtual-reality', function () {
 	// 	return view('pages.virtual-reality');
 	// })->name('virtual-reality');
-	Route::get('notifications', function () {
-		return view('pages.notifications');
-	})->name('notifications');
+	// Route::get('notifications', function () {
+	// 	return view('pages.notifications');
+	// })->name('notifications');
 	// Route::get('static-sign-in', function () {
 	// 	return view('pages.static-sign-in');
 	// })->name('static-sign-in');
@@ -177,5 +178,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::controller(DeviceController::class)->group(function () {
         Route::get('device', 'index')->name('device.index');
         Route::post('device', 'store')->name('device.store');
+    });
+    Route::controller(SettingsController::class)->group(function () {
+        Route::get('settings', 'index')->name('settings.index');
+        Route::put('settings', 'update')->name('settings.update');
     });
 });

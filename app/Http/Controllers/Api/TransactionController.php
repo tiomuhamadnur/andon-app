@@ -4,16 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\RealtimeEvent;
 use App\Events\StatusLiked;
+use App\Helpers\WhatsAppHelper;
 use App\Http\Controllers\Controller;
 use App\Models\Building;
 use App\Models\Department;
 use App\Models\Device;
 use App\Models\Line;
+use App\Models\Pegawai;
 use App\Models\Process;
+use App\Models\Settings;
 use App\Models\Transaction;
 use App\Models\Zona;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 
 class TransactionController extends Controller
@@ -316,12 +320,50 @@ class TransactionController extends Controller
             'status' => 'Call',
         ]);
 
+        $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
+
+        $zona_id = $device->zona->id;
+        $transaction_id = $transaction->id;
+
+        $data = [$zona_id, $transaction_id];
+
+        $this->sendEvent($data);
+
+        $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
+        $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+        if($notifWA == 1)
+        {
+            $department_id = $transaction->department_id;
+            $building_id = $transaction->device->building->id;
+
+            $users = Pegawai::where('department_id', $department_id)
+                            ->where('building_id', $building_id)
+                            ->get();
+
+            foreach($users as $user)
+            {
+                $data = [
+                    $user->gender,
+                    $user->name,
+                    $user->department->name,
+                    Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                    Carbon::parse($transaction->call_at)->format("H:m:s"),
+                    $transaction->device->building->name,
+                    $transaction->device->line->name,
+                    $transaction->device->zona->name,
+                    $transaction->device->process->name,
+                    route('transaction.detail.response', Crypt::encryptString($transaction_id))
+                ];
+
+                $message = $this->formatMessage($data);
+                WhatsAppHelper::sendNotification($user->phone, $message);
+            }
+        }
+
         $data = [
                 'status' => 'ok',
                 'message' => 'data laporan berhasil ditambahkan'
             ];
-
-        $this->sendEvent($device->zona->id);
 
         return response()->json($data, 201);
     }
@@ -384,10 +426,13 @@ class TransactionController extends Controller
         ])->header('Content-Type', 'application/json');
     }
 
-    public function sendEvent($zona_id)
+    public function sendEvent($data)
     {
+        $zona_id = (int)$data[0];
+        $transaction_id = (int)$data[1];
         $status = ['Call', 'Response', 'Pending', 'Closed'];
         $statusZona = [];
+        $transaction = Transaction::findOrFail($transaction_id);
 
         foreach ($status as $item) {
             $count = Transaction::query()
@@ -404,9 +449,67 @@ class TransactionController extends Controller
             'ok',
             $zona_id,
             $statusZona,
+            $transaction->department->name,
+            $transaction->device->zona->name,
+            $transaction->device->line->name,
+            $transaction->status,
+            '',
+            '',
         ];
 
         Event::dispatch(new RealtimeEvent($data));
+    }
+
+    public function formatMessage(array $data)
+    {
+        $enter = "\n";
+        $div = '=============================';
+
+        $mode = "*CALLING*";
+        $gender = $data[0];
+        $name = $data[1];
+        $department = strtoupper($data[2]);
+        $date = $data[3];
+        $time = $data[4];
+        $building = $data[5];
+        $line = $data[6];
+        $zone = $data[7];
+        $process = $data[8];
+        $url = $data[9];
+
+        $message = '🔴 *ANDON NOTIFICATION:* ' . $mode . $enter . $enter . $enter .
+        'Dear ' . $gender .' *' . $name . '*,' . $enter . $enter.
+        'Sebagai informasi, terdapat ' . $mode . ' untuk tim *' . $department . '* yang perlu ditindak lanjuti dengan detail informasi sebagai berikut:' . $enter . $enter .
+
+        $div . $enter . $enter .
+
+        '*Tanggal :*' . $enter.
+        $date . $enter . $enter .
+
+        '*Waktu :*' . $enter .
+        $time . $enter . $enter .
+
+        '*Building :*' . $enter .
+        $building . $enter . $enter .
+
+        '*Line :*' . $enter .
+        $line . $enter . $enter .
+
+        '*Zone :*' . $enter .
+        $zone . $enter . $enter .
+
+        '*Process :*' . $enter .
+        $process . $enter . $enter .
+
+        '*URL :*' . $enter .
+        $url . $enter . $enter .
+        $div . $enter . $enter .
+
+        '_Regards,_' . $enter . $enter .
+        '*ExoBOT*' .
+        $enter . $enter . $enter . $enter;
+
+        return $message;
     }
 
     public function testEvent()

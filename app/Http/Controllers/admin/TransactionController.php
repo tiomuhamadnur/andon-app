@@ -14,6 +14,7 @@ use App\Models\Equipment;
 use App\Models\Line;
 use App\Models\Pegawai;
 use App\Models\Process;
+use App\Models\Settings;
 use App\Models\Transaction;
 use App\Models\Zona;
 use Carbon\Carbon;
@@ -216,31 +217,35 @@ class TransactionController extends Controller
 
         $this->sendEvent($data);
 
-
-        $department_id = $transaction->department_id;
-        $building_id = $transaction->device->building->id;
-
-        $users = Pegawai::where('department_id', $department_id)
-                        ->where('building_id', $building_id)
-                        ->get();
-
-        foreach($users as $user)
+        $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
+        $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+        if($notifWA == 1)
         {
-            $data = [
-                $user->gender,
-                $user->name,
-                $user->department->name,
-                Carbon::parse($transaction->call_at)->format("d-m-Y"),
-                Carbon::parse($transaction->call_at)->format("H:m:s"),
-                $transaction->device->building->name,
-                $transaction->device->line->name,
-                $transaction->device->zona->name,
-                $transaction->device->process->name,
-                route('transaction.detail.response', Crypt::encryptString($transaction_id))
-            ];
+            $department_id = $transaction->department_id;
+            $building_id = $transaction->device->building->id;
 
-            $message = $this->formatMessage($data);
-            WhatsAppHelper::sendNotification($user->phone, $message);
+            $users = Pegawai::where('department_id', $department_id)
+                            ->where('building_id', $building_id)
+                            ->get();
+
+            foreach($users as $user)
+            {
+                $data = [
+                    $user->gender,
+                    $user->name,
+                    $user->department->name,
+                    Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                    Carbon::parse($transaction->call_at)->format("H:m:s"),
+                    $transaction->device->building->name,
+                    $transaction->device->line->name,
+                    $transaction->device->zona->name,
+                    $transaction->device->process->name,
+                    route('transaction.detail.response', Crypt::encryptString($transaction_id))
+                ];
+
+                $message = $this->formatMessage($data);
+                WhatsAppHelper::sendNotification($user->phone, $message);
+            }
         }
 
         return redirect()->route('transaction.index')->withNotify('Data saved successfully');
@@ -511,14 +516,14 @@ class TransactionController extends Controller
 
         $message = '🔴 *ANDON NOTIFICATION:* ' . $mode . $enter . $enter . $enter .
         'Dear ' . $gender .' *' . $name . '*,' . $enter . $enter.
-        'Sebagai informasi, terdapat ' . $mode . ' untuk tim ' . $department . ' yang perlu ditindaklanjuti dengan detail informasi sebagai berikut:' . $enter . $enter .
+        'Sebagai informasi, terdapat ' . $mode . ' untuk tim *' . $department . '* yang perlu ditindak lanjuti dengan detail informasi sebagai berikut:' . $enter . $enter .
 
         $div . $enter . $enter .
 
         '*Tanggal :*' . $enter.
         $date . $enter . $enter .
 
-        '*Pukul :*' . $enter .
+        '*Waktu :*' . $enter .
         $time . $enter . $enter .
 
         '*Building :*' . $enter .

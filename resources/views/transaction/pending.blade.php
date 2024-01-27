@@ -45,7 +45,11 @@
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                                                ZONA
+                                                SECTION
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ZONE
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
@@ -96,6 +100,11 @@
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->device->line->name ?? '-' }}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $item->device->section->name ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center">

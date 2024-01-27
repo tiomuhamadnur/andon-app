@@ -24,12 +24,12 @@
                                 <form action="{{ route('display.show') }}" method="GET" target="_blank">
                                     @csrf
                                     <div class="mb-3">
-                                        <label class="form-label">Display by Zona</label>
+                                        <label class="form-label">Display by Line</label>
                                         <div class="input-group mb-3">
                                             <select name="id" class="form-control border border-2 p-2" required>
-                                                <option value="" selected disabled>- select zona -
+                                                <option value="" selected disabled>- select line -
                                                 </option>
-                                                @foreach ($zona as $item)
+                                                @foreach ($line as $item)
                                                     <option value="{{ Crypt::encryptString($item->id) }}">
                                                         {{ $item->name }}</option>
                                                 @endforeach

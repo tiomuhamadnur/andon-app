@@ -58,7 +58,11 @@
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                                                ZONA
+                                                SECTION
+                                            </th>
+                                            <th
+                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                ZONE
                                             </th>
                                             <th
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
@@ -126,6 +130,11 @@
                                                 <td class="align-middle text-center">
                                                     <span class="text-secondary text-xs font-weight-bold">
                                                         {{ $item->device->line->name ?? '-' }}
+                                                    </span>
+                                                </td>
+                                                <td class="align-middle text-center">
+                                                    <span class="text-secondary text-xs font-weight-bold">
+                                                        {{ $item->device->section->name ?? '-' }}
                                                     </span>
                                                 </td>
                                                 <td class="align-middle text-center">
@@ -221,19 +230,19 @@
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Zona</label>
-                                            <select name="zona_id" class="form-control border border-2 p-2">
-                                                <option value="" selected disabled>- select zona -</option>
-                                                @foreach ($zona as $item)
+                                            <label class="form-label">Line</label>
+                                            <select name="line_id" class="form-control border border-2 p-2">
+                                                <option value="" selected disabled>- select line -</option>
+                                                @foreach ($line as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Line</label>
-                                            <select name="line_id" class="form-control border border-2 p-2">
-                                                <option value="" selected disabled>- select line -</option>
-                                                @foreach ($line as $item)
+                                            <label class="form-label">Zone</label>
+                                            <select name="zona_id" class="form-control border border-2 p-2">
+                                                <option value="" selected disabled>- select zone -</option>
+                                                @foreach ($zona as $item)
                                                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                                                 @endforeach
                                             </select>
