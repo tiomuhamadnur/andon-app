@@ -130,17 +130,12 @@
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <a rel="tooltip" class="btn btn-success btn-link" href=""
-                                                        data-original-title="" title="">
+                                                    <a rel="tooltip" class="btn btn-success btn-link"
+                                                        href="{{ route('device.edit', Crypt::encryptString($item->id)) }}"
+                                                        data-original-title="" title="edit">
                                                         <i class="material-icons">edit</i>
                                                         <div class="ripple-container"></div>
                                                     </a>
-
-                                                    <button type="button" class="btn btn-danger btn-link"
-                                                        data-original-title="" title="">
-                                                        <i class="material-icons">close</i>
-                                                        <div class="ripple-container"></div>
-                                                    </button>
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -185,19 +180,28 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Zona</label>
-                                        <select name="zona_id" class="form-select border border-2 p-2" required>
-                                            <option value="" selected disabled>- select zona -</option>
-                                            @foreach ($zona as $item)
+                                        <label for="exampleFormControlInput1" class="form-label">Line</label>
+                                        <select name="line_id" class="form-select border border-2 p-2" required>
+                                            <option value="" selected disabled>- select line -</option>
+                                            @foreach ($line as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">Line</label>
-                                        <select name="line_id" class="form-select border border-2 p-2" required>
-                                            <option value="" selected disabled>- select line -</option>
-                                            @foreach ($line as $item)
+                                        <label for="exampleFormControlInput1" class="form-label">Section</label>
+                                        <select name="section_id" class="form-select border border-2 p-2" required>
+                                            <option value="" selected disabled>- select section -</option>
+                                            @foreach ($section as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Zone</label>
+                                        <select name="zona_id" class="form-select border border-2 p-2" required>
+                                            <option value="" selected disabled>- select zone -</option>
+                                            @foreach ($zona as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>

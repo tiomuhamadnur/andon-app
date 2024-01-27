@@ -178,6 +178,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::controller(DeviceController::class)->group(function () {
         Route::get('device', 'index')->name('device.index');
         Route::post('device', 'store')->name('device.store');
+        Route::get('device/{id}/edit', 'edit')->name('device.edit');
+        Route::put('device', 'update')->name('device.update');
     });
     Route::controller(SettingsController::class)->group(function () {
         Route::get('settings', 'index')->name('settings.index');
