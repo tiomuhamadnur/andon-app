@@ -167,6 +167,8 @@
 
                         setTimeout(function() {
                             modalCall.hide();
+                            modalResponse.hide();
+                            modalClosed.hide();
                             pauseAudio();
                         }, 20000);
                     } else if (transaction_status == 'Response') {
@@ -188,11 +190,12 @@
 
                         getAudio(transaction_status, department_name);
 
-                        modalCall.hide();
                         modalResponse.show();
 
                         setTimeout(function() {
+                            modalCall.hide();
                             modalResponse.hide();
+                            modalClosed.hide();
                             pauseAudio();
                         }, 15000);
                     } else if (transaction_status == 'Closed') {
@@ -214,10 +217,11 @@
 
                         getAudio(transaction_status, department_name);
 
-                        modalResponse.hide();
                         modalClosed.show();
 
                         setTimeout(function() {
+                            modalCall.hide();
+                            modalResponse.hide();
                             modalClosed.hide();
                             pauseAudio();
                         }, 15000);
