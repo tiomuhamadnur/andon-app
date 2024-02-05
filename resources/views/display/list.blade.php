@@ -163,15 +163,12 @@
 
                         getAudio(transaction_status, department_name);
 
-                        modalResponse.hide();
-                        modalClosed.hide();
                         modalCall.show();
 
                         setTimeout(function() {
                             modalCall.hide();
-                            modalResponse.hide();
-                            modalClosed.hide();
                             pauseAudio();
+                            location.reload();
                         }, 20000);
                     } else if (transaction_status == 'Response') {
                         departmentName.forEach(function(element) {
@@ -193,14 +190,12 @@
                         getAudio(transaction_status, department_name);
 
                         modalCall.hide();
-                        modalClosed.hide();
                         modalResponse.show();
 
                         setTimeout(function() {
-                            modalCall.hide();
                             modalResponse.hide();
-                            modalClosed.hide();
                             pauseAudio();
+                            location.reload();
                         }, 15000);
                     } else if (transaction_status == 'Closed') {
                         departmentName.forEach(function(element) {
@@ -221,15 +216,14 @@
 
                         getAudio(transaction_status, department_name);
 
-                        modalCall.hide();
                         modalResponse.hide();
                         modalClosed.show();
 
+
                         setTimeout(function() {
-                            modalCall.hide();
-                            modalResponse.hide();
                             modalClosed.hide();
                             pauseAudio();
+                            location.reload();
                         }, 15000);
                     }
                 }
