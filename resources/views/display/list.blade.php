@@ -163,6 +163,8 @@
 
                         getAudio(transaction_status, department_name);
 
+                        modalResponse.hide();
+                        modalClosed.hide();
                         modalCall.show();
 
                         setTimeout(function() {
@@ -190,6 +192,8 @@
 
                         getAudio(transaction_status, department_name);
 
+                        modalCall.hide();
+                        modalClosed.hide();
                         modalResponse.show();
 
                         setTimeout(function() {
@@ -217,6 +221,8 @@
 
                         getAudio(transaction_status, department_name);
 
+                        modalCall.hide();
+                        modalResponse.hide();
                         modalClosed.show();
 
                         setTimeout(function() {
