@@ -16,8 +16,8 @@
 
 
         <div class="position-fixed top-1 end-1 z-index-2">
-            <div class="toast fade hide p-2 bg-white" role="alert" aria-live="assertive" id="successToast"
-                aria-atomic="true">
+            <div class="toast fade hide p-2 bg-white border-3 border-success" role="alert" aria-live="assertive"
+                id="successToast" aria-atomic="true">
                 <div class="toast-header border-0">
                     <i class="material-icons text-success me-2">
                         check
@@ -31,8 +31,8 @@
                 </div>
             </div>
 
-            <div class="toast fade hide p-2 mt-2 bg-white" role="alert" aria-live="assertive" id="dangerToast"
-                aria-atomic="true">
+            <div class="toast fade hide p-2 mt-2 bg-white border-3 border-danger" role="alert" aria-live="assertive"
+                id="dangerToast" aria-atomic="true">
                 <div class="toast-header border-0">
                     <i class="material-icons text-danger me-2">
                         campaign

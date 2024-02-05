@@ -16,9 +16,6 @@ class SectionController extends Controller
         return view('admin.masterdata.section.index', compact(['section', 'department']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
@@ -34,35 +31,36 @@ class SectionController extends Controller
         return redirect()->route('section.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
-        //
+        $section = Section::findOrFail($id);
+        $department = Department::all();
+
+        return view('admin.masterdata.section.update', compact(['section', 'department']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $section = Section::findOrFail($id);
+        $section->update([
+            'name' => $request->name,
+            'code' => $request->code,
+            'department_id' => $request->department_id,
+        ]);
+        return redirect()->route('section.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $section = Section::findOrFail($id);
+        $section->delete();
+        return redirect()->route('section.index')->withNotify('Data deleted successfully');
     }
 }

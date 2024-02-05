@@ -14,17 +14,11 @@ class JabatanController extends Controller
         return view('admin.masterdata.jabatan.index', compact(['jabatan']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         Jabatan::create([
@@ -34,35 +28,32 @@ class JabatanController extends Controller
         return redirect()->route('jabatan.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $jabatan = Jabatan::findOrFail($id);
+        $jabatan->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+        return redirect()->route('jabatan.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $jabatan = Jabatan::findOrFail($id);
+        $jabatan->delete();
+        return redirect()->route('jabatan.index')->withNotify('Data deleted successfully');
     }
 }

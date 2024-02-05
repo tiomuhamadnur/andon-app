@@ -189,7 +189,7 @@ class TransactionController extends Controller
 
         $cek = Transaction::where('device_id', $device->id)
                             ->where('department_id', $department->id)
-                            ->whereIn('status', ['Call', 'Pending'])
+                            ->whereIn('status', ['Call', 'Pending', 'Response'])
                             ->count();
 
         if($cek > 0){

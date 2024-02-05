@@ -297,7 +297,7 @@ class TransactionController extends Controller
         }
         $cek = Transaction::where('device_id', $device->id)
                             ->where('department_id', $department->id)
-                            ->whereIn('status', ['Call', 'Pending'])
+                            ->whereIn('status', ['Call', 'Pending', 'Response'])
                             ->count();
 
         if($cek > 0){
@@ -399,27 +399,14 @@ class TransactionController extends Controller
     public function check_initial(Request $request)
     {
         $zona_id = $request->zona_id;
-        $status = ['Call', 'Response', 'Pending', 'Closed'];
-        $statusZona = [];
 
-        foreach ($status as $item) {
-            $count = Transaction::query()
-                ->select('device.zona_id as zona_id', 'transaction.status as status')
-                ->join('device', 'device.id', '=', 'transaction.device_id')
-                ->where('zona_id', $zona_id)
-                ->where('status', $item)
-                ->count();
-
-            $statusZona[] = $count;
-        }
 
         $data = [
-            'ok',
             $zona_id,
-            $statusZona,
+            '',
         ];
 
-        Event::dispatch(new RealtimeEvent($data));
+        $this->sendEvent($data);
 
         return response()->json([
             'status' => 'ok',
@@ -433,7 +420,7 @@ class TransactionController extends Controller
         $transaction_id = (int)$data[1];
         $status = ['Call', 'Response', 'Pending', 'Closed'];
         $statusZona = [];
-        $transaction = Transaction::findOrFail($transaction_id);
+        $transaction = Transaction::find($transaction_id);
 
         foreach ($status as $item) {
             $count = Transaction::query()
@@ -450,10 +437,10 @@ class TransactionController extends Controller
             'ok',
             $zona_id,
             $statusZona,
-            $transaction->department->name,
-            $transaction->device->zona->name,
-            $transaction->device->line->name,
-            $transaction->status,
+            $transaction->department->name ?? '',
+            $transaction->device->zona->name ?? '',
+            $transaction->device->line->name ?? '',
+            $transaction->status ?? '',
             '',
             '',
         ];

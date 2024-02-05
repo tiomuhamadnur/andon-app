@@ -14,17 +14,11 @@ class BuildingController extends Controller
         return view('admin.masterdata.building.index', compact(['building']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         Building::create([
@@ -35,35 +29,32 @@ class BuildingController extends Controller
         return redirect()->route('building.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $building = Building::findOrFail($id);
+        $building->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+        return redirect()->route('building.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $building = Building::findOrFail($id);
+        $building->delete();
+        return redirect()->route('building.index')->withNotify('Data deleted successfully');
     }
 }

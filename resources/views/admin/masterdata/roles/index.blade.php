@@ -63,14 +63,19 @@
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <a rel="tooltip" class="btn btn-success btn-link" href=""
-                                                        data-original-title="" title="">
+                                                    <a rel="tooltip" class="btn btn-success btn-link" href="#"
+                                                        data-original-title="edit data" title="edit data"
+                                                        data-bs-toggle="modal" data-bs-target="#editModal"
+                                                        data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                        data-code="{{ $item->code }}">
                                                         <i class="material-icons">edit</i>
                                                         <div class="ripple-container"></div>
                                                     </a>
 
                                                     <button type="button" class="btn btn-danger btn-link"
-                                                        data-original-title="" title="">
+                                                        data-original-title="delete data" title="delete data"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                        data-id="{{ $item->id }}">
                                                         <i class="material-icons">close</i>
                                                         <div class="ripple-container"></div>
                                                     </button>
@@ -119,6 +124,98 @@
                 </div>
             </div>
             <!-- End Add Modal -->
+
+            <!-- Start Edit Modal -->
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form">
+                                <form action="{{ route('roles.update') }}" id="edit-form" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <input type="text" name="id" id="id_modal" hidden>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Name</label>
+                                        <input type="text" class="form-control border border-2 p-2"
+                                            placeholder="input name" id="name_modal" name="name" required
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Code</label>
+                                        <input type="text" class="form-control border border-2 p-2"
+                                            placeholder="input code" id="code_modal" name="code" required
+                                            autocomplete="off">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="edit-form" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Edit Modal -->
+
+            <!-- Start Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Data</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form">
+                                <form action="{{ route('roles.delete') }}" id="delete-form" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <input type="text" name="id" id="id_delete_modal" hidden>
+                                    <div class="mb-3 text-center">
+                                        <p class="text-secondary">
+                                            Are you sure to delete this data permanently?
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="delete-form" class="btn btn-primary">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Delete Modal -->
+
+
+            @section('javascript')
+                <script>
+                    $(document).ready(function() {
+                        $('#editModal').on('show.bs.modal', function(e) {
+                            var id = $(e.relatedTarget).data('id');
+                            var name = $(e.relatedTarget).data('name');
+                            var code = $(e.relatedTarget).data('code');
+
+                            $('#id_modal').val(id);
+                            $('#name_modal').val(name);
+                            $('#code_modal').val(code);
+                        });
+
+                        $('#deleteModal').on('show.bs.modal', function(e) {
+                            var id = $(e.relatedTarget).data('id');
+
+                            $('#id_delete_modal').val(id);
+                        });
+                    });
+                </script>
+            @endsection
 
             <x-footers.auth></x-footers.auth>
         </div>

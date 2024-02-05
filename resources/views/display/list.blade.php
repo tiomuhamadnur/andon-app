@@ -30,7 +30,7 @@
 
         @include('display.modals')
 
-        <audio src="{{ asset('assets/tone/ring-tone.mp3') }}" id="audio" hidden>
+        <audio src="#" id="audio" hidden>
     </main>
     </div>
 
@@ -83,6 +83,24 @@
                 modalClosed = new bootstrap.Modal(document.getElementById('modalFinished' + issue.toString()));
             }
 
+            function getAudio(transaction_status, department_name) {
+                $.ajax({
+                    url: '/getAudio',
+                    type: 'get',
+                    data: {
+                        status: transaction_status,
+                        department_name: department_name
+                    },
+                    success: function(res) {
+                        audio.src = res;
+                        playAudio();
+                    },
+                    error: function(err) {
+                        console.error('Error fetching audio:', err);
+                    }
+                });
+            }
+
             // Pusher.logToConsole = true;
 
             var pusher = new Pusher('76bef5d058242d5c2648', {
@@ -111,6 +129,10 @@
                 // Menampilkan hasil parsing
                 console.log("Status:", status);
                 console.log("Zona ID:", zona_id);
+                console.log("Call:", call);
+                console.log("Response:", response);
+                console.log("Pending:", pending);
+                console.log("Closed:", closed);
                 console.log("Department Name:", department_name);
                 console.log("Line Name:", line_name);
                 console.log("Zona Name:", zona_name);
@@ -139,8 +161,10 @@
                             element.textContent = zona_name;
                         });
 
+                        getAudio(transaction_status, department_name);
+
                         modalCall.show();
-                        playAudio();
+
                         setTimeout(function() {
                             modalCall.hide();
                             pauseAudio();
@@ -162,10 +186,14 @@
                             element.textContent = pic_name;
                         });
 
+                        getAudio(transaction_status, department_name);
+
                         modalCall.hide();
                         modalResponse.show();
+
                         setTimeout(function() {
                             modalResponse.hide();
+                            pauseAudio();
                         }, 15000);
                     } else if (transaction_status == 'Closed') {
                         departmentName.forEach(function(element) {
@@ -184,10 +212,14 @@
                             element.textContent = pic_name;
                         });
 
+                        getAudio(transaction_status, department_name);
+
                         modalResponse.hide();
                         modalClosed.show();
+
                         setTimeout(function() {
                             modalClosed.hide();
+                            pauseAudio();
                         }, 15000);
                     }
                 }

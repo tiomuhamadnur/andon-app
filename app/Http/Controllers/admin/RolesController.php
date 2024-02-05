@@ -48,19 +48,22 @@ class RolesController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $role = Roles::findOrFail($id);
+        $role->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+        return redirect()->route('roles.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $role = Roles::findOrFail($id);
+        $role->delete();
+        return redirect()->route('roles.index')->withNotify('Data deleted successfully');
     }
 }

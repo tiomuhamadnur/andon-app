@@ -14,17 +14,11 @@ class CompanyController extends Controller
         return view('admin.masterdata.company.index', compact(['company']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         // dd($request);
@@ -37,35 +31,34 @@ class CompanyController extends Controller
         return redirect()->route('company.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $company = Company::findOrFail($id);
+        $company->update([
+            'name' => $request->name,
+            'address' => $request->address,
+            'no_hp' => $request->no_hp,
+            'pic' => $request->pic,
+        ]);
+        return redirect()->route('company.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $company = Company::findOrFail($id);
+        $company->delete();
+        return redirect()->route('company.index')->withNotify('Data deleted successfully');
     }
 }

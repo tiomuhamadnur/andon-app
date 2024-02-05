@@ -47,7 +47,8 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($settings as $item)
-                                            <form action="{{ route('settings.update') }}" method="POST">
+                                            <form action="{{ route('settings.update') }}" method="POST"
+                                                enctype="multipart/form-data">
                                                 @csrf
                                                 @method('put')
                                                 <tr>
@@ -59,7 +60,11 @@
                                                     </td>
                                                     <td class="align-middle text-center text-sm">
                                                         <div class="d-flex flex-column justify-content-center">
-                                                            <h6 class="mb-0 text-sm text-center">{{ $item->code }}
+                                                            <h6 class="mb-0 text-sm text-center"
+                                                                title="{{ $item->description ?? '' }}">
+                                                                <span class="badge badge-pill bg-warning p-2">
+                                                                    {{ $item->code }}
+                                                                </span>
                                                             </h6>
                                                         </div>
                                                     </td>
@@ -75,6 +80,15 @@
                                                                         @if ($item->value == 0) selected @endif
                                                                         value="0">OFF</option>
                                                                 </select>
+                                                            @elseif ($item->code == 'APP_LOGO')
+                                                                <div class="btn-group">
+                                                                    <img class="img-thumbnail"
+                                                                        src="{{ asset('storage/' . $item->value) }}"
+                                                                        alt="LOGO APP"
+                                                                        style="height: 70px; width:70px;">
+                                                                    <input class="ms-2" type="file" name="logo"
+                                                                        required accept="image/*">
+                                                                </div>
                                                             @else
                                                                 <input name="value" type="text"
                                                                     value="{{ $item->value }}"
@@ -87,7 +101,7 @@
                                                             hidden>
                                                         <button rel="tooltip" class="btn btn-success btn-link"
                                                             type="submit" data-original-title="Update" title="Update">
-                                                            <i class="material-icons">edit</i>
+                                                            <i class="material-icons">save</i> Update
                                                             <div class="ripple-container"></div>
                                                         </button>
                                                     </td>

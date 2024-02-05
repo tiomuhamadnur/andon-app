@@ -10,23 +10,29 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class StatusLiked implements ShouldBroadcast
+class CheckInitialEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $username;
-    public $message;
+    public $data;
 
-    public function __construct($username)
+    public function __construct(array $data)
     {
-        $this->username = $username;
-        $this->message  = "{$username} liked your status";
+        $this->data = $data;
     }
 
-    public function broadcastOn(): array
+    public function broadcastOn()
     {
-        return [
-            'status-liked'
-        ];
+        return new Channel('towerlight-channel');
+    }
+
+    public function broadcastWith()
+    {
+        return $this->data;
+    }
+
+    public function broadcastAs()
+    {
+        return 'CheckInitialEvent';
     }
 }

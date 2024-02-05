@@ -6,8 +6,8 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets') }}/img/diamond.png">
-        <link rel="icon" type="image/png" href="{{ asset('assets') }}/img/diamond.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('storage/' . $appLogo) }}">
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . $appLogo) }}">
         @yield('title')
         <!--     Fonts and icons     -->
         <link rel="stylesheet" type="text/css"
@@ -55,6 +55,7 @@
         <script src="https://code.highcharts.com/themes/high-contrast-light.js"></script>
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/series-label.js"></script>
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         @stack('js')
         @yield('javascript')
         <script>

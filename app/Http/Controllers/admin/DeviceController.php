@@ -8,6 +8,7 @@ use App\Models\Device;
 use App\Models\Line;
 use App\Models\Process;
 use App\Models\Section;
+use App\Models\Transaction;
 use App\Models\Zona;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
@@ -34,9 +35,6 @@ class DeviceController extends Controller
         ]));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
@@ -60,17 +58,11 @@ class DeviceController extends Controller
         return redirect()->route('device.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         try {
@@ -94,9 +86,6 @@ class DeviceController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request)
     {
         $id = $request->id;
@@ -114,11 +103,16 @@ class DeviceController extends Controller
         return redirect()->route('device.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $device = Device::findOrFail($id);
+        $transaction = Transaction::where('device_id', $device->id)->count();
+        if($transaction > 0)
+        {
+            return back()->withNotifyerror('Something went wrong!');
+        }
+        $device->delete();
+        return redirect()->route('device.index')->withNotify('Data deleted successfully');
     }
 }

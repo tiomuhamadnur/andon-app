@@ -6,6 +6,7 @@ use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\DeviceController;
 use App\Http\Controllers\admin\DisplayController;
 use App\Http\Controllers\admin\EquipmentController;
+use App\Http\Controllers\admin\GetDataController;
 use App\Http\Controllers\admin\JabatanController;
 use App\Http\Controllers\admin\LineController;
 use App\Http\Controllers\admin\ProcessController;
@@ -120,69 +121,99 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::controller(UserManagementController::class)->group(function () {
         Route::get('user-management', 'index')->name('user-management');
-        Route::post('user-management', 'store')->name('user-management.store');
+        Route::post('user-management', 'store')->name('user-management.store')->middleware('isAdd');
         Route::get('user-management/{id}/edit', 'edit')->name('user-management.edit');
-        Route::put('user-management', 'update')->name('user-management.update');
+        Route::put('user-management', 'update')->name('user-management.update')->middleware('isUpdate');
     });
 
     Route::controller(RolesController::class)->group(function () {
         Route::get('roles', 'index')->name('roles.index');
-        Route::post('roles', 'store')->name('roles.store');
+        Route::post('roles', 'store')->name('roles.store')->middleware('isAdd');
+        Route::put('roles', 'update')->name('roles.update')->middleware('isUpdate');
+        Route::delete('roles', 'destroy')->name('roles.delete')->middleware('isDelete');
     });
 
     Route::controller(DepartmentController::class)->group(function () {
         Route::get('department', 'index')->name('department.index');
-        Route::post('department', 'store')->name('department.store');
+        Route::post('department', 'store')->name('department.store')->middleware('isAdd');
+        Route::put('department', 'update')->name('department.update')->middleware('isUpdate');
+        Route::delete('department', 'destroy')->name('department.delete')->middleware('isDelete');
     });
 
     Route::controller(SectionController::class)->group(function () {
         Route::get('section', 'index')->name('section.index');
-        Route::post('section', 'store')->name('section.store');
+        Route::post('section', 'store')->name('section.store')->middleware('isAdd');
+        Route::get('section/{id}/edit', 'edit')->name('section.edit');
+        Route::put('section', 'update')->name('section.update')->middleware('isUpdate');
+        Route::delete('section', 'destroy')->name('section.delete')->middleware('isDelete');
     });
 
     Route::controller(JabatanController::class)->group(function () {
         Route::get('jabatan', 'index')->name('jabatan.index');
-        Route::post('jabatan', 'store')->name('jabatan.store');
+        Route::post('jabatan', 'store')->name('jabatan.store')->middleware('isAdd');
+        Route::put('jabatan', 'update')->name('jabatan.update')->middleware('isUpdate');
+        Route::delete('jabatan', 'destroy')->name('jabatan.delete')->middleware('isDelete');
     });
 
     Route::controller(CompanyController::class)->group(function () {
         Route::get('company', 'index')->name('company.index');
-        Route::post('company', 'store')->name('company.store');
+        Route::post('company', 'store')->name('company.store')->middleware('isAdd');
+        Route::put('company', 'update')->name('company.update')->middleware('isUpdate');
+        Route::delete('company', 'destroy')->name('company.delete')->middleware('isDelete');
     });
 
     Route::controller(BuildingController::class)->group(function () {
         Route::get('building', 'index')->name('building.index');
-        Route::post('building', 'store')->name('building.store');
+        Route::post('building', 'store')->name('building.store')->middleware('isAdd');
+        Route::put('building', 'update')->name('building.update')->middleware('isUpdate');
+        Route::delete('building', 'destroy')->name('building.delete')->middleware('isDelete');
     });
 
     Route::controller(EquipmentController::class)->group(function () {
         Route::get('equipment', 'index')->name('equipment.index');
-        Route::post('equipment', 'store')->name('equipment.store');
+        Route::post('equipment', 'store')->name('equipment.store')->middleware('isAdd');
+        Route::get('equipment/{id}/edit', 'edit')->name('equipment.edit');
+        Route::put('equipment', 'update')->name('equipment.update')->middleware('isUpdate');
+        Route::delete('equipment', 'destroy')->name('equipment.delete')->middleware('isDelete');
     });
 
     Route::controller(ZonaController::class)->group(function () {
         Route::get('zona', 'index')->name('zona.index');
-        Route::post('zona', 'store')->name('zona.store');
+        Route::post('zona', 'store')->name('zona.store')->middleware('isAdd');
+        Route::put('zona', 'update')->name('zona.update')->middleware('isUpdate');
+        Route::delete('zona', 'destroy')->name('zona.delete')->middleware('isDelete');
     });
 
     Route::controller(LineController::class)->group(function () {
         Route::get('line', 'index')->name('line.index');
-        Route::post('line', 'store')->name('line.store');
+        Route::post('line', 'store')->name('line.store')->middleware('isAdd');
+        Route::put('line', 'update')->name('line.update')->middleware('isUpdate');
+        Route::delete('line', 'destroy')->name('line.delete')->middleware('isDelete');
     });
 
     Route::controller(ProcessController::class)->group(function () {
         Route::get('process', 'index')->name('process.index');
-        Route::post('process', 'store')->name('process.store');
+        Route::post('process', 'store')->name('process.store')->middleware('isAdd');
+        Route::put('process', 'update')->name('process.update')->middleware('isUpdate');
+        Route::delete('process', 'destroy')->name('process.delete')->middleware('isDelete');
     });
 
     Route::controller(DeviceController::class)->group(function () {
-        Route::get('device', 'index')->name('device.index');
-        Route::post('device', 'store')->name('device.store');
-        Route::get('device/{id}/edit', 'edit')->name('device.edit');
-        Route::put('device', 'update')->name('device.update');
+        Route::get('devices', 'index')->name('device.index');
+        Route::post('devices', 'store')->name('device.store')->middleware('isAdd');
+        Route::get('devices/{id}/edit', 'edit')->name('device.edit');
+        Route::put('devices', 'update')->name('device.update')->middleware('isUpdate');
+        Route::delete('devices', 'destroy')->name('device.delete')->middleware('isDelete');
     });
+
     Route::controller(SettingsController::class)->group(function () {
         Route::get('settings', 'index')->name('settings.index');
+        Route::post('settings', 'store')->name('settings.store');
         Route::put('settings', 'update')->name('settings.update');
+        Route::delete('settings', 'destroy')->name('settings.delete');
+    });
+
+    Route::controller(GetDataController::class)->group(function () {
+        Route::get('getAudio', 'getAudio');
     });
 });

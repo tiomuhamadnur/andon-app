@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DepartmentController extends Controller
 {
@@ -14,17 +15,11 @@ class DepartmentController extends Controller
         return view('admin.masterdata.department.index', compact(['department']));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         Department::create([
@@ -35,35 +30,49 @@ class DepartmentController extends Controller
         return redirect()->route('department.index')->withNotify('Data saved successfully');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(string $id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        $id = $request->id;
+        $department = Department::findOrFail($id);
+        $department->update([
+            'name' => $request->name,
+            'code' => $request->code,
+        ]);
+
+        if($request->hasFile('call_tone') && $request->hasFile('response_tone') && $request->hasFile('closed_tone'))
+        {
+            if($department->call_tone != '' && $department->response_tone != '' && $department->closed_tone != '')
+            {
+                Storage::delete([$department->call_tone, $department->response_tone, $department->closed_tone]);
+            }
+            $call_tone = $request->file('call_tone')->store('tone');
+            $response_tone = $request->file('response_tone')->store('tone');
+            $closed_tone = $request->file('closed_tone')->store('tone');
+
+            $department->update([
+                'call_tone' => $call_tone,
+                'response_tone' => $response_tone,
+                'closed_tone' => $closed_tone,
+            ]);
+        }
+        return redirect()->route('department.index')->withNotify('Data updated successfully');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function destroy(Request $request)
     {
-        //
+        $id = $request->id;
+        $department = Department::findOrFail($id);
+        $department->delete();
+        return redirect()->route('department.index')->withNotify('Data deleted successfully');
     }
 }

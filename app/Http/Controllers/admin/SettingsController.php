@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Settings;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class SettingsController extends Controller
 {
@@ -38,17 +39,34 @@ class SettingsController extends Controller
     {
         $code = $request->code;
         $value = $request->value;
+        $logo = $request->logo;
 
-        $setting = Settings::where('code', $code)->first();
-        if(!$setting)
+        if($request->hasFile('logo') && $logo != '')
         {
-            return back()->withNotifyerror('Something went wrong!');
+            $setting = Settings::where('code', $code)->first();
+            if($setting->value != '')
+            {
+                Storage::delete($setting->value);
+            }
+            $data_logo = $request->file('logo')->store('logo');
+            $setting->update([
+                'value' => $data_logo,
+            ]);
+            return back()->withNotify('Configuration about ' . $setting->name . ' updated successfuly!');
         }
-        $setting->update([
-            'value' => $value,
-        ]);
+        else
+        {
+            $setting = Settings::where('code', $code)->first();
+            if(!$setting)
+            {
+                return back()->withNotifyerror('Something went wrong!');
+            }
+            $setting->update([
+                'value' => $value,
+            ]);
 
-        return back()->withNotify('Configuration about ' . $setting->name . ' updated successfuly!');
+            return back()->withNotify('Configuration about ' . $setting->name . ' updated successfuly!');
+        }
     }
 
     public function destroy(string $id)

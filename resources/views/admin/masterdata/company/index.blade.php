@@ -84,14 +84,21 @@
                                                     </div>
                                                 </td>
                                                 <td class="align-middle text-center">
-                                                    <a rel="tooltip" class="btn btn-success btn-link" href=""
-                                                        data-original-title="" title="">
+                                                    <a rel="tooltip" class="btn btn-success btn-link" href="#"
+                                                        data-original-title="edit data" title="edit data"
+                                                        data-bs-toggle="modal" data-bs-target="#editModal"
+                                                        data-id="{{ $item->id }}" data-name="{{ $item->name }}"
+                                                        data-address="{{ $item->address }}"
+                                                        data-no_hp="{{ $item->no_hp ?? '' }}"
+                                                        data-pic="{{ $item->pic ?? '' }}">
                                                         <i class="material-icons">edit</i>
                                                         <div class="ripple-container"></div>
                                                     </a>
 
                                                     <button type="button" class="btn btn-danger btn-link"
-                                                        data-original-title="" title="">
+                                                        data-original-title="delete data" title="delete data"
+                                                        data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                        data-id="{{ $item->id }}">
                                                         <i class="material-icons">close</i>
                                                         <div class="ripple-container"></div>
                                                     </button>
@@ -136,7 +143,8 @@
                                             placeholder="input no handphone" name="no_hp" autocomplete="off">
                                     </div>
                                     <div class="mb-3">
-                                        <label for="exampleFormControlInput1" class="form-label">PIC (optional)</label>
+                                        <label for="exampleFormControlInput1" class="form-label">PIC
+                                            (optional)</label>
                                         <input type="text" class="form-control border border-2 p-2"
                                             placeholder="input pic name" name="pic" autocomplete="off">
                                     </div>
@@ -151,6 +159,116 @@
                 </div>
             </div>
             <!-- End Add Modal -->
+
+            <!-- Start Edit Modal -->
+            <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Edit Data</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form">
+                                <form action="{{ route('company.update') }}" id="edit-form" method="POST">
+                                    @csrf
+                                    @method('put')
+                                    <input type="text" name="id" id="id_modal" hidden>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Name</label>
+                                        <input type="text" class="form-control border border-2 p-2"
+                                            placeholder="input name" id="name_modal" name="name" required
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">Address</label>
+                                        <input type="text" class="form-control border border-2 p-2"
+                                            placeholder="input address" id="address_modal" name="address" required
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">No HP
+                                            (optional)</label>
+                                        <input type="text" class="form-control border border-2 p-2"
+                                            placeholder="input phone number" id="no_hp_modal" name="no_hp"
+                                            autocomplete="off">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="exampleFormControlInput1" class="form-label">PIC
+                                            (optional)</label>
+                                        <input type="text" class="form-control border border-2 p-2"
+                                            placeholder="input PIC name" id="pic_modal" name="pic"
+                                            autocomplete="off">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="edit-form" class="btn btn-primary">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Edit Modal -->
+
+            <!-- Start Delete Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Delete Data</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form">
+                                <form action="{{ route('company.delete') }}" id="delete-form" method="POST">
+                                    @csrf
+                                    @method('delete')
+                                    <input type="text" name="id" id="id_delete_modal" hidden>
+                                    <div class="mb-3 text-center">
+                                        <p class="text-secondary">
+                                            Are you sure to delete this data permanently?
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" form="delete-form" class="btn btn-primary">Delete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Delete Modal -->
+
+
+            @section('javascript')
+                <script>
+                    $(document).ready(function() {
+                        $('#editModal').on('show.bs.modal', function(e) {
+                            var id = $(e.relatedTarget).data('id');
+                            var name = $(e.relatedTarget).data('name');
+                            var address = $(e.relatedTarget).data('address');
+                            var no_hp = $(e.relatedTarget).data('no_hp');
+                            var pic = $(e.relatedTarget).data('pic');
+
+                            $('#id_modal').val(id);
+                            $('#name_modal').val(name);
+                            $('#address_modal').val(address);
+                            $('#no_hp_modal').val(no_hp);
+                            $('#pic_modal').val(pic);
+                        });
+
+                        $('#deleteModal').on('show.bs.modal', function(e) {
+                            var id = $(e.relatedTarget).data('id');
+
+                            $('#id_delete_modal').val(id);
+                        });
+                    });
+                </script>
+            @endsection
 
             <x-footers.auth></x-footers.auth>
         </div>
