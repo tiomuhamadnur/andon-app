@@ -273,6 +273,14 @@ class TransactionController extends Controller
             ];
             return response()->json($data, 400);
         }
+
+        $validate = Settings::where('code', 'APP_MODE')->first()->value;
+
+        if($validate == 1)
+        {
+            $this->check_transaction($device_id, $department_id);
+        }
+
         $cek = Transaction::where('device_id', $device->id)
                             ->where('department_id', $department->id)
                             ->whereIn('status', ['Call', 'Pending', 'Response'])
@@ -330,7 +338,6 @@ class TransactionController extends Controller
                     $transaction->device->line->name,
                     $transaction->device->zona->name,
                     $transaction->device->process->name,
-                    route('transaction.detail.response', Crypt::encryptString($transaction_id)),
                     'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . 'detail-response',
                 ];
 
@@ -553,8 +560,8 @@ class TransactionController extends Controller
             $transaction->device->zona->name ?? '',
             $transaction->device->line->name ?? '',
             $transaction->status ?? '',
-            '',
-            '',
+            $transaction->department->name . ' Team',
+            asset('assets/img/technician.png'),
         ];
 
         Event::dispatch(new RealtimeEvent($data));
@@ -610,5 +617,113 @@ class TransactionController extends Controller
         $enter . $enter . $enter . $enter;
 
         return $message;
+    }
+
+    public function check_transaction($device_id, $department_id)
+    {
+        $transaction = Transaction::where('device_id', $device_id)
+                    ->where('department_id', $department_id)
+                    ->orderBy('created_at', 'DESC')
+                    ->first();
+
+        $status = $transaction->status;
+        $now = Carbon::now();
+
+        switch($status)
+        {
+            case 'Call':
+                $transaction->update([
+                    'status' => 'Response',
+                    'response_at' => $now,
+                ]);
+
+                $data = [$transaction->device->zona->id, $transaction->id];
+
+                $this->sendEvent($data);
+
+                $data = [
+                    'status' => 'ok',
+                    'message' => 'data berhasil diupdate, status Response',
+                ];
+
+                return response()->json($data, 200);
+
+            case 'Response':
+                $transaction->update([
+                    'status' => 'Closed',
+                    'closed_at' => $now,
+                ]);
+
+                $data = [$transaction->device->zona->id, $transaction->id];
+
+                $this->sendEvent($data);
+
+                $data = [
+                    'status' => 'ok',
+                    'message' => 'data berhasil diupdate, status Closed',
+                ];
+
+                return response()->json($data, 200);
+
+            default:
+                $timestamp = now()->timestamp;
+                $randomNumber = rand(1000, 9999);
+                $ticketNumber = $timestamp . $randomNumber;
+
+                Transaction::create([
+                    'ticket_number' => $ticketNumber,
+                    'device_id' => $device_id,
+                    'department_id' => $department_id,
+                    'call_at' => Carbon::now(),
+                    'status' => 'Call',
+                ]);
+
+                $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
+
+                $zona_id = $transaction->device->zona->id;
+                $transaction_id = $transaction->id;
+
+                $data = [$zona_id, $transaction_id];
+
+                $this->sendEvent($data);
+
+                $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
+                $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+                if($notifWA == 1)
+                {
+                    $department_id = $transaction->department_id;
+                    $building_id = $transaction->device->building->id;
+
+                    $users = Pegawai::where('department_id', $department_id)
+                                    ->where('building_id', $building_id)
+                                    ->get();
+
+                    foreach($users as $user)
+                    {
+                        $data = [
+                            $user->gender,
+                            $user->name,
+                            $user->department->name,
+                            Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                            Carbon::parse($transaction->call_at)->format("H:m:s"),
+                            $transaction->device->building->name,
+                            $transaction->device->line->name,
+                            $transaction->device->zona->name,
+                            $transaction->device->process->name,
+                            '-',
+                        ];
+
+                        $message = $this->formatMessage($data);
+                        WhatsAppHelper::sendNotification($user->phone, $message);
+                    }
+                }
+
+                $data = [
+                        'status' => 'ok',
+                        'message' => 'data laporan berhasil ditambahkan'
+                    ];
+
+                return response()->json($data, 201);
+        }
     }
 }
