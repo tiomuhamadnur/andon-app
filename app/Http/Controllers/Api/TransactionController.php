@@ -629,101 +629,102 @@ class TransactionController extends Controller
         $status = $transaction->status;
         $now = Carbon::now();
 
-        switch($status)
+        if($status == 'Call')
         {
-            case 'Call':
-                $transaction->update([
-                    'status' => 'Response',
-                    'response_at' => $now,
-                ]);
+            $transaction->update([
+                'status' => 'Response',
+                'response_at' => $now,
+            ]);
 
-                $data = [$transaction->device->zona->id, $transaction->id];
+            $data = [$transaction->device->zona->id, $transaction->id];
 
-                $this->sendEvent($data);
+            $this->sendEvent($data);
 
-                $data = [
-                    'status' => 'ok',
-                    'message' => 'data berhasil diupdate, status Response',
-                ];
+            $data = [
+                'status' => 'ok',
+                'message' => 'data berhasil diupdate, status Response',
+            ];
 
-                return response()->json($data, 200);
+            return response()->json($data, 200);
+        }
+        elseif($status == 'Response')
+        {
+            $transaction->update([
+                'status' => 'Closed',
+                'closed_at' => $now,
+            ]);
 
-            case 'Response':
-                $transaction->update([
-                    'status' => 'Closed',
-                    'closed_at' => $now,
-                ]);
+            $data = [$transaction->device->zona->id, $transaction->id];
 
-                $data = [$transaction->device->zona->id, $transaction->id];
+            $this->sendEvent($data);
 
-                $this->sendEvent($data);
+            $data = [
+                'status' => 'ok',
+                'message' => 'data berhasil diupdate, status Closed',
+            ];
 
-                $data = [
-                    'status' => 'ok',
-                    'message' => 'data berhasil diupdate, status Closed',
-                ];
+            return response()->json($data, 200);
+        }
+        else
+        {
+            $timestamp = now()->timestamp;
+            $randomNumber = rand(1000, 9999);
+            $ticketNumber = $timestamp . $randomNumber;
 
-                return response()->json($data, 200);
+            Transaction::create([
+                'ticket_number' => $ticketNumber,
+                'device_id' => $device_id,
+                'department_id' => $department_id,
+                'call_at' => Carbon::now(),
+                'status' => 'Call',
+            ]);
 
-            default:
-                $timestamp = now()->timestamp;
-                $randomNumber = rand(1000, 9999);
-                $ticketNumber = $timestamp . $randomNumber;
+            $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
 
-                Transaction::create([
-                    'ticket_number' => $ticketNumber,
-                    'device_id' => $device_id,
-                    'department_id' => $department_id,
-                    'call_at' => Carbon::now(),
-                    'status' => 'Call',
-                ]);
+            $zona_id = $transaction->device->zona->id;
+            $transaction_id = $transaction->id;
 
-                $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
+            $data = [$zona_id, $transaction_id];
 
-                $zona_id = $transaction->device->zona->id;
-                $transaction_id = $transaction->id;
+            $this->sendEvent($data);
 
-                $data = [$zona_id, $transaction_id];
+            $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
+            $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+            if($notifWA == 1)
+            {
+                $department_id = $transaction->department_id;
+                $building_id = $transaction->device->building->id;
 
-                $this->sendEvent($data);
+                $users = Pegawai::where('department_id', $department_id)
+                                ->where('building_id', $building_id)
+                                ->get();
 
-                $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
-                $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
-                if($notifWA == 1)
+                foreach($users as $user)
                 {
-                    $department_id = $transaction->department_id;
-                    $building_id = $transaction->device->building->id;
-
-                    $users = Pegawai::where('department_id', $department_id)
-                                    ->where('building_id', $building_id)
-                                    ->get();
-
-                    foreach($users as $user)
-                    {
-                        $data = [
-                            $user->gender,
-                            $user->name,
-                            $user->department->name,
-                            Carbon::parse($transaction->call_at)->format("d-m-Y"),
-                            Carbon::parse($transaction->call_at)->format("H:m:s"),
-                            $transaction->device->building->name,
-                            $transaction->device->line->name,
-                            $transaction->device->zona->name,
-                            $transaction->device->process->name,
-                            '-',
-                        ];
-
-                        $message = $this->formatMessage($data);
-                        WhatsAppHelper::sendNotification($user->phone, $message);
-                    }
-                }
-
-                $data = [
-                        'status' => 'ok',
-                        'message' => 'data laporan berhasil ditambahkan'
+                    $data = [
+                        $user->gender,
+                        $user->name,
+                        $user->department->name,
+                        Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                        Carbon::parse($transaction->call_at)->format("H:m:s"),
+                        $transaction->device->building->name,
+                        $transaction->device->line->name,
+                        $transaction->device->zona->name,
+                        $transaction->device->process->name,
+                        '-',
                     ];
 
-                return response()->json($data, 201);
+                    $message = $this->formatMessage($data);
+                    WhatsAppHelper::sendNotification($user->phone, $message);
+                }
+            }
+
+            $data = [
+                    'status' => 'ok',
+                    'message' => 'data laporan berhasil ditambahkan'
+                ];
+
+            return response()->json($data, 201);
         }
     }
 }
