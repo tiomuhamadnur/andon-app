@@ -260,11 +260,6 @@ class TransactionController extends Controller
 
     public function call(Request $request)
     {
-        $request->validate([
-            'device_id' => 'required',
-            'department_id' => 'required',
-        ]);
-
         $device_id = $request->device_id;
         $department_id = $request->department_id;
 
