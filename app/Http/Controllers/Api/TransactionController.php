@@ -261,15 +261,15 @@ class TransactionController extends Controller
     public function call(Request $request)
     {
         $request->validate([
-            'token' => 'required',
+            'device_id' => 'required',
             'department_id' => 'required',
         ]);
 
-        $token = $request->token;
+        $device_id = $request->device_id;
         $department_id = $request->department_id;
 
         $department = Department::find($department_id);
-        $device = Device::where('token', $token)->first();
+        $device = Device::find($device_id);
 
         if((!$device) or (!$department)){
             $data = [
