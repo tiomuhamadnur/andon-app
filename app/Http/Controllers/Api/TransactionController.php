@@ -280,78 +280,79 @@ class TransactionController extends Controller
         {
             $this->check_transaction($device_id, $department_id);
         }
+        else{
+            $cek = Transaction::where('device_id', $device->id)
+                                ->where('department_id', $department->id)
+                                ->whereIn('status', ['Call', 'Pending', 'Response'])
+                                ->count();
 
-        $cek = Transaction::where('device_id', $device->id)
-                            ->where('department_id', $department->id)
-                            ->whereIn('status', ['Call', 'Pending', 'Response'])
-                            ->count();
-
-        if($cek > 0){
-            $data = [
-                'status' => 'error',
-                'message' => 'request device_id ini masih berstatus "Call" atau "Pending", tidak bisa menambah request baru'
-            ];
-            return response()->json($data, 400);
-        }
-
-        $timestamp = now()->timestamp;
-        $randomNumber = rand(1000, 9999);
-        $ticketNumber = $timestamp . $randomNumber;
-
-        Transaction::create([
-            'ticket_number' => $ticketNumber,
-            'device_id' => $device->id,
-            'department_id' => $department->id,
-            'call_at' => Carbon::now(),
-            'status' => 'Call',
-        ]);
-
-        $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
-
-        $zona_id = $device->zona->id;
-        $transaction_id = $transaction->id;
-
-        $data = [$zona_id, $transaction_id];
-
-        $this->sendEvent($data);
-
-        $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
-        $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
-        if($notifWA == 1)
-        {
-            $department_id = $transaction->department_id;
-            $building_id = $transaction->device->building->id;
-
-            $users = Pegawai::where('department_id', $department_id)
-                            ->where('building_id', $building_id)
-                            ->get();
-
-            foreach($users as $user)
-            {
+            if($cek > 0){
                 $data = [
-                    $user->gender,
-                    $user->name,
-                    $user->department->name,
-                    Carbon::parse($transaction->call_at)->format("d-m-Y"),
-                    Carbon::parse($transaction->call_at)->format("H:m:s"),
-                    $transaction->device->building->name,
-                    $transaction->device->line->name,
-                    $transaction->device->zona->name,
-                    $transaction->device->process->name,
-                    'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . 'detail-response',
+                    'status' => 'error',
+                    'message' => 'request device_id ini masih berstatus "Call" atau "Pending", tidak bisa menambah request baru'
+                ];
+                return response()->json($data, 400);
+            }
+
+            $timestamp = now()->timestamp;
+            $randomNumber = rand(1000, 9999);
+            $ticketNumber = $timestamp . $randomNumber;
+
+            Transaction::create([
+                'ticket_number' => $ticketNumber,
+                'device_id' => $device->id,
+                'department_id' => $department->id,
+                'call_at' => Carbon::now(),
+                'status' => 'Call',
+            ]);
+
+            $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
+
+            $zona_id = $device->zona->id;
+            $transaction_id = $transaction->id;
+
+            $data = [$zona_id, $transaction_id];
+
+            $this->sendEvent($data);
+
+            $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
+            $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+            if($notifWA == 1)
+            {
+                $department_id = $transaction->department_id;
+                $building_id = $transaction->device->building->id;
+
+                $users = Pegawai::where('department_id', $department_id)
+                                ->where('building_id', $building_id)
+                                ->get();
+
+                foreach($users as $user)
+                {
+                    $data = [
+                        $user->gender,
+                        $user->name,
+                        $user->department->name,
+                        Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                        Carbon::parse($transaction->call_at)->format("H:m:s"),
+                        $transaction->device->building->name,
+                        $transaction->device->line->name,
+                        $transaction->device->zona->name,
+                        $transaction->device->process->name,
+                        'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . 'detail-response',
+                    ];
+
+                    $message = $this->formatMessage($data);
+                    WhatsAppHelper::sendNotification($user->phone, $message);
+                }
+            }
+
+            $data = [
+                    'status' => 'ok',
+                    'message' => 'data laporan berhasil ditambahkan'
                 ];
 
-                $message = $this->formatMessage($data);
-                WhatsAppHelper::sendNotification($user->phone, $message);
-            }
+            return response()->json($data, 201);
         }
-
-        $data = [
-                'status' => 'ok',
-                'message' => 'data laporan berhasil ditambahkan'
-            ];
-
-        return response()->json($data, 201);
     }
 
     public function response(Request $request)
