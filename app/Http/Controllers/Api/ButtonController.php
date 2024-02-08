@@ -12,6 +12,10 @@ class ButtonController extends Controller
 {
     public function register(Request $request)
     {
+        $request->validate([
+            'code' => 'required',
+        ]);
+
         $code = [$request->code];
 
         $this->sendEvent($code);
