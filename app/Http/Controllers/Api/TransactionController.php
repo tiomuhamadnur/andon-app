@@ -665,7 +665,7 @@ class TransactionController extends Controller
 
             return response()->json($data, 200);
         }
-        else
+        elseif($status == 'Closed')
         {
             $timestamp = now()->timestamp;
             $randomNumber = rand(1000, 9999);
@@ -725,6 +725,15 @@ class TransactionController extends Controller
                 ];
 
             return response()->json($data, 201);
+        }
+        else
+        {
+            $data = [
+                'status' => 'error',
+                'message' => 'something went wrong',
+            ];
+            return response()->json($data, 400);
+
         }
     }
 }
