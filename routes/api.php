@@ -60,4 +60,5 @@ Route::controller(TransactionController::class)->group(function () {
 
 Route::controller(ButtonController::class)->group(function () {
     Route::get('button/register', 'register');
+    Route::get('button', 'button');
 });

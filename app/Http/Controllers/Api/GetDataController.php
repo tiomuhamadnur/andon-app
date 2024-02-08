@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Building;
+use App\Models\Button;
 use App\Models\Department;
 use App\Models\Equipment;
 use App\Models\Line;

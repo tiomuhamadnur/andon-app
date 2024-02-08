@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Events\RegisterButtonEvent;
 use App\Http\Controllers\Controller;
+use App\Models\Button;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 
@@ -26,28 +27,10 @@ class ButtonController extends Controller
         Event::dispatch(new RegisterButtonEvent($data));
     }
 
-    public function create()
+    public function button()
     {
-        //
-    }
+        $buttons = Button::all();
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-    public function show(string $id)
-    {
-        //
-    }
-
-    public function edit(string $id)
-    {
-        //
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
+        return response()->json(['buttons' => $buttons], 200);
     }
 }
