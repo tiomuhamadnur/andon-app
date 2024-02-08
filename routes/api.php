@@ -54,7 +54,7 @@ Route::middleware('auth:api')->group(function () {
 });
 
 Route::controller(TransactionController::class)->group(function () {
-    Route::get('transaction/call', 'call');
+    Route::post('transaction/call', 'call');
     Route::get('transaction/check-initial', 'check_initial');
 });
 
