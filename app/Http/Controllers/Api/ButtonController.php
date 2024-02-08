@@ -12,10 +12,6 @@ class ButtonController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'code' => 'required',
-        ]);
-
         $code = [$request->code];
 
         $this->sendEvent($code);
@@ -23,7 +19,7 @@ class ButtonController extends Controller
         return response()->json([
             'status' => 'ok',
             'message' => 'data code button berhasil dikirim',
-        ])->header('Content-Type', 'application/json');
+        ], 200)->header('Content-Type', 'application/json');
     }
 
     public function sendEvent($data)
