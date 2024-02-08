@@ -338,7 +338,7 @@ class TransactionController extends Controller
                         $transaction->device->line->name,
                         $transaction->device->zona->name,
                         $transaction->device->process->name,
-                        'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . 'detail-response',
+                        'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . '/detail-response',
                     ];
 
                     $message = $this->formatMessage($data);
