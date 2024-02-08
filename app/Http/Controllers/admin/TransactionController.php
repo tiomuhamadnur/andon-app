@@ -180,6 +180,7 @@ class TransactionController extends Controller
             return Excel::download(new TransactionFilterExport($department_id, $building_id, $zona_id, $line_id, $process_id, $status, $start_date, $end_date), $waktu . '_data report (filtered).xlsx');
         }
     }
+
     public function store(Request $request)
     {
         $department_id = $request->department_id;

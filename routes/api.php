@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\ButtonController;
+use App\Http\Controllers\Api\GetDataController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -32,20 +34,30 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::controller(TransactionController::class)->group(function () {
-        Route::post('transaction/search/id', 'id');
-        Route::post('transaction/search/ticket-number', 'ticketNumber');
-
         Route::get('transactions', 'transactions');
-        Route::post('transactions/filter', 'filter');
+        Route::post('transaction', 'transaction');
 
-        Route::get('transactions/parameters', 'parameters');
+        Route::post('transaction/response', 'response');
+        Route::post('transaction/closed', 'closed');
+
+        Route::post('transaction/filter', 'filter');
+        Route::post('transaction/search', 'ticketNumber');
+    });
+
+    Route::controller(GetDataController::class)->group(function () {
+        Route::get('app', 'app');
+
+        Route::post('equipments', 'equipments');
+        Route::post('equipment', 'equipment');
+        Route::get('parameters', 'parameters');
     });
 });
 
 Route::controller(TransactionController::class)->group(function () {
     Route::get('transaction/call', 'call');
-    Route::get('transaction/check', 'check');
-    Route::get('check-initial', 'check_initial');
+    Route::get('transaction/check-initial', 'check_initial');
+});
 
-    Route::get('cek-kirim-event', 'testEvent');
+Route::controller(ButtonController::class)->group(function () {
+    Route::get('button/register', 'register');
 });

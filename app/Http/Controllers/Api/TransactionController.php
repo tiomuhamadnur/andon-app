@@ -15,6 +15,7 @@ use App\Models\Process;
 use App\Models\Settings;
 use App\Models\Transaction;
 use App\Models\Zona;
+use App\Models\Equipment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -61,10 +62,14 @@ class TransactionController extends Controller
         return response()->json($data, 200);
     }
 
-    public function id(Request $request)
+    public function transaction(Request $request)
     {
+        $request->validate([
+            'id' => 'required|numeric',
+        ]);
+
         $id = $request->id;
-        $transactions = Transaction::findOrFail($id);
+        $transactions = Transaction::find($id);
 
         if(!$transactions)
         {
@@ -112,6 +117,10 @@ class TransactionController extends Controller
 
     public function ticketNumber(Request $request)
     {
+        $request->validate([
+            'ticket_number' => 'required',
+        ]);
+
         $ticket_number = $request->ticket_number;
         $transactions = Transaction::where('ticket_number', $ticket_number)->first();
 
@@ -120,7 +129,7 @@ class TransactionController extends Controller
             $data = [
                 'status' => 'error',
                 'message' => 'data tidak ditemukan',
-                'data' => [],
+                'data' => null,
             ];
 
             return response()->json($data, 400);
@@ -249,38 +258,6 @@ class TransactionController extends Controller
         return response()->json($data, 200);
     }
 
-    public function parameters()
-    {
-        $department = Department::all();
-        $building = Building::all();
-        $zona = Zona::all();
-        $line = Line::all();
-        $process = Process::all();
-        $status = [
-            'Call',
-            'Response',
-            'Pending',
-            'Closed',
-        ];
-
-        $parameters = [
-            'department' => $department,
-            'building' => $building,
-            'zona' => $zona,
-            'line' => $line,
-            'process' => $process,
-            'status' => $status,
-        ];
-
-        $data = [
-            'status' => 'ok',
-            'message' => 'data berhasil didapatkan',
-            'data' => $parameters,
-        ];
-
-        return response()->json($data, 200);
-    }
-
     public function call(Request $request)
     {
         $token = $request->token;
@@ -369,31 +346,131 @@ class TransactionController extends Controller
         return response()->json($data, 201);
     }
 
-    public function check(Request $request)
+    public function response(Request $request)
     {
-        $zona_id = $request->zona_id;
+        $request->validate([
+            'id'  => 'required',
+            'status' => 'required',
+        ]);
 
-        $status = ['Call', 'Response', 'Pending', 'Closed'];
-        $statusZona = [];
+        $id = $request->id;
+        $status = $request->status;
+        $pending_reason = $request->pending_reason ?? '';
 
-        foreach ($status as $item) {
-            $count = Transaction::query()
-                ->select('device.zona_id as zona_id', 'transaction.status as status')
-                ->join('device', 'device.id', '=', 'transaction.device_id')
-                ->where('zona_id', $zona_id)
-                ->where('status', $item)
-                ->count();
+        $transaction = Transaction::where('id', $id)->whereIn('status', ['Call', 'Pending'])->first();
+        $response_at = Carbon::now();
 
-            $statusZona[$item] = $count;
+        if(!$transaction)
+        {
+            $data = [
+                'status' => 'error',
+                'message' => 'data tidak ditemukan atau karena sudah berstatus Response atau Closed',
+                'data' => null,
+            ];
+
+            return response()->json($data, 400);
         }
+
+        if($status == 'Pending')
+        {
+            $response_at = null;
+        }
+
+        $transaction->update([
+            'pic_id' => auth()->user()->id,
+            'status' => $status,
+            'response_at' => $response_at,
+            'pending_reason' => $pending_reason,
+        ]);
+
+        $data = [
+            $transaction->device->zona->id,
+            $transaction->id,
+        ];
+
+        $this->sendEventAuth($data);
 
         $data = [
             'status' => 'ok',
-            'message' => 'data berhasil didapatkan',
-            'statusZona' => $statusZona,
+            'message' => 'data berhasil diupdate',
         ];
 
-        return response()->json($data)->header('Content-Type', 'application/json');
+        return response()->json($data, 200);
+    }
+
+    public function closed(Request $request)
+    {
+        $request->validate([
+            'id'  => 'required|numeric',
+            'photo'=> 'image',
+            'photo_closed' => 'image',
+        ]);
+
+        $id = $request->id;
+        $equipment_id = $request->equipment_id ?? '';
+        $remark = $request->remark ?? '';
+
+        $transaction = Transaction::where('id', $id)->where('status', 'Response')->first();
+        $closed_at = Carbon::now();
+
+        if(!$transaction)
+        {
+            $data = [
+                'status' => 'error',
+                'message' => 'data tidak ditemukan atau karena tidak berstatus Response',
+                'data' => null,
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        if ($equipment_id != '' && $request->hasFile('photo') && $request->photo != '' && $request->hasFile('photo_closed') && $request->photo_closed != '')
+        {
+            $equipment = Equipment::find($equipment_id);
+            if(!$equipment)
+            {
+                $data = [
+                    'status' => 'error',
+                    'message' => 'data equipment tidak ditemukan',
+                    'data' => null,
+                ];
+                return response()->json($data, 400);
+            }
+
+            $photo = $request->file('photo')->store('photo');
+            $photo_closed = $request->file('photo_closed')->store('photo-closed');
+            $transaction->update([
+            'pic_id' => auth()->user()->id,
+            'status' => 'Closed',
+            'closed_at' => $closed_at,
+            'equipment_id' => $equipment_id,
+            'photo' => $photo,
+            'photo_closed' => $photo_closed,
+            'remark' => $remark,
+        ]);
+        }
+        else
+        {
+            $transaction->update([
+                'pic_id' => auth()->user()->id,
+                'status' => 'Closed',
+                'closed_at' => $closed_at,
+            ]);
+        }
+
+        $data = [
+            $transaction->device->zona->id,
+            $transaction->id,
+        ];
+
+        $this->sendEventAuth($data);
+
+        $data = [
+            'status' => 'ok',
+            'message' => 'data berhasil diupdate',
+        ];
+
+        return response()->json($data, 200);
     }
 
     public function check_initial(Request $request)
@@ -412,6 +489,40 @@ class TransactionController extends Controller
             'status' => 'ok',
             'message' => 'data initial request berhasil didapatkan',
         ])->header('Content-Type', 'application/json');
+    }
+
+    public function sendEventAuth($data)
+    {
+        $zona_id = (int)$data[0];
+        $transaction_id = (int)$data[1];
+        $status = ['Call', 'Response', 'Pending', 'Closed'];
+        $statusZona = [];
+        $transaction = Transaction::findOrFail($transaction_id);
+
+        foreach ($status as $item) {
+            $count = Transaction::query()
+                ->select('device.zona_id as zona_id', 'transaction.status as status')
+                ->join('device', 'device.id', '=', 'transaction.device_id')
+                ->where('zona_id', $zona_id)
+                ->where('status', $item)
+                ->count();
+
+            $statusZona[] = $count;
+        }
+
+        $data = [
+            'ok',
+            $zona_id,
+            $statusZona,
+            $transaction->department->name,
+            $transaction->device->zona->name,
+            $transaction->device->line->name,
+            $transaction->status,
+            auth()->user()->name,
+            asset('storage/' . auth()->user()->photo),
+        ];
+
+        Event::dispatch(new RealtimeEvent($data));
     }
 
     public function sendEvent($data)
@@ -498,19 +609,5 @@ class TransactionController extends Controller
         $enter . $enter . $enter . $enter;
 
         return $message;
-    }
-
-    public function testEvent()
-    {
-        $data = [
-            'data1' => 123,
-            'data2' => 456,
-        ];
-
-        event(new RealtimeEvent([$data]));
-
-        return response()->json([
-            'message' => 'Realtime event sent successfully'
-        ]);
     }
 }

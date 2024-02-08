@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\BuildingController;
+use App\Http\Controllers\admin\ButtonController;
 use App\Http\Controllers\admin\CompanyController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\DeviceController;
@@ -204,6 +205,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('devices/{id}/edit', 'edit')->name('device.edit');
         Route::put('devices', 'update')->name('device.update')->middleware('isUpdate');
         Route::delete('devices', 'destroy')->name('device.delete')->middleware('isDelete');
+    });
+
+    Route::controller(ButtonController::class)->group(function () {
+        Route::get('buttons', 'index')->name('button.index');
+        Route::get('buttons/add', 'create')->name('button.create');
+        Route::post('buttons', 'store')->name('button.store')->middleware('isAdd');
+        Route::get('buttons/{id}/edit', 'edit')->name('button.edit');
+        Route::put('buttons', 'update')->name('button.update')->middleware('isUpdate');
+        Route::delete('buttons', 'destroy')->name('button.delete')->middleware('isDelete');
     });
 
     Route::controller(SettingsController::class)->group(function () {

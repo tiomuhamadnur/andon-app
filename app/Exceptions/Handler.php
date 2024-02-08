@@ -27,8 +27,8 @@ class Handler extends ExceptionHandler
         if ($exception instanceof AuthenticationException && $request->expectsJson()) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'user unauthenticated',
-                'data' => 'unauthenticated',
+                'message' => 'user unauthenticated.',
+                'data' => null,
             ], 401);
         }
 
