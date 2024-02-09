@@ -69,7 +69,7 @@
                                                                     class="avatar avatar-sm me-3 border-radius-lg"
                                                                     alt="user-photo">
                                                             @else
-                                                                <img src="{{ asset('assets') }}/img/team-2.jpg"
+                                                                <img src="{{ asset('assets/img/technician.png') }}"
                                                                     class="avatar avatar-sm me-3 border-radius-lg"
                                                                     alt="user1">
                                                             @endif

@@ -26,9 +26,26 @@ use Illuminate\Support\Facades\Event;
 
 class TransactionController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $transactions = Transaction::orderBy('call_at', 'DESC')->orderBy('status', 'ASC')->paginate(50);
+        $start_date = Carbon::now()->startOfWeek()->format('Y-m-d');
+        $end_date = Carbon::now()->endOfWeek()->format('Y-m-d');
+
+        if(auth()->user()->role->id != 1) {
+            $department_id = auth()->user()->department->id;
+            $request->merge([
+                'department_id' => $department_id,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+            ]);
+            return $this->filter($request);
+        }
+
+        $transactions = Transaction::orderBy('call_at', 'DESC')
+                    ->whereDate('created_at', '>=', $start_date)
+                    ->whereDate('created_at', '<=', $end_date)
+                    ->orderBy('status', 'ASC')
+                    ->paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -72,6 +89,8 @@ class TransactionController extends Controller
             'zona',
             'line',
             'process',
+            'start_date',
+            'end_date',
         ]));
     }
 
@@ -434,6 +453,8 @@ class TransactionController extends Controller
             'line_id' => $line_id,
             'process_id' => $process_id,
             'status' => $status,
+            'start_date' => $start_date,
+            'end_date' => $end_date,
         ]);
     }
 

@@ -87,19 +87,31 @@
                                         @csrf
                                         @method('post')
                                         <div class="mb-3 mt-2">
-                                            <input type="text" name="id" value="{{ $transaction->id }}"
-                                                required hidden>
-                                            <label class="form-label">Affected Equipment (Optional)</label>
-                                            <select name="equipment_id" id="equipment_id"
-                                                class="form-control border border-2 p-2">
-                                                <option value="" selected disabled>- select equipment -</option>
-                                                <option value="">No Equipment</option>
-                                                @foreach ($equipment as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
+                                            <label class="form-label">is there any equipment affected?</label>
+                                            <select id="is_equipment" class="form-control border border-2 p-2">
+                                                <option value="no">
+                                                    NO
+                                                </option>
+                                                <option value="yes">
+                                                    YES
+                                                </option>
                                             </select>
                                         </div>
                                         <div id="data_container" style="display: none;">
+                                            <div class="mb-3 mt-2">
+                                                <input type="text" name="id" value="{{ $transaction->id }}"
+                                                    required hidden>
+                                                <label class="form-label">Affected Equipment</label>
+                                                <select name="equipment_id" id="equipment_id"
+                                                    class="form-control border border-2 p-2 data-tambahan">
+                                                    <option value="" selected disabled>- select equipment -
+                                                    </option>
+                                                    @foreach ($equipment as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Remark</label>
                                                 <input type="text"
@@ -143,12 +155,12 @@
                 @section('javascript')
                     <script>
                         document.addEventListener('DOMContentLoaded', function() {
-                            var equipmentSelect = document.getElementById('equipment_id');
+                            var equipmentSelect = document.getElementById('is_equipment');
                             var container = document.getElementById('data_container');
                             var dataContainer = document.querySelectorAll('.data-tambahan');
 
                             equipmentSelect.addEventListener('change', function() {
-                                if (equipmentSelect.value !== "") {
+                                if (equipmentSelect.value === "yes") {
                                     container.style.display = 'block';
                                     var inputs = dataContainer;
                                     inputs.forEach(function(input) {

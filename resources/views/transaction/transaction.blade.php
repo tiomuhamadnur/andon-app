@@ -20,8 +20,10 @@
                             </div>
                         </div>
                         <div class=" me-3 mt-3 mb-1 text-end">
-                            <a class="btn bg-gradient-dark mb-0" data-toggle="modal" data-target="#addModal"
-                                href="javascript:;"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add</a>
+                            @if (auth()->user()->role->id == 1)
+                                <a class="btn bg-gradient-dark mb-0" data-toggle="modal" data-target="#addModal"
+                                    href="javascript:;"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add</a>
+                            @endif
                             <a class="btn bg-gradient-warning mb-0" data-toggle="modal" data-target="#filterModal"
                                 href="javascript:;"><i class="material-icons text-sm">filter</i>&nbsp;&nbsp;Filter</a>
                             <a class="btn bg-gradient-success mb-0" data-toggle="modal"
@@ -212,13 +214,21 @@
                                         @method('get')
                                         <div class="mb-3">
                                             <label class="form-label">Issue</label>
-                                            <select name="department_id" class="form-control border border-2 p-2">
-                                                <option value="" selected disabled>- select issue -
-                                                </option>
-                                                @foreach ($department as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endforeach
-                                            </select>
+                                            @if (auth()->user()->role->id == 1)
+                                                <select name="department_id" class="form-control border border-2 p-2">
+                                                    <option value="" selected disabled>- select issue -
+                                                    </option>
+                                                    @foreach ($department as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            @else
+                                                <input type="text" class="form-control border border-2 p-2"
+                                                    value="{{ auth()->user()->department->name }}" readonly>
+                                                <input type="text" value="{{ auth()->user()->department->id }}"
+                                                    name="department_id" hidden>
+                                            @endif
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Building</label>
@@ -270,8 +280,9 @@
                                             <label class="form-label">Date Range</label>
                                             <div class="input-group">
                                                 <input type="date" name="start_date"
+                                                    value="{{ $start_date ?? '' }}"
                                                     class="form-control border border-2 p-2" placeholder="start date">
-                                                <input type="date" name="end_date"
+                                                <input type="date" name="end_date" value="{{ $end_date ?? '' }}"
                                                     class="form-control border border-2 p-2" placeholder="end date">
                                             </div>
                                         </div>

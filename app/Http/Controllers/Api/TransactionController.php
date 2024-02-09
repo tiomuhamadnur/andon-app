@@ -25,7 +25,7 @@ class TransactionController extends Controller
 {
     public function transactions()
     {
-        $transactions = Transaction::get();
+        $transactions = Transaction::paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -221,7 +221,7 @@ class TransactionController extends Controller
             });
         }
 
-        $transactions = $transactions->get();
+        $transactions = $transactions->paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;

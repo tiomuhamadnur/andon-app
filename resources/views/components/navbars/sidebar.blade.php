@@ -12,7 +12,7 @@
         </a>
     </div>
     <hr class="horizontal light mt-0 mb-2">
-    <div class="collapse navbar-collapse  w-auto h-auto  max-height-vh-100" id="sidenav-collapse-main">
+    <div class="collapse navbar-collapse  w-auto h-auto" id="sidenav-collapse-main">
         <ul class="navbar-nav">
             <li class="nav-item mt-3">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Main Menu</h6>
@@ -33,6 +33,26 @@
                         <i style="font-size: 1.2rem;" class="fas fa-desktop ps-2 pe-2 text-center"></i>
                     </div>
                     <span class="nav-link-text ms-1">Display</span>
+                </a>
+            </li>
+            <li class="nav-item mt-4">
+                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'user-profile' ? 'active bg-gradient-primary' : '' }} "
+                    href="{{ route('user-profile') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-user-circle ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">User Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-white " href="{{ route('logout') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i class="material-icons ps-2 opacity-10">logout</i>
+                    </div>
+                    <span class="nav-link-text ms-1">Logout</span>
                 </a>
             </li>
             <li class="nav-item mt-4">
@@ -83,297 +103,147 @@
                     <span class="nav-link-text ms-1">All Requests</span>
                 </a>
             </li>
-            <li class="nav-item mt-4">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Essential Data</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user-management' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('user-management') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Management</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'device.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('device.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-microchip ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Device</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'button.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('button.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-toggle-off ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Button Config</span>
-                </a>
-            </li>
-            <li class="nav-item mt-4">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master Data</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'roles.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('roles.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fas fa-lg fa-user-shield ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Role</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'department.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('department.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fas fa-lg fa-building ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Department</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'section.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('section.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fas fa-lg fa-user-tie ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Section</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'jabatan.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('jabatan.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fas fa-lg fa-user-plus ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Jabatan</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'company.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('company.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-building ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Company</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'building.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('building.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-building ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Building</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'zona.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('zona.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-street-view ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Zona</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'line.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('line.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-grip-lines-vertical ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Line</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'process.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('process.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-rotate-left ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Process</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'equipment.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('equipment.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1rem;" class="fa fa-lg fa-toolbox ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Equipment</span>
-                </a>
-            </li>
+            @if (auth()->user()->role->id == 1)
+                <li class="nav-item mt-4">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Essential Data
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'user-management' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('user-management') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fas fa-lg fa-list-ul ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">User Management</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'device.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('device.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-lg fa-microchip ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Device</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'button.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('button.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-toggle-off ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Button Config</span>
+                    </a>
+                </li>
+                <li class="nav-item mt-4">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Master Data
+                    </h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'roles.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('roles.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fas fa-lg fa-user-shield ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Role</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'department.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('department.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fas fa-lg fa-building ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Department</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'section.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('section.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fas fa-lg fa-user-tie ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Section</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'jabatan.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('jabatan.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fas fa-lg fa-user-plus ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Jabatan</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'company.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('company.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-lg fa-building ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Company</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'building.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('building.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-lg fa-building ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Building</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'zona.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('zona.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-lg fa-street-view ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Zona</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'line.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('line.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;"
+                                class="fa fa-lg fa-grip-lines-vertical ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Line</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'process.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('process.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-lg fa-rotate-left ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Process</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'equipment.index' ? ' active bg-gradient-primary' : '' }} "
+                        href="{{ route('equipment.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1rem;" class="fa fa-lg fa-toolbox ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Equipment</span>
+                    </a>
+                </li>
 
-
-            {{-- <li class="nav-item mt-3">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Pages</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'tables' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('tables') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">table_view</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Tables</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'notifications' ? ' active bg-gradient-primary' : '' }}  "
-                    href="{{ route('notifications') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">notifications</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Notifications</span>
-                </a>
-            </li> --}}
-
-            {{-- <li class="nav-item mt-4">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Display</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.index' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-desktop ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Display</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display.zone' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_zone') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sample All Zone</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display_machine_call' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_machine_call') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Display Machine Call</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display_quality_call' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_quality_call') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Display Quality Call</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display_material_call' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_material_call') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Display Material Call</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display_spv_call' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_spv_call') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Display Supervisor Call</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'display_progress' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('display_progress') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Display List</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user_page' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('user_page') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Page</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user_performance' ? ' active bg-gradient-primary' : '' }} "
-                    href="{{ route('user_performance') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-chart-line ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Performance</span>
-                </a>
-            </li> --}}
-
-            <li class="nav-item mt-4">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Settings</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'settings.index' ? 'active bg-gradient-primary' : '' }} "
-                    href="{{ route('settings.index') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-cogs ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">Settings App</span>
-                </a>
-            </li>
-
-            <li class="nav-item mt-4">
-                <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'user-profile' ? 'active bg-gradient-primary' : '' }} "
-                    href="{{ route('user-profile') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i style="font-size: 1.2rem;" class="fas fa-user-circle ps-2 pe-2 text-center"></i>
-                    </div>
-                    <span class="nav-link-text ms-1">User Profile</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white " href="{{ route('logout') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons ps-2 opacity-10">logout</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Logout</span>
-                </a>
-            </li>
-            {{-- <li class="nav-item">
-                <a class="nav-link text-white {{ $activePage == 'profile' ? ' active bg-gradient-primary' : '' }}  "
-                    href="{{ route('profile') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">person</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Profile</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white " href="{{ route('static-sign-in') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">login</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sign In</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white " href="{{ route('static-sign-up') }}">
-                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
-                        <i class="material-icons opacity-10">assignment</i>
-                    </div>
-                    <span class="nav-link-text ms-1">Sign Up</span>
-                </a>
-            </li> --}}
+                <li class="nav-item mt-4">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Settings</h6>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white {{ $activePage == 'settings.index' ? 'active bg-gradient-primary' : '' }} "
+                        href="{{ route('settings.index') }}">
+                        <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <i style="font-size: 1.2rem;" class="fas fa-cogs ps-2 pe-2 text-center"></i>
+                        </div>
+                        <span class="nav-link-text ms-1">Settings App</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </div>
 </aside>
