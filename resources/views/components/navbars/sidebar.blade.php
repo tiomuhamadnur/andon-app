@@ -35,6 +35,15 @@
                     <span class="nav-link-text ms-1">Display</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link text-white {{ $activePage == 'evaluate.index' ? ' active bg-gradient-primary' : '' }} "
+                    href="{{ route('evaluate.index') }}">
+                    <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+                        <i style="font-size: 1.2rem;" class="fas fa-chart-pie ps-2 pe-2 text-center"></i>
+                    </div>
+                    <span class="nav-link-text ms-1">Evaluate</span>
+                </a>
+            </li>
             <li class="nav-item mt-4">
                 <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account</h6>
             </li>

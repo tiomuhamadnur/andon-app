@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\DeviceController;
 use App\Http\Controllers\admin\DisplayController;
 use App\Http\Controllers\admin\EquipmentController;
+use App\Http\Controllers\admin\EvaluateController;
 use App\Http\Controllers\admin\GetDataController;
 use App\Http\Controllers\admin\JabatanController;
 use App\Http\Controllers\admin\LineController;
@@ -118,6 +119,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('transaction/excel', 'excel')->name('transaction.excel');
         Route::get('transaction/filter', 'filter')->name('transaction.filter');
         Route::get('transaction/{id}/detail-response', 'detail_response')->name('transaction.detail.response');
+    });
+
+    Route::controller(EvaluateController::class)->group(function () {
+        Route::get('evaluate', 'index')->name('evaluate.index');
+        Route::get('evaluate/filter', 'filter')->name('evaluate.filter');
     });
 
     Route::controller(UserManagementController::class)->group(function () {
