@@ -20,11 +20,11 @@
                             </div>
                         </div>
                         <div class=" me-3 mt-3 mb-1 text-end">
-                            <a class="btn bg-gradient-dark mb-0" data-toggle="modal" data-target="#addModal"
+                            {{-- <a class="btn bg-gradient-dark mb-0" data-toggle="modal" data-target="#addModal"
                                 href="javascript:;"><i class="material-icons text-sm">add</i>&nbsp;&nbsp;Add</a>
                             <a class="btn bg-gradient-warning mb-0" data-toggle="modal" data-target="#filterModal"
-                                href="javascript:;"><i class="material-icons text-sm">filter</i>&nbsp;&nbsp;Filter</a>
-                            <a class="btn bg-gradient-success mb-0" data-toggle="modal"
+                                href="javascript:;"><i class="material-icons text-sm">filter</i>&nbsp;&nbsp;Filter</a> --}}
+                            <a class="btn bg-gradient-success mb-0 disabled" data-toggle="modal"
                                 data-target="#confirmationExportExcel" href="javascript:;"><i
                                     class="material-icons text-sm">send</i>&nbsp;&nbsp;Export</a>
                         </div>
@@ -46,35 +46,39 @@
                                                 CODE
                                             </th>
                                             <th
-                                                class="text-uppercase text-wrap text-center text-secondary text-xxs font-weight-bolder opacity-7">
-                                                WORKING DAY (days)
+                                                class="text-wrap text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                WORKING DAY (day)
                                             </th>
                                             <th
-                                                class="text-uppercase text-wrap text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-wrap text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 WORKING TIME ({{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
+                                                TOTAL FAILURE
+                                            </th>
+                                            <th
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
                                                 UP TIME ({{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
                                                 DOWN TIME ({{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
                                                 MTBF ({{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
                                                 MTTR ({{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-center text-uppercase text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
                                                 FAILURE RATE (failure/{{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-center text-uppercase text-wrap text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
                                                 REPAIR RATE (repair/{{ $unit ?? '-' }})
                                             </th>
                                             <th
@@ -114,6 +118,11 @@
                                             <td class="align-middle text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">
                                                     {{ $total_operating_time ?? '-' }}
+                                                </span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">
+                                                    {{ $total_transactions ?? '-' }}
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center">
@@ -173,27 +182,19 @@
                             </div>
                             <div class="modal-body">
                                 <div class="form">
-                                    <form action="{{ route('transaction.excel') }}" id="confirmation-export-form"
-                                        method="GET">
+                                    <form action="#" id="confirmation-export-form" method="GET">
                                         @csrf
                                         @method('get')
                                         <div class="mb-3">
                                             <h6 class="text-center text-wrap">
                                                 This report data will be generated in Excel format.
                                             </h6>
-                                            <input type="text" name="department_id"
-                                                value="{{ $department_id ?? '' }}" hidden>
-                                            <input type="text" name="building_id" value="{{ $building_id ?? '' }}"
-                                                hidden>
-                                            <input type="text" name="zona_id" value="{{ $zona_id ?? '' }}" hidden>
-                                            <input type="text" name="line_id" value="{{ $line_id ?? '' }}" hidden>
-                                            <input type="text" name="process_id" value="{{ $process_id ?? '' }}"
-                                                hidden>
-                                            <input type="text" name="status" value="{{ $status ?? '' }}" hidden>
+                                            <input type="text" name="mode" value="{{ $mode ?? '' }}" hidden>
+                                            <input type="text" name="equipment_id"
+                                                value="{{ $equipment->id ?? '' }}" hidden>
                                             <input type="text" name="start_date" value="{{ $start_date ?? '' }}"
                                                 hidden>
-                                            <input type="text" name="end_date" value="{{ $end_date ?? '' }}"
-                                                hidden>
+                                            <input type="text" name="end_date" value="{{ $end_date ?? '' }}" hidden>
                                         </div>
                                     </form>
                                 </div>

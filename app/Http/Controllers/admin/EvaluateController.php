@@ -136,25 +136,32 @@ class EvaluateController extends Controller
         $reliability = $totalOperatingTime/($totalOperatingTime + $sumTotalDownDuration);
         $availability = $mtbf/($mtbf + $mttr);
 
-        return view('evaluate.aspect.equipment', [
-            'mode' => $mode,
-            'user' => $user ?? null,
-            'equipment' => $equipment ?? null,
-            'total_transactions' => $totalTransactions,
-            'total_working_day' => $count_workDays,
-            'total_operating_time' => number_format($totalOperatingTime, 2),
-            'sum_response_duration' => number_format($sumResponseDuration, 2),
-            'sum_performance_duration' => number_format($sumPerformanceDuration, 2),
-            'sum_total_down_duration' => number_format($sumTotalDownDuration, 2),
-            'sum_total_up_duration' => number_format($totalOperatingTime - $sumTotalDownDuration, 2),
-            'mttr' => number_format($mttr, 2),
-            'mtbf' => number_format($mtbf, 2),
-            'failure_rate' => number_format(($failureRate), 2),
-            'repair_rate' => number_format(($repairRate), 2),
-            'reliability' => number_format($reliability * 100, 2),
-            'availability' => number_format($availability * 100, 2),
-            'unit' => $unit,
-        ]);
+        if($mode == 'equipment')
+        {
+            return view('evaluate.aspect.equipment', [
+                'mode' => $mode,
+                'user' => $user ?? null,
+                'equipment' => $equipment ?? null,
+                'total_transactions' => $totalTransactions,
+                'total_working_day' => $count_workDays,
+                'total_operating_time' => number_format($totalOperatingTime, 2),
+                'sum_response_duration' => number_format($sumResponseDuration, 2),
+                'sum_performance_duration' => number_format($sumPerformanceDuration, 2),
+                'sum_total_down_duration' => number_format($sumTotalDownDuration, 2),
+                'sum_total_up_duration' => number_format($totalOperatingTime - $sumTotalDownDuration, 2),
+                'mttr' => number_format($mttr, 2),
+                'mtbf' => number_format($mtbf, 2),
+                'failure_rate' => number_format(($failureRate), 2),
+                'repair_rate' => number_format(($repairRate), 2),
+                'reliability' => number_format($reliability * 100, 2),
+                'availability' => number_format($availability * 100, 2),
+                'unit' => $unit,
+            ]);
+        }
+        else
+        {
+            return "evaluation page for user still on development";
+        }
     }
 
     public function evaluate(Request $request)
