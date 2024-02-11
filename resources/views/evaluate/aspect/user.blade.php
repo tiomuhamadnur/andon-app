@@ -1,7 +1,7 @@
 <x-layout bodyClass="g-sidenav-show  bg-gray-200">
 
     @section('title')
-        <title>Evaluate Equipment</title>
+        <title>Evaluate User</title>
         @livewireStyles
     @endsection
     <x-navbars.sidebar activePage="evaluate.index"></x-navbars.sidebar>
@@ -15,7 +15,7 @@
                     <div class="card my-4">
                         <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
                             <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-                                <h6 class="text-white mx-3">Data Equipment Evaluation
+                                <h6 class="text-white mx-3">Data User Evaluation
                                 </h6>
                             </div>
                         </div>
@@ -31,61 +31,52 @@
                                 <table class="table align-items-center mb-0">
                                     <thead>
                                         <tr>
-                                            <th
+                                            <th rowspan="2"
                                                 class="text-uppercase text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 NO
                                             </th>
-                                            <th
+                                            <th rowspan="2"
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">
-                                                EQUIPMENT
+                                                NAME
                                             </th>
-                                            <th
+                                            <th rowspan="2"
                                                 class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
-                                                CODE
+                                                POSITION
                                             </th>
-                                            <th
+                                            <th rowspan="2"
+                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
+                                                DEPARTMENT
+                                            </th>
+                                            <th rowspan="2"
                                                 class="text-wrap text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 WORKING DAY (day)
                                             </th>
-                                            <th
+                                            <th rowspan="2"
                                                 class="text-wrap text-center text-secondary text-xxs font-weight-bolder opacity-7">
                                                 WORKING TIME ({{ $unit ?? '-' }})
                                             </th>
-                                            <th
+                                            <th rowspan="2"
                                                 class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
                                                 TOTAL FAILURE
                                             </th>
+                                            <th colspan="3"
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
+                                                EVALUATION
+                                            </th>
+
+                                        </tr>
+                                        <tr>
                                             <th
                                                 class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
-                                                UP TIME ({{ $unit ?? '-' }})
-                                            </th>
-                                            <th
-                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
-                                                DOWN TIME ({{ $unit ?? '-' }})
-                                            </th>
-                                            <th
-                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
-                                                MTBF ({{ $unit ?? '-' }})
-                                            </th>
-                                            <th
-                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
-                                                MTTR ({{ $unit ?? '-' }})
+                                                RESPONSE TIME ({{ $unit ?? '-' }})
                                             </th>
                                             <th
                                                 class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
-                                                FAILURE RATE (failure/{{ $unit ?? '-' }})
+                                                PERFORMANCE TIME ({{ $unit ?? '-' }})
                                             </th>
                                             <th
-                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
-                                                REPAIR RATE (repair/{{ $unit ?? '-' }})
-                                            </th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
-                                                RELIABILITY (%)
-                                            </th>
-                                            <th
-                                                class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 text-wrap">
-                                                AVAILABILITY (%)
+                                                class="text-center text-wrap text-secondary text-xxs font-weight-bolder opacity-7">
+                                                TOTAL DURATION ({{ $unit ?? '-' }})
                                             </th>
                                         </tr>
                                     </thead>
@@ -100,12 +91,17 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $equipment->name ?? '-' }}
+                                                    {{ $user->name ?? '-' }}
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $equipment->code ?? '-' }}
+                                                    {{ $user->jabatan->name ?? '-' }}
+                                                </span>
+                                            </td>
+                                            <td class="align-middle text-center">
+                                                <span class="text-secondary text-xs font-weight-bold">
+                                                    {{ $user->department->name ?? '-' }}
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center">
@@ -125,42 +121,17 @@
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $sum_total_up_duration ?? '-' }}
+                                                    {{ $sum_response_duration ?? '-' }}
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $sum_total_down_duration ?? '-' }}
+                                                    {{ $sum_performance_duration ?? '-' }}
                                                 </span>
                                             </td>
                                             <td class="align-middle text-center">
                                                 <span class="text-xs text-secondary mb-0 font-weight-bold">
-                                                    {{ $mtbf ?? '-' }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center">
-                                                <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $mttr ?? '-' }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center text-wrap">
-                                                <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
-                                                    {{ $failure_rate ?? '-' }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center text-wrap">
-                                                <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
-                                                    {{ $repair_rate ?? '-' }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center text-wrap">
-                                                <span class="text-secondary text-xs py-0 my-0 font-weight-bold">
-                                                    {{ $reliability ?? '-' }}
-                                                </span>
-                                            </td>
-                                            <td class="align-middle text-center text-wrap">
-                                                <span class="text-secondary text-xs font-weight-bold">
-                                                    {{ $availability ?? '-' }}
+                                                    {{ $sum_total_down_duration ?? '-' }}
                                                 </span>
                                             </td>
                                         </tr>

@@ -42,6 +42,7 @@ class EvaluateController extends Controller
         $start_date = Carbon::parse($request->start_date);
         $end_date = Carbon::parse($request->end_date) ?? $start_date;
         $work_duration_perday = $request->work_duration_perday;
+        $work_day_perweek = $request->work_day_perweek;
         $work_duration_perday = $work_duration_perday * 60;
         $unit = $request->unit;
 
@@ -56,11 +57,21 @@ class EvaluateController extends Controller
 
         $count_workDays = 0;
 
-        while ($start_date <= $end_date) {
-            if ($start_date->dayOfWeek !== Carbon::SATURDAY && $start_date->dayOfWeek !== Carbon::SUNDAY) {
-                $count_workDays++;
+        if($work_day_perweek == 5)
+        {
+            while ($start_date <= $end_date) {
+                if ($start_date->dayOfWeek !== Carbon::SATURDAY && $start_date->dayOfWeek !== Carbon::SUNDAY) {
+                    $count_workDays++;
+                }
+                $start_date->addDay();
             }
-            $start_date->addDay();
+        }
+        else
+        {
+            while ($start_date <= $end_date) {
+                $count_workDays++;
+                $start_date->addDay();
+            }
         }
 
         $totalOperatingTime = $count_workDays * $work_duration_perday;
@@ -118,6 +129,10 @@ class EvaluateController extends Controller
         // dd($transactions);
 
         $totalTransactions = $transactions->count();
+        if($totalTransactions == 0)
+        {
+            return redirect()->route('evaluate.index')->withNotifyerror('No data found');
+        }
         $sumResponseDuration = $transactions->sum('response_duration');
         $sumPerformanceDuration = $transactions->sum('performance_duration');
         $sumTotalDownDuration = $transactions->sum('total_duration');
@@ -160,7 +175,25 @@ class EvaluateController extends Controller
         }
         else
         {
-            return "evaluation page for user still on development";
+            return view('evaluate.aspect.user', [
+                'mode' => $mode,
+                'user' => $user ?? null,
+                'equipment' => $equipment ?? null,
+                'total_transactions' => $totalTransactions,
+                'total_working_day' => $count_workDays,
+                'total_operating_time' => number_format($totalOperatingTime, 2),
+                'sum_response_duration' => number_format($sumResponseDuration, 2),
+                'sum_performance_duration' => number_format($sumPerformanceDuration, 2),
+                'sum_total_down_duration' => number_format($sumTotalDownDuration, 2),
+                'sum_total_up_duration' => number_format($totalOperatingTime - $sumTotalDownDuration, 2),
+                'mttr' => number_format($mttr, 2),
+                'mtbf' => number_format($mtbf, 2),
+                'failure_rate' => number_format(($failureRate), 2),
+                'repair_rate' => number_format(($repairRate), 2),
+                'reliability' => number_format($reliability * 100, 2),
+                'availability' => number_format($availability * 100, 2),
+                'unit' => $unit,
+            ]);
         }
     }
 

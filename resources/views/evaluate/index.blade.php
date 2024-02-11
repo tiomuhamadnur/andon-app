@@ -86,7 +86,24 @@
                                             <div class="input-group mb-3">
                                                 <input type="number" min="1" name="work_duration_perday"
                                                     class="form-control border border-2 p-2" required autocomplete="off"
-                                                    placeholder="entry in hour">
+                                                    placeholder="entry in hour (ex: 8 hours)">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Working day per week (day)</label>
+                                            <div class="input-group mb-3">
+                                                <select name="work_day_perweek" class="form-control border border-2 p-2"
+                                                    required>
+                                                    <option value="" selected disabled>
+                                                        - select number work day per week -
+                                                    </option>
+                                                    <option value="5">
+                                                        5 days per week
+                                                    </option>
+                                                    <option value="7">
+                                                        7 days per week
+                                                    </option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="mb-3">
@@ -132,12 +149,14 @@
                                     container_equipment.style.display = 'none';
                                     user_id.setAttribute('required', 'required');
                                     equipment_id.removeAttribute('required');
+                                    equipment_id.value = '';
                                 } else if (select.value === "equipment") {
                                     container_mode.style.display = 'block';
                                     container_user.style.display = 'none';
                                     container_equipment.style.display = 'block';
                                     equipment_id.setAttribute('required', 'required');
                                     user_id.removeAttribute('required');
+                                    user_id.value = '';
                                 } else {
                                     container_mode.style.display = 'none';
                                     equipment_id.removeAttribute('required');

@@ -15,8 +15,30 @@ class UserController extends Controller
 
         if(Auth::attempt($input))
         {
+            $user = Auth::user();
             $data['token'] =  $request->user()->createToken('MyApp')->accessToken;
-            $data['user'] = Auth::user();
+            $data['user'] = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'email_verified_at' => $user->email_verified_at,
+                'phone' => $user->phone,
+                'location' => $user->location,
+                'about' => $user->about,
+                'photo' => asset('storage/' . $user->photo),
+                'ttd' => $user->ttd,
+                'gender' => $user->gender,
+                'status_employee' => $user->status_employee,
+                'active' => $user->active,
+                'role' => $user->role,
+                'jabatan' => $user->jabatan,
+                'section' => $user->section,
+                'department' => $user->department,
+                'building' => $user->building,
+                'company' => $user->company,
+                'created_at' => $user->created_at,
+                'updated_at' => $user->updated_at,
+            ];
 
             return response()->json([
                 'status' => 'ok',
