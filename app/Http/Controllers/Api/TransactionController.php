@@ -20,6 +20,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendNotificationMail;
 
 class TransactionController extends Controller
 {
@@ -280,7 +282,8 @@ class TransactionController extends Controller
         {
             $this->check_transaction($device_id, $department_id);
         }
-        else{
+        else
+        {
             $cek = Transaction::where('device_id', $device->id)
                                 ->where('department_id', $department->id)
                                 ->whereIn('status', ['Call', 'Pending', 'Response'])
@@ -317,11 +320,10 @@ class TransactionController extends Controller
 
             $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
             $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+            $department_id = $transaction->department_id;
+            $building_id = $transaction->device->building->id;
             if($notifWA == 1)
             {
-                $department_id = $transaction->department_id;
-                $building_id = $transaction->device->building->id;
-
                 $users = Pegawai::where('department_id', $department_id)
                                 ->where('building_id', $building_id)
                                 ->get();
@@ -344,6 +346,14 @@ class TransactionController extends Controller
                     $message = $this->formatMessage($data);
                     WhatsAppHelper::sendNotification($user->phone, $message);
                 }
+            }
+
+            if($notifEmail == 1)
+            {
+                $users = Pegawai::where('department_id', $department_id)
+                                        ->where('building_id', $building_id)
+                                        ->get();
+                $this->sendNotificationMail($users, $transaction_id);
             }
 
             $data = [
@@ -735,6 +745,30 @@ class TransactionController extends Controller
             ];
             return response()->json($data, 400);
 
+        }
+    }
+
+    public function sendNotificationMail($users, int $transaction_id)
+    {
+        $transaction = Transaction::find($transaction_id);
+        if($transaction)
+        {
+            foreach($users as $user)
+            {
+                $data = [
+                    'gender' => $user->gender ?? 'Bapak/Ibu',
+                    'name' => $user->name,
+                    'department' => $transaction->department->name,
+                    'date' => Carbon::parse($transaction->call_at)->format("d-m-Y"),
+                    'time' => Carbon::parse($transaction->call_at)->format("H:m:s"),
+                    'building' => $transaction->device->building->name,
+                    'line' => $transaction->device->line->name,
+                    'zona' => $transaction->device->zona->name,
+                    'process' => $transaction->device->process->name,
+                    'url' => 'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . '/detail-response',
+                ];
+                Mail::to($user->email)->send(new SendNotificationMail($data));
+            }
         }
     }
 }
