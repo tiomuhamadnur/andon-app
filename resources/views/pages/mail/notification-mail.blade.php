@@ -352,7 +352,7 @@
                                                 <br>
                                                 <br>
                                                 Sebagai informasi, terdapat <b>CALLING</b> untuk <b
-                                                    style="text-transform: uppercase;">Departemen
+                                                    style="text-transform: uppercase;">Tim
                                                     {{ $data['department'] ?? '' }}</b> yang harus segera
                                                 di-response. <br> <br>
                                                 Dengan detail data sebagai berikut:
