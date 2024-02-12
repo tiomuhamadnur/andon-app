@@ -688,15 +688,13 @@ class TransactionController extends Controller
             $randomNumber = rand(1000, 9999);
             $ticketNumber = $timestamp . $randomNumber;
 
-            Transaction::create([
+            $transaction = Transaction::create([
                 'ticket_number' => $ticketNumber,
                 'device_id' => $device_id,
                 'department_id' => $department_id,
                 'call_at' => Carbon::now(),
                 'status' => 'Call',
             ]);
-
-            $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
 
             $zona_id = $transaction->device->zona->id;
             $transaction_id = $transaction->id;
@@ -707,11 +705,12 @@ class TransactionController extends Controller
 
             $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
             $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
+
+            $department_id = $transaction->department_id;
+            $building_id = $transaction->device->building->id;
+
             if($notifWA == 1)
             {
-                $department_id = $transaction->department_id;
-                $building_id = $transaction->device->building->id;
-
                 $users = Pegawai::where('department_id', $department_id)
                                 ->where('building_id', $building_id)
                                 ->get();
@@ -739,8 +738,8 @@ class TransactionController extends Controller
             if($notifEmail == 1)
             {
                 $users = Pegawai::where('department_id', $department_id)
-                                        ->where('building_id', $building_id)
-                                        ->get();
+                                ->where('building_id', $building_id)
+                                ->get();
                 $this->sendNotificationMail($users, $transaction_id);
             }
 
