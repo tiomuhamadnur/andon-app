@@ -281,6 +281,12 @@ class TransactionController extends Controller
         if($validate == 1)
         {
             $this->check_transaction($device_id, $department_id);
+            $data = [
+                'status' => 'ok',
+                'mode' => 'all responses from remote only',
+                'message' => 'data laporan berhasil ditambahkan'
+            ];
+            return response()->json($data, 201);
         }
         else
         {
@@ -301,7 +307,7 @@ class TransactionController extends Controller
             $randomNumber = rand(1000, 9999);
             $ticketNumber = $timestamp . $randomNumber;
 
-            Transaction::create([
+            $transaction = Transaction::create([
                 'ticket_number' => $ticketNumber,
                 'device_id' => $device->id,
                 'department_id' => $department->id,
@@ -309,9 +315,7 @@ class TransactionController extends Controller
                 'status' => 'Call',
             ]);
 
-            $transaction = Transaction::where('ticket_number', $ticketNumber)->first();
-
-            $zona_id = $device->zona->id;
+            $zona_id = $transaction->device->zona->id;
             $transaction_id = $transaction->id;
 
             $data = [$zona_id, $transaction_id];
@@ -320,8 +324,10 @@ class TransactionController extends Controller
 
             $notifWA = Settings::where('code', 'NOTIF_WA')->first()->value;
             $notifEmail = Settings::where('code', 'NOTIF_EMAIL')->first()->value;
-            $department_id = $transaction->department_id;
+
+            $department_id = $transaction->department->id;
             $building_id = $transaction->device->building->id;
+
             if($notifWA == 1)
             {
                 $users = Pegawai::where('department_id', $department_id)
@@ -728,6 +734,14 @@ class TransactionController extends Controller
                     $message = $this->formatMessage($data);
                     WhatsAppHelper::sendNotification($user->phone, $message);
                 }
+            }
+
+            if($notifEmail == 1)
+            {
+                $users = Pegawai::where('department_id', $department_id)
+                                        ->where('building_id', $building_id)
+                                        ->get();
+                $this->sendNotificationMail($users, $transaction_id);
             }
 
             $data = [
