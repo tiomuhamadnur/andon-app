@@ -767,7 +767,6 @@ class TransactionController extends Controller
                     'process' => $transaction->device->process->name,
                     'url' => 'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . '/detail-response',
                 ];
-                dd($data);
                 Mail::to($user->email)->send(new SendNotificationMail($data));
             }
         }
