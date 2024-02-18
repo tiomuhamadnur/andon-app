@@ -577,7 +577,7 @@ class TransactionController extends Controller
             $transaction->device->zona->name ?? '',
             $transaction->device->line->name ?? '',
             $transaction->status ?? '',
-            $transaction->department->name . ' Team',
+            $transaction->department->name ?? 'Your' . ' Team',
             asset('assets/img/technician.png'),
         ];
 

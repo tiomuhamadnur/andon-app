@@ -247,6 +247,7 @@ class TransactionController extends Controller
             $users = Pegawai::where('department_id', $department_id)
                             ->where('building_id', $building_id)
                             ->get();
+            dd($users);
 
             foreach($users as $user)
             {
@@ -260,7 +261,7 @@ class TransactionController extends Controller
                     $transaction->device->line->name,
                     $transaction->device->zona->name,
                     $transaction->device->process->name,
-                    route('transaction.detail.response', Crypt::encryptString($transaction_id))
+                    'https://andon-app.tideupindustries.com/transaction/' . Crypt::encryptString($transaction_id) . '/detail-response',
                 ];
 
                 $message = $this->formatMessage($data);
