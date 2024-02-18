@@ -22,12 +22,13 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendNotificationMail;
+use App\Models\User;
 
 class TransactionController extends Controller
 {
     public function transactions()
     {
-        $transactions = Transaction::paginate(50);
+        $transactions = Transaction::orderBy('call_at', 'DESC')->paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -37,6 +38,16 @@ class TransactionController extends Controller
             $call_at_carbon = Carbon::parse($call_at);
             $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
             $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
+
+            $transaction->department;
+            $transaction->pic;
+            $transaction->device->building;
+            $transaction->device->line;
+            $transaction->device->zona;
+            $transaction->device->process;
+            $transaction->equipment;
+            $transaction->photo ? asset('storage/' . $transaction->photo) : null;
+            $transaction->photo_closed ? asset('storage/' . $transaction->photo_closed) : null;
 
             if ($response_at_carbon) {
                 $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);
@@ -124,7 +135,79 @@ class TransactionController extends Controller
         ]);
 
         $ticket_number = $request->ticket_number;
-        $transactions = Transaction::where('ticket_number', $ticket_number)->first();
+        $transaction = Transaction::where('ticket_number', $ticket_number)->first();
+
+        if(!$transaction)
+        {
+            $data = [
+                'status' => 'error',
+                'message' => 'data tidak ditemukan',
+                'data' => null,
+            ];
+
+            return response()->json($data, 400);
+        }
+
+        $call_at = $transaction->call_at;
+        $response_at = $transaction->response_at ?? $call_at;
+        $closed_at = $transaction->closed_at;
+
+        $call_at_carbon = Carbon::parse($call_at);
+        $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
+        $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
+
+        $transaction->department;
+        $transaction->pic;
+        $transaction->device->building;
+        $transaction->device->line;
+        $transaction->device->zona;
+        $transaction->device->process;
+        $transaction->equipment;
+        $transaction->photo ? asset('storage/' . $transaction->photo) : null;
+        $transaction->photo_closed ? asset('storage/' . $transaction->photo_closed) : null;
+
+        if ($response_at_carbon) {
+            $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);
+
+            $performace_duration = $closed_at_carbon ? $closed_at_carbon->diffInMinutes($response_at_carbon) : 0;
+
+            $total_duration = $closed_at_carbon ? $call_at_carbon->diffInMinutes($closed_at_carbon) : 0;
+
+            $transaction->response_duration = $response_duration;
+            $transaction->performance_duration = $performace_duration;
+            $transaction->total_duration = $total_duration;
+        } else {
+            $transaction->response_duration = 0;
+            $transaction->performance_duration = 0;
+            $transaction->total_duration = 0;
+        }
+
+        $data = [
+            'status' => 'ok',
+            'message' => 'data berhasil didapatkan',
+            'data' => $transaction,
+        ];
+
+        return response()->json($data, 200);
+    }
+
+    public function count(Request $request)
+    {
+        $request->validate([
+            'department_id' => 'required',
+            'time_mode' => 'required|in:today,this_week,this_month,this_year',
+        ],[
+            'time_mode.required' => 'Harus berisi "today", "this_week", "this_month", atau "this_year"',
+            'time_mode.in' => 'Harus berisi "today", "this_week", "this_month", atau "this_year"',
+        ]);
+
+        $department_id = $request->department_id;
+        $time_mode = $request->time_mode;
+        $transactions = Transaction::query();
+
+        $transactions->when($department_id, function ($query) use ($request) {
+            return $query->where('department_id', $request->department_id);
+        });
 
         if(!$transactions)
         {
@@ -137,34 +220,47 @@ class TransactionController extends Controller
             return response()->json($data, 400);
         }
 
-        $call_at = $transactions->call_at;
-        $response_at = $transactions->response_at ?? $call_at;
-        $closed_at = $transactions->closed_at;
-
-        $call_at_carbon = Carbon::parse($call_at);
-        $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
-        $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
-
-        if ($response_at_carbon) {
-            $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);
-
-            $performace_duration = $closed_at_carbon ? $closed_at_carbon->diffInMinutes($response_at_carbon) : 0;
-
-            $total_duration = $closed_at_carbon ? $call_at_carbon->diffInMinutes($closed_at_carbon) : 0;
-
-            $transactions->response_duration = $response_duration;
-            $transactions->performance_duration = $performace_duration;
-            $transactions->total_duration = $total_duration;
-        } else {
-            $transactions->response_duration = 0;
-            $transactions->performance_duration = 0;
-            $transactions->total_duration = 0;
+        switch ($time_mode) {
+            case 'today':
+                $time = Carbon::today();
+                $transactions = $transactions->whereDate('call_at', $time)->get();
+                break;
+            case 'this_week':
+                $startDate = now()->startOfWeek();
+                $endDate = now()->endOfWeek();
+                $transactions = $transactions->whereBetween('call_at', [$startDate, $endDate])->get();
+                break;
+            case 'this_month':
+                $time = Carbon::now()->format('m');
+                $transactions = $transactions->whereMonth('call_at', $time)->get();
+                break;
+            case 'this_year':
+                $time = Carbon::now()->format('Y');
+                $transactions = $transactions->whereYear('call_at', $time)->get();
+                break;
+            default:
+                // Do nothing
+                break;
         }
+
+        $total = $transactions->count();
+        $call = $transactions->where('status', 'Call')->count();
+        $response = $transactions->where('status', 'Response')->count();
+        $pending = $transactions->where('status', 'Pending')->count();
+        $closed = $transactions->where('status', 'Closed')->count();
+
+        $data = [
+            'call' => $call,
+            'response' => $response,
+            'pending' => $pending,
+            'closed' => $closed,
+            'total' => $total,
+        ];
 
         $data = [
             'status' => 'ok',
             'message' => 'data berhasil didapatkan',
-            'data' => $transactions,
+            'data' => $data,
         ];
 
         return response()->json($data, 200);
@@ -223,7 +319,7 @@ class TransactionController extends Controller
             });
         }
 
-        $transactions = $transactions->paginate(50);
+        $transactions = $transactions->orderBy('call_at', 'DESC')->paginate(50);
 
         foreach ($transactions as $transaction) {
             $call_at = $transaction->call_at;
@@ -233,6 +329,15 @@ class TransactionController extends Controller
             $call_at_carbon = Carbon::parse($call_at);
             $response_at_carbon = $response_at ? Carbon::parse($response_at) : 0;
             $closed_at_carbon = $closed_at ? Carbon::parse($closed_at) : 0;
+            $transaction->department;
+            $transaction->pic;
+            $transaction->device->building;
+            $transaction->device->line;
+            $transaction->device->zona;
+            $transaction->device->process;
+            $transaction->equipment;
+            $transaction->photo ? asset('storage/' . $transaction->photo) : null;
+            $transaction->photo_closed ? asset('storage/' . $transaction->photo_closed) : null;
 
             if ($response_at_carbon) {
                 $response_duration = $call_at_carbon->diffInMinutes($response_at_carbon);

@@ -42,6 +42,8 @@ Route::middleware('auth:api')->group(function () {
 
         Route::post('transaction/filter', 'filter');
         Route::post('transaction/search', 'ticketNumber');
+
+        Route::post('transaction/count', 'count');
     });
 
     Route::controller(GetDataController::class)->group(function () {
