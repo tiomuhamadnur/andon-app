@@ -247,7 +247,6 @@ class TransactionController extends Controller
             $users = Pegawai::where('department_id', $department_id)
                             ->where('building_id', $building_id)
                             ->get();
-            dd($users);
 
             foreach($users as $user)
             {
